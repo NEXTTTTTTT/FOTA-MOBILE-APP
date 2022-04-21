@@ -11,45 +11,41 @@ class BaseResponse{
 }
 
 @JsonSerializable()
-class CustomerResponse{
-  @JsonKey(name: "id")
+class UserResponse{
+  @JsonKey(name: "_id")
   String? id;
-  @JsonKey(name: "name")
-  String? name;
-  @JsonKey(name: "numOfNotifications")
-  int? numOfNotification;
-  
-  CustomerResponse(this.id,this.name,this.numOfNotification);
-  // from json
-  factory CustomerResponse.fromJson(Map<String,dynamic> json)=> _$CustomerResponseFromJson(json);
-  // to json
-  Map<String,dynamic> toJson() =>_$CustomerResponseToJson(this);
-}
-
-@JsonSerializable()
-class ContactsResponse{
-  @JsonKey(name: "phoneNumber")
-  String? phoneNumber;
-  @JsonKey(name: "link")
-  String? link;
+  @JsonKey(name: "fullname")
+  String? fullname;
+  @JsonKey(name: "username")
+  String? username;
   @JsonKey(name: "email")
   String? email;
+  @JsonKey(name: "profileImage")
+  String? profileImage;
+  @JsonKey(name: "deviceToken")
+  String? deviceToken;
+  @JsonKey(name: "isActive")
+  bool? isActive;
+  @JsonKey(name: "currentLocation")
+  Map? currentLocation;
+  @JsonKey(name: "createdAt")
+  String? createdAt;
   
-  ContactsResponse(this.phoneNumber,this.link,this.email);
+  UserResponse(this.id,this.fullname,this.email,this.profileImage,this.deviceToken,this.isActive,this.currentLocation,this.createdAt);
   // from json
-  factory ContactsResponse.fromJson(Map<String,dynamic> json)=> _$ContactsResponseFromJson(json);
+  factory UserResponse.fromJson(Map<String,dynamic> json)=> _$UserResponseFromJson(json);
   // to json
-  Map<String,dynamic> toJson() =>_$ContactsResponseToJson(this);
+  Map<String,dynamic> toJson() =>_$UserResponseToJson(this);
 }
 
 @JsonSerializable()
 class AuthenticationResponse extends BaseResponse{
-  @JsonKey(name: "customer")
-  CustomerResponse? customer;
-  @JsonKey(name: "contacts")
-  ContactsResponse? contacts;
+  @JsonKey(name:"access_token")
+  String? accessToken;
+  @JsonKey(name: "user")
+  UserResponse? user;
 
-  AuthenticationResponse(this.customer,this.contacts);
+  AuthenticationResponse(this.accessToken,this.user);
   // from json
   factory AuthenticationResponse.fromJson(Map<String,dynamic> json)=> _$AuthenticationResponseFromJson(json);
   // to json

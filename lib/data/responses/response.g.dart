@@ -16,43 +16,37 @@ Map<String, dynamic> _$BaseResponseToJson(BaseResponse instance) =>
       'message': instance.message,
     };
 
-CustomerResponse _$CustomerResponseFromJson(Map<String, dynamic> json) =>
-    CustomerResponse(
-      json['id'] as String?,
-      json['name'] as String?,
-      json['numOfNotifications'] as int?,
-    );
-
-Map<String, dynamic> _$CustomerResponseToJson(CustomerResponse instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
-      'numOfNotifications': instance.numOfNotification,
-    };
-
-ContactsResponse _$ContactsResponseFromJson(Map<String, dynamic> json) =>
-    ContactsResponse(
-      json['phoneNumber'] as String?,
-      json['link'] as String?,
+UserResponse _$UserResponseFromJson(Map<String, dynamic> json) => UserResponse(
+      json['_id'] as String?,
+      json['fullname'] as String?,
       json['email'] as String?,
-    );
+      json['profileImage'] as String?,
+      json['deviceToken'] as String?,
+      json['isActive'] as bool?,
+      json['currentLocation'] as Map<String, dynamic>?,
+      json['createdAt'] as String?,
+    )..username = json['username'] as String?;
 
-Map<String, dynamic> _$ContactsResponseToJson(ContactsResponse instance) =>
+Map<String, dynamic> _$UserResponseToJson(UserResponse instance) =>
     <String, dynamic>{
-      'phoneNumber': instance.phoneNumber,
-      'link': instance.link,
+      '_id': instance.id,
+      'fullname': instance.fullname,
+      'username': instance.username,
       'email': instance.email,
+      'profileImage': instance.profileImage,
+      'deviceToken': instance.deviceToken,
+      'isActive': instance.isActive,
+      'currentLocation': instance.currentLocation,
+      'createdAt': instance.createdAt,
     };
 
 AuthenticationResponse _$AuthenticationResponseFromJson(
         Map<String, dynamic> json) =>
     AuthenticationResponse(
-      json['customer'] == null
+      json['access_token'] as String?,
+      json['user'] == null
           ? null
-          : CustomerResponse.fromJson(json['customer'] as Map<String, dynamic>),
-      json['contacts'] == null
-          ? null
-          : ContactsResponse.fromJson(json['contacts'] as Map<String, dynamic>),
+          : UserResponse.fromJson(json['user'] as Map<String, dynamic>),
     )
       ..status = json['status'] as int?
       ..message = json['message'] as String?;
@@ -62,6 +56,6 @@ Map<String, dynamic> _$AuthenticationResponseToJson(
     <String, dynamic>{
       'status': instance.status,
       'message': instance.message,
-      'customer': instance.customer,
-      'contacts': instance.contacts,
+      'access_token': instance.accessToken,
+      'user': instance.user,
     };

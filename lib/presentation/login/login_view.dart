@@ -10,7 +10,7 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorManager.white,
-      body: Center(child: const Text('login')),
+      body: const Center(child: Text('login')),
     );
   }
 }

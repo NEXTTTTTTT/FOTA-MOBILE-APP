@@ -5,24 +5,26 @@ class SliderObject {
   SliderObject(this.title, this.subTitle, this.image);
 }
 
-class Customer{
+class User{
   String id;
-  String name;
-  int numOfNotification;
-  Customer(this.id,this.name,this.numOfNotification);
+  String fullname;
+  String username;
+  String email;
+  String profileImage;
+  String deviceToken;
+  bool isActive;
+  Map currentLocation;
+
+  String createdAt;
+  User(this.id,this.fullname,this.username,this.email,this.profileImage,this.isActive,this.deviceToken,this.currentLocation,this.createdAt);
 }
 
-class Contacts{
-  String email;
-  String phoneNumber;
-  String link;
-  Contacts(this.email,this.link,this.phoneNumber);
-}
+
 
 class Authentication{
-  Customer customer;
-  Contacts contacts;
-  Authentication(this.customer,this.contacts);
+  String accessToken;
+  User user;
+  Authentication(this.accessToken,this.user);
 }
 
 class DeviceInfo{
