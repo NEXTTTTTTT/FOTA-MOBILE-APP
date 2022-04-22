@@ -8,12 +8,12 @@ part of 'response.dart';
 
 BaseResponse _$BaseResponseFromJson(Map<String, dynamic> json) => BaseResponse()
   ..status = json['status'] as int?
-  ..message = json['message'] as String?;
+  ..message = json['msg'] as String?;
 
 Map<String, dynamic> _$BaseResponseToJson(BaseResponse instance) =>
     <String, dynamic>{
       'status': instance.status,
-      'message': instance.message,
+      'msg': instance.message,
     };
 
 UserResponse _$UserResponseFromJson(Map<String, dynamic> json) => UserResponse(
@@ -49,13 +49,13 @@ AuthenticationResponse _$AuthenticationResponseFromJson(
           : UserResponse.fromJson(json['user'] as Map<String, dynamic>),
     )
       ..status = json['status'] as int?
-      ..message = json['message'] as String?;
+      ..message = json['msg'] as String?;
 
 Map<String, dynamic> _$AuthenticationResponseToJson(
         AuthenticationResponse instance) =>
     <String, dynamic>{
       'status': instance.status,
-      'message': instance.message,
+      'msg': instance.message,
       'access_token': instance.accessToken,
       'user': instance.user,
     };
