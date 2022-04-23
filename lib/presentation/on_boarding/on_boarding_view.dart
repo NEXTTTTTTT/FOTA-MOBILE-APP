@@ -124,7 +124,9 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                 child: TextButton(
                     onPressed: () {
                       Navigator.pushReplacementNamed(context, Routes.loginRoute);
-                    }, child:  Text(AppStrings.skip,style: Theme.of(context).textTheme.subtitle1,))),
+                    }, child:  Text(AppStrings.skip,style: Theme.of(context).textTheme.subtitle1,)
+                )
+            ),
             _getBottomSheetWidget(sliderViewObject)
           ],
         ),

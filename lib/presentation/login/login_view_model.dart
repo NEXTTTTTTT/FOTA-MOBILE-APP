@@ -6,16 +6,16 @@ import 'package:fota_mobile_app/presentation/common/freezed_data_classes.dart';
 
 class LoginViewModel extends BaseViewModel
     with LoginViewModelInputs, LoginViewModelOutputs {
-  StreamController _userNameStreamController =
+  final StreamController _userNameStreamController =
       StreamController<String>.broadcast();
-  StreamController _passwordStreamController =
+  final StreamController _passwordStreamController =
       StreamController<String>.broadcast();
-  StreamController _isAllInputsValidStreamController =
+  final StreamController _isAllInputsValidStreamController =
       StreamController<void>.broadcast();
 
-  var loginObject = LoginObject("", "");
+  var loginObject = LoginObject(userName: "", password: "");
 
-  LoginUseCase? _loginUseCase; // todo: remove ?
+  final LoginUseCase _loginUseCase;
   LoginViewModel(this._loginUseCase);
 
   /// inputs
@@ -42,7 +42,8 @@ class LoginViewModel extends BaseViewModel
 
   @override
   login() async {
-    (await _loginUseCase!.execute(
+    print('hey');
+    (await _loginUseCase.execute(
             LoginUseCaseInput(loginObject.userName, loginObject.password)))
         .fold((failure) {
       // TODO: left -> failure
@@ -57,15 +58,14 @@ class LoginViewModel extends BaseViewModel
   @override
   setPassword(String password) {
     inputPassword.add(password);
-    loginObject.copyWith(
-        password: password); // data class operation same as kotlin
+    loginObject = loginObject.copyWith(password: password); // data class operation same as kotlin
     _validate();
   }
 
   @override
   setUserName(String userName) {
     inputUserName.add(userName);
-    loginObject.copyWith(userName: userName);
+    loginObject = loginObject.copyWith(userName: userName);
     _validate();
   }
 
@@ -84,7 +84,7 @@ class LoginViewModel extends BaseViewModel
 
   /// private functions
   bool _isPasswordValid(String password) {
-    return password.isNotEmpty && password.length >= 6;
+    return password.isNotEmpty;
   }
 
   bool _isUserNameValid(String userName) {

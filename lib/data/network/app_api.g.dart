@@ -10,7 +10,7 @@ part of 'app_api.dart';
 
 class _AppServiceClient implements AppServiceClient {
   _AppServiceClient(this._dio, {this.baseUrl}) {
-    baseUrl ??= 'http://mahmoud.mocklab.io';
+    baseUrl ??= 'http://fota2022.herokuapp.com/api/v1';
   }
 
   final Dio _dio;

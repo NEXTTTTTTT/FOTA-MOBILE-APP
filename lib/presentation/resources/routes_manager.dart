@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fota_mobile_app/app/di.dart';
 import 'package:fota_mobile_app/presentation/car_details/car_details_view.dart';
 import 'package:fota_mobile_app/presentation/profile/profile_view.dart';
 import 'package:fota_mobile_app/presentation/resources/strings_manager.dart';
@@ -34,6 +35,7 @@ class RouteGenerator{
           case Routes.onBoardingRoute:
             return MaterialPageRoute(builder: (_)=> const OnBoardingView());
           case Routes.loginRoute:
+            initLoginModule();
             return MaterialPageRoute(builder: (_)=> const LoginView());
           case Routes.registerRoute:
             return MaterialPageRoute(builder: (_)=> const RegisterView());

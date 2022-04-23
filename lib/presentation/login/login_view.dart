@@ -5,6 +5,7 @@ import 'package:fota_mobile_app/presentation/resources/color_manager.dart';
 import 'package:fota_mobile_app/presentation/resources/strings_manager.dart';
 import 'package:fota_mobile_app/presentation/resources/values_manager.dart';
 
+import '../../app/di.dart';
 import '../resources/assets_manager.dart';
 import '../resources/routes_manager.dart';
 
@@ -16,11 +17,10 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  LoginViewModel _loginViewModel =
-      LoginViewModel(null); // todo: pass login use case
+  final LoginViewModel _loginViewModel = instance<LoginViewModel>();
 
-  TextEditingController _userNameController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _userNameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   void _bind() {
@@ -126,22 +126,27 @@ class _LoginViewState extends State<LoginView> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppPadding.p50),
+                padding: const EdgeInsets.symmetric(horizontal: AppPadding.p20),
                 child: StreamBuilder<bool>(
                     stream: _loginViewModel.outputIsAllInputsValid,
                     builder: (context, snapshot) {
-                      return ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor: (snapshot.data ?? false)
-                                ? MaterialStateProperty.all(ColorManager.primary)
-                                : MaterialStateProperty.all(ColorManager.lightGrey),
-                          ),
-                          onPressed: () {
-                            (snapshot.data?? false) ? (){
-                              _loginViewModel.login();
-                            }: null;
-                          },
-                          child: Text(AppStrings.login));
+                      return SizedBox(
+                        width: double.infinity,
+                        height: AppSize.s50,
+                        child: ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor: (snapshot.data ?? false)
+                                  ? MaterialStateProperty.all(ColorManager.primary)
+                                  : MaterialStateProperty.all(ColorManager.lightGrey),
+                            ),
+                            onPressed: () {
+                              if(snapshot.data?? false) {
+                               _loginViewModel.login();
+                              }
+                            },
+                            child: Text(AppStrings.login,style: Theme.of(context).textTheme.headline2,)
+                        ),
+                      );
                     }),
 
               ),

@@ -84,11 +84,11 @@ class __$LoginObjectCopyWithImpl<$Res> extends _$LoginObjectCopyWithImpl<$Res>
     Object? password = freezed,
   }) {
     return _then(_LoginObject(
-      userName == freezed
+      userName: userName == freezed
           ? _value.userName
           : userName // ignore: cast_nullable_to_non_nullable
               as String,
-      password == freezed
+      password: password == freezed
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
               as String,
@@ -99,7 +99,7 @@ class __$LoginObjectCopyWithImpl<$Res> extends _$LoginObjectCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_LoginObject implements _LoginObject {
-  _$_LoginObject(this.userName, this.password);
+  const _$_LoginObject({required this.userName, required this.password});
 
   @override
   final String userName;
@@ -133,8 +133,9 @@ class _$_LoginObject implements _LoginObject {
 }
 
 abstract class _LoginObject implements LoginObject {
-  factory _LoginObject(final String userName, final String password) =
-      _$_LoginObject;
+  const factory _LoginObject(
+      {required final String userName,
+      required final String password}) = _$_LoginObject;
 
   @override
   String get userName => throw _privateConstructorUsedError;
