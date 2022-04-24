@@ -112,7 +112,7 @@ class StateRenderer extends StatelessWidget {
           child: ElevatedButton(
               onPressed: () {
                 if (stateRendererType == StateRendererType.POPUP_ERROR_STATE) {
-                  retryActionFunction;
+                  retryActionFunction?.call();
                 } else {
                   Navigator.of(context).pop();
                 }

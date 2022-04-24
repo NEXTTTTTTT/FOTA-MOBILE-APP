@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fota_mobile_app/app/app_prefs.dart';
+import 'package:fota_mobile_app/app/di.dart';
 import 'package:fota_mobile_app/domain/model/model.dart';
 import 'package:fota_mobile_app/presentation/on_boarding/on_boarding_view_model.dart';
 import 'package:fota_mobile_app/presentation/resources/assets_manager.dart';
@@ -19,26 +21,30 @@ class OnBoardingView extends StatefulWidget {
 
 class _OnBoardingViewState extends State<OnBoardingView> {
   final PageController _pageController = PageController(initialPage: 0);
-  final OnBoardingViewModel _viewModel =OnBoardingViewModel();
-  _bind(){
+  final OnBoardingViewModel _viewModel = OnBoardingViewModel();
+  final AppPreferences _appPreferences = instance<AppPreferences>();
+  _bind() {
     _viewModel.start();
+    _appPreferences.setOnBoardingScreenViewed();
   }
+
   @override
   void initState() {
     _bind();
     super.initState();
   }
+
   @override
   void dispose() {
     _viewModel.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<SliderViewObject>(
         stream: _viewModel.outputSliderViewObject,
-        builder: (context,snapshot)=>_getContent(snapshot.data));
-
+        builder: (context, snapshot) => _getContent(snapshot.data));
   }
 
   Widget _getBottomSheetWidget(SliderViewObject sliderViewObject) => Container(
@@ -68,7 +74,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                 for (int i = 0; i < sliderViewObject.numOfSlides; i++)
                   Padding(
                     padding: const EdgeInsets.all(AppPadding.p8),
-                    child: _getProperCircle(i,sliderViewObject.currentIndex),
+                    child: _getProperCircle(i, sliderViewObject.currentIndex),
                   )
               ],
             ),
@@ -92,7 +98,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
         ),
       );
 
-  Widget _getProperCircle(int index,int _currentIndex) {
+  Widget _getProperCircle(int index, int _currentIndex) {
     if (index == _currentIndex) {
       return SvgPicture.asset(AssetsManager.solidCircle);
     } else {
@@ -101,47 +107,47 @@ class _OnBoardingViewState extends State<OnBoardingView> {
   }
 
   Widget _getContent(SliderViewObject? sliderViewObject) {
-    if(sliderViewObject == null) {
+    if (sliderViewObject == null) {
       return Container();
     } else {
       return Scaffold(
-      body: PageView.builder(
-        itemCount: sliderViewObject.numOfSlides,
-        itemBuilder: (context, index) =>
-            OnBoardingPage(sliderObject: sliderViewObject.sliderObject),
-        controller: _pageController,
-        onPageChanged: (index) {
-          _viewModel.onPageChanged(index);
-        },
-      ),
-      bottomSheet: Container(
-        color: ColorManager.white,
-        height: AppSize.s100,
-        child: Column(
-          children: [
-            Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                    onPressed: () {
-                      Navigator.pushReplacementNamed(context, Routes.loginRoute);
-                    }, child:  Text(AppStrings.skip,style: Theme.of(context).textTheme.subtitle1,)
-                )
-            ),
-            _getBottomSheetWidget(sliderViewObject)
-          ],
+        body: PageView.builder(
+          itemCount: sliderViewObject.numOfSlides,
+          itemBuilder: (context, index) =>
+              OnBoardingPage(sliderObject: sliderViewObject.sliderObject),
+          controller: _pageController,
+          onPageChanged: (index) {
+            _viewModel.onPageChanged(index);
+          },
         ),
-      ),
-    );
+        bottomSheet: Container(
+          color: ColorManager.white,
+          height: AppSize.s100,
+          child: Column(
+            children: [
+              Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                      onPressed: () {
+                        Navigator.pushReplacementNamed(
+                            context, Routes.loginRoute);
+                      },
+                      child: Text(
+                        AppStrings.skip,
+                        style: Theme.of(context).textTheme.subtitle1,
+                      ))),
+              _getBottomSheetWidget(sliderViewObject)
+            ],
+          ),
+        ),
+      );
     }
   }
-
-
 }
 
 class OnBoardingPage extends StatelessWidget {
   SliderObject sliderObject;
-  OnBoardingPage({Key? key, required this.sliderObject})
-      : super(key: key);
+  OnBoardingPage({Key? key, required this.sliderObject}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -167,13 +173,14 @@ class OnBoardingPage extends StatelessWidget {
         const SizedBox(
           height: AppSize.s20,
         ),
-        Center(child: SvgPicture.asset(sliderObject.image,
-        height: AppSize.s250,
-        allowDrawingOutsideViewBox: false,
-        fit: BoxFit.cover,)),
+        Center(
+            child: SvgPicture.asset(
+          sliderObject.image,
+          height: AppSize.s250,
+          allowDrawingOutsideViewBox: false,
+          fit: BoxFit.cover,
+        )),
       ],
     );
   }
 }
-
-

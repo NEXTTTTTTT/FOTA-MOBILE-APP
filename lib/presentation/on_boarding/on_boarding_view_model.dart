@@ -38,14 +38,14 @@ class OnBoardingViewModel extends BaseViewModel
   int goPrevious() {
     int previousIndex = _currentIndex--;
     if (previousIndex == -1) {
-      _currentIndex = _list.length-1;
+      _currentIndex = _list.length - 1;
     }
     return _currentIndex;
   }
 
   @override
   void onPageChanged(int index) {
-    _currentIndex == index;
+    _currentIndex = index;
     _postDataToView();
   }
 

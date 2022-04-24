@@ -2,9 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fota_mobile_app/app/app_prefs.dart';
 import 'package:fota_mobile_app/presentation/resources/assets_manager.dart';
 import 'package:fota_mobile_app/presentation/resources/color_manager.dart';
 import 'package:fota_mobile_app/presentation/resources/routes_manager.dart';
+
+import '../../app/di.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({Key? key}) : super(key: key);
@@ -15,13 +18,34 @@ class SplashView extends StatefulWidget {
 
 class _SplashViewState extends State<SplashView> {
   late Timer _timer;
+  final AppPreferences _appPreferences = instance<AppPreferences>();
 
-  _startDelay(){
-  _timer = Timer(const Duration(seconds: 3),_goNext);
+  _startDelay() {
+    _timer = Timer(const Duration(seconds: 3), _goNext);
   }
 
-  _goNext(){
-    Navigator.pushReplacementNamed(context, Routes.onBoardingRoute);
+  _goNext() async {
+    _appPreferences.isUserLoggedIn().then((isUserLoggedIn) => {
+          if (isUserLoggedIn)
+            {Navigator.pushReplacementNamed(context, Routes.mainRoute)}
+          else
+            {
+              _appPreferences
+                  .isOnBoardingScreenViewed()
+                  .then((isOnBoardingScreenViewed) => {
+                        if (isOnBoardingScreenViewed)
+                          {
+                            Navigator.pushReplacementNamed(
+                                context, Routes.loginRoute)
+                          }
+                        else
+                          {
+                            Navigator.pushReplacementNamed(
+                                context, Routes.onBoardingRoute)
+                          }
+                      })
+            }
+        });
   }
 
   @override
@@ -39,8 +63,9 @@ class _SplashViewState extends State<SplashView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorManager.white,
-      body: Center(child: SvgPicture.asset(AssetsManager.splashLogo),)
-    );
+        backgroundColor: ColorManager.white,
+        body: Center(
+          child: SvgPicture.asset(AssetsManager.splashLogo),
+        ));
   }
 }

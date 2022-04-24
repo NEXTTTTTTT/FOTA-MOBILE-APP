@@ -59,11 +59,14 @@ class EmptyState extends FlowState {
 }
 
 extension FlowStateExtention on FlowState {
-  Widget getScreenWidget(BuildContext context, Widget contentScreenWidget,
+  Widget getScreenWidget(
+    BuildContext context,
+   Widget contentScreenWidget,
       Function retryActionFunction) {
     switch (this.runtimeType) {
       case LoadingState:
         {
+          dismissDialog(context);
           if (getStateRendererType() == StateRendererType.POPUP_LOADING_STATE) {
             // show dialog
             showPopUp(context, getStateRendererType(), getMessage(),
@@ -99,6 +102,7 @@ extension FlowStateExtention on FlowState {
         }
       case EmptyState:
         {
+          dismissDialog(context);
           return StateRenderer(
             stateRendererType: getStateRendererType(),
             retryActionFunction: retryActionFunction,
@@ -112,6 +116,7 @@ extension FlowStateExtention on FlowState {
         }
       default:
         {
+          dismissDialog(context);
           return contentScreenWidget;
         }
     }
@@ -131,7 +136,7 @@ extension FlowStateExtention on FlowState {
         context: context,
         builder: (BuildContext context) => StateRenderer(
               stateRendererType: stateRendererType,
-              retryActionFunction: ()=>retryActionFunction,
+              retryActionFunction: retryActionFunction,
               message: message,
             )));
   }

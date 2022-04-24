@@ -16,6 +16,9 @@ class LoginViewModel extends BaseViewModel
   final StreamController _isAllInputsValidStreamController =
       StreamController<void>.broadcast();
 
+  final StreamController isUserLoggedInSuccessfullyStreamController =
+      StreamController<bool>();
+
   var loginObject = LoginObject(userName: "", password: "");
 
   final LoginUseCase _loginUseCase;
@@ -27,6 +30,7 @@ class LoginViewModel extends BaseViewModel
     _userNameStreamController.close();
     _passwordStreamController.close();
     _isAllInputsValidStreamController.close();
+    isUserLoggedInSuccessfullyStreamController.close();
   }
 
   @override
@@ -44,6 +48,7 @@ class LoginViewModel extends BaseViewModel
   @override
   Sink get inputIsAllInputsValid => _isAllInputsValidStreamController.sink;
 
+
   @override
   login() async {
     inputState.add(LoadingState(
@@ -53,12 +58,12 @@ class LoginViewModel extends BaseViewModel
             LoginUseCaseInput(loginObject.userName, loginObject.password)))
         .fold((failure) {
       // left -> failure
-      inputState.add(ErrorState(StateRendererType.POPUP_ERROR_STATE, failure.message));
+      inputState.add(
+          ErrorState(StateRendererType.POPUP_ERROR_STATE, failure.message));
     }, (data) {
       //  right -> success (data)
       inputState.add(ContentState());
-
-      // todo: navigate to main screen
+      isUserLoggedInSuccessfullyStreamController.add(true);
     });
   }
 
@@ -89,6 +94,7 @@ class LoginViewModel extends BaseViewModel
   @override
   Stream<bool> get outputIsAllInputsValid =>
       _isAllInputsValidStreamController.stream.map((_) => _isAllInputsValid());
+
 
   /// private functions
   bool _isPasswordValid(String password) {

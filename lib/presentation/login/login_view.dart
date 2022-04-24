@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fota_mobile_app/app/app_prefs.dart';
 import 'package:fota_mobile_app/presentation/common/state_renderer/state_renderer_impl.dart';
 import 'package:fota_mobile_app/presentation/login/login_view_model.dart';
 import 'package:fota_mobile_app/presentation/resources/color_manager.dart';
 import 'package:fota_mobile_app/presentation/resources/strings_manager.dart';
 import 'package:fota_mobile_app/presentation/resources/values_manager.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../app/di.dart';
 import '../resources/assets_manager.dart';
@@ -19,6 +22,7 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView> {
   final LoginViewModel _loginViewModel = instance<LoginViewModel>();
+  final AppPreferences _appPreferences = instance<AppPreferences>();
 
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -30,6 +34,15 @@ class _LoginViewState extends State<LoginView> {
         () => _loginViewModel.setUserName(_userNameController.text));
     _passwordController.addListener(
         () => _loginViewModel.setPassword(_passwordController.text));
+
+    _loginViewModel.isUserLoggedInSuccessfullyStreamController.stream
+        .listen((_) {
+      _appPreferences.setUserLoggIn();
+      //* navigate to main screen
+      SchedulerBinding.instance?.addPostFrameCallback((_) {
+        Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
+      });
+    });
   }
 
   @override
@@ -51,9 +64,9 @@ class _LoginViewState extends State<LoginView> {
       body: StreamBuilder<FlowState>(
           stream: _loginViewModel.outputState,
           builder: (context, snapshot) {
-            return snapshot.data?.getScreenWidget(context, _getContent(), () {
-              _loginViewModel.login();
-            })??_getContent();
+            return snapshot.data?.getScreenWidget(
+                    context, _getContent(), () => _loginViewModel.login()) ??
+                _getContent();
           }),
     );
   }

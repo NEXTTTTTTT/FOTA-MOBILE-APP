@@ -5,7 +5,7 @@ import 'package:fota_mobile_app/presentation/common/state_renderer/state_rendere
 abstract class BaseViewModel extends BaseViewModelInputs
     with BaseViewModelOutputs {
   // shared variables and functions that will be through any view model.
-  StreamController _inputStateStreamController = StreamController<FlowState>();
+  StreamController _inputStateStreamController = StreamController<FlowState>.broadcast();
 
 
   @override
