@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fota_mobile_app/presentation/common/state_renderer/state_renderer_impl.dart';
 import 'package:fota_mobile_app/presentation/login/login_view_model.dart';
 import 'package:fota_mobile_app/presentation/resources/color_manager.dart';
 import 'package:fota_mobile_app/presentation/resources/strings_manager.dart';
@@ -45,117 +46,120 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    return _getContent();
+    return Scaffold(
+      backgroundColor: ColorManager.white,
+      body: StreamBuilder<FlowState>(
+          stream: _loginViewModel.outputState,
+          builder: (context, snapshot) {
+            return snapshot.data?.getScreenWidget(context, _getContent(), () {
+              _loginViewModel.login();
+            })??_getContent();
+          }),
+    );
   }
 
   Widget _getContent() {
-    return Scaffold(
-      backgroundColor: ColorManager.white,
-      body: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              SvgPicture.asset(AssetsManager.splashLogo),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: AppPadding.p20),
-                child: StreamBuilder<bool>(
-                  stream: _loginViewModel.outputIsUserNameValid,
-                  builder: (context, snapshot) {
-                    return TextFormField(
-                      controller: _userNameController,
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                        hintText: AppStrings.userName,
-                        labelText: AppStrings.userName,
-                        errorText: (snapshot.data ?? true)
-                            ? null
-                            : AppStrings.userNameError,
-                      ),
-                    );
-                  },
-                ),
-              ),
-              const SizedBox(
-                height: AppSize.s10,
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: AppPadding.p20),
-                child: StreamBuilder<bool>(
-                  stream: _loginViewModel.outputIsPasswordValid,
-                  builder: (context, snapshot) {
-                    return TextFormField(
-                      controller: _passwordController,
-                      obscureText: true,
-                      keyboardType: TextInputType.visiblePassword,
-                      decoration: InputDecoration(
-                        hintText: AppStrings.password,
-                        labelText: AppStrings.password,
-                        errorText: (snapshot.data ?? true)
-                            ? null
-                            : AppStrings.passwordError,
-                      ),
-                    );
-                  },
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppPadding.p20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // text Button
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, Routes.forgetPasswordRoute);
-                      },
-                      child: Text(AppStrings.forgetPassword),
+    return SingleChildScrollView(
+      child: Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            SvgPicture.asset(AssetsManager.splashLogo),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppPadding.p20),
+              child: StreamBuilder<bool>(
+                stream: _loginViewModel.outputIsUserNameValid,
+                builder: (context, snapshot) {
+                  return TextFormField(
+                    controller: _userNameController,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: InputDecoration(
+                      hintText: AppStrings.userName,
+                      labelText: AppStrings.userName,
+                      errorText: (snapshot.data ?? true)
+                          ? null
+                          : AppStrings.userNameError,
                     ),
-                    // text Button
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, Routes.registerRoute);
-                      },
-                      child: Text(AppStrings.registerText),
+                  );
+                },
+              ),
+            ),
+            const SizedBox(
+              height: AppSize.s10,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppPadding.p20),
+              child: StreamBuilder<bool>(
+                stream: _loginViewModel.outputIsPasswordValid,
+                builder: (context, snapshot) {
+                  return TextFormField(
+                    controller: _passwordController,
+                    obscureText: true,
+                    keyboardType: TextInputType.visiblePassword,
+                    decoration: InputDecoration(
+                      hintText: AppStrings.password,
+                      labelText: AppStrings.password,
+                      errorText: (snapshot.data ?? true)
+                          ? null
+                          : AppStrings.passwordError,
                     ),
-
-
-                  ],
-                ),
+                  );
+                },
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppPadding.p20),
-                child: StreamBuilder<bool>(
-                    stream: _loginViewModel.outputIsAllInputsValid,
-                    builder: (context, snapshot) {
-                      return SizedBox(
-                        width: double.infinity,
-                        height: AppSize.s50,
-                        child: ElevatedButton(
-                            style: ButtonStyle(
-                              backgroundColor: (snapshot.data ?? false)
-                                  ? MaterialStateProperty.all(ColorManager.primary)
-                                  : MaterialStateProperty.all(ColorManager.lightGrey),
-                            ),
-                            onPressed: () {
-                              if(snapshot.data?? false) {
-                               _loginViewModel.login();
-                              }
-                            },
-                            child: Text(AppStrings.login,style: Theme.of(context).textTheme.headline2,)
-                        ),
-                      );
-                    }),
-
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppPadding.p20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // text Button
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, Routes.forgetPasswordRoute);
+                    },
+                    child: Text(AppStrings.forgetPassword),
+                  ),
+                  // text Button
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, Routes.registerRoute);
+                    },
+                    child: Text(AppStrings.registerText),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppPadding.p20),
+              child: StreamBuilder<bool>(
+                  stream: _loginViewModel.outputIsAllInputsValid,
+                  builder: (context, snapshot) {
+                    return SizedBox(
+                      width: double.infinity,
+                      height: AppSize.s50,
+                      child: ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: (snapshot.data ?? false)
+                                ? MaterialStateProperty.all(
+                                    ColorManager.primary)
+                                : MaterialStateProperty.all(
+                                    ColorManager.lightGrey),
+                          ),
+                          onPressed: () {
+                            if (snapshot.data ?? false) {
+                              _loginViewModel.login();
+                            }
+                          },
+                          child: Text(
+                            AppStrings.login,
+                            style: Theme.of(context).textTheme.headline2,
+                          )),
+                    );
+                  }),
+            ),
+          ],
         ),
       ),
     );
   }
 }
-
-

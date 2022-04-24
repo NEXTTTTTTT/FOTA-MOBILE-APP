@@ -6,7 +6,7 @@ class BaseResponse{
   @JsonKey(name: "status")
   int? status;
   @JsonKey(name: "msg")
-  String? message;
+  String? msg;
 
 }
 

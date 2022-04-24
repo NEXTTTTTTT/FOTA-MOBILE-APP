@@ -22,8 +22,8 @@ class User{
 
 
 class Authentication{
-  String accessToken;
-  User user;
+  String? accessToken;
+  User? user;
   Authentication(this.accessToken,this.user);
 }
 

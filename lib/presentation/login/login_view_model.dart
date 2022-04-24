@@ -3,6 +3,9 @@ import 'dart:async';
 import 'package:fota_mobile_app/domain/usecase/login_usecase.dart';
 import 'package:fota_mobile_app/presentation/base/base_view_model.dart';
 import 'package:fota_mobile_app/presentation/common/freezed_data_classes.dart';
+import 'package:fota_mobile_app/presentation/common/state_renderer/state_renderer.dart';
+import 'package:fota_mobile_app/presentation/common/state_renderer/state_renderer_impl.dart';
+import 'package:fota_mobile_app/presentation/resources/strings_manager.dart';
 
 class LoginViewModel extends BaseViewModel
     with LoginViewModelInputs, LoginViewModelOutputs {
@@ -28,7 +31,8 @@ class LoginViewModel extends BaseViewModel
 
   @override
   void start() {
-    // TODO: implement start
+    // view tell state renderer to show the content
+    inputState.add(ContentState());
   }
 
   @override
@@ -42,23 +46,27 @@ class LoginViewModel extends BaseViewModel
 
   @override
   login() async {
-    print('hey');
+    inputState.add(LoadingState(
+      stateRendererType: StateRendererType.POPUP_LOADING_STATE,
+    ));
     (await _loginUseCase.execute(
             LoginUseCaseInput(loginObject.userName, loginObject.password)))
         .fold((failure) {
-      // TODO: left -> failure
-      print(failure.message);
+      // left -> failure
+      inputState.add(ErrorState(StateRendererType.POPUP_ERROR_STATE, failure.message));
     }, (data) {
-      // TODO: right -> success (data)
-      print(data.user);
-      print(data.accessToken);
+      //  right -> success (data)
+      inputState.add(ContentState());
+
+      // todo: navigate to main screen
     });
   }
 
   @override
   setPassword(String password) {
     inputPassword.add(password);
-    loginObject = loginObject.copyWith(password: password); // data class operation same as kotlin
+    loginObject = loginObject.copyWith(
+        password: password); // data class operation same as kotlin
     _validate();
   }
 

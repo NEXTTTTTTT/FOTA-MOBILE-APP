@@ -3,7 +3,6 @@ import 'package:fota_mobile_app/data/mapper/mapper.dart';
 import 'package:fota_mobile_app/data/network/network_info.dart';
 import 'package:fota_mobile_app/domain/repository/repository.dart';
 
-
 import '../../data/data_source/remote_data_source.dart';
 import '../../data/network/error_handler.dart';
 import '../../data/network/failure.dart';
@@ -11,8 +10,8 @@ import '../../data/request/request.dart';
 import '../model/model.dart';
 
 class RepositoryImplementer extends Repository {
-  RemoteDataSource _remoteDataSource;
-  NetworkInfo _networkInfo;
+  final RemoteDataSource _remoteDataSource;
+  final NetworkInfo _networkInfo;
   RepositoryImplementer(this._remoteDataSource, this._networkInfo);
 
   @override
@@ -22,16 +21,18 @@ class RepositoryImplementer extends Repository {
       try {
         // safe to call APIs
         final response = await _remoteDataSource.login(loginRequest);
+
         if (response.status == ApiInternalStatus.SUCCESS) {
           // success
           // return data
           // return right
+        
           return Right(response.toDomain());
         } else {
           // return biz logic error
           // return left
-          return Left(Failure(
-              response.status??ApiInternalStatus.FAILURE, response.message ?? ResponseMessage.DEFAULT));
+          return Left(Failure(response.status ?? ApiInternalStatus.FAILURE,
+              response.msg ?? ResponseMessage.DEFAULT));
         }
       } catch (error) {
         return Left(ErrorHandler.handle(error).failure);

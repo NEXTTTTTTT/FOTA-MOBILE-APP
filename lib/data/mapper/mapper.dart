@@ -6,15 +6,15 @@ import '../../domain/model/model.dart';
 extension UserResponseMapper on UserResponse? {
   User toDomain() {
     return User(
-        this!.id!.orEmpty(),
-        this!.fullname!.orEmpty(),
-        this!.username!.orEmpty(),
-        this!.email!.orEmpty(),
-        this!.profileImage!.orEmpty(),
-        this!.isActive!.orFalse(),
-        this!.deviceToken!.orEmpty(),
-        this!.currentLocation!.orEmptyMap(),
-        this!.createdAt!.orEmpty()
+        this?.id?.orEmpty()?? EMPTY,
+        this?.fullname?.orEmpty() ??EMPTY,
+        this?.username?.orEmpty() ??EMPTY,
+        this?.email?.orEmpty() ??EMPTY,
+        this?.profileImage?.orEmpty() ??EMPTY,
+        this?.isActive?.orFalse() ??FALSE,
+        this?.deviceToken?.orEmpty() ??EMPTY,
+        this?.currentLocation?.orEmptyMap() ??EMPTY_MAP,
+        this?.createdAt?.orEmpty() ??EMPTY
     );
   }
 }
@@ -22,6 +22,6 @@ extension UserResponseMapper on UserResponse? {
 
 extension AuthenticationResponseMapper on AuthenticationResponse? {
   Authentication toDomain() {
-    return Authentication(this!.accessToken!, this!.user.toDomain());
+    return Authentication(this?.accessToken, this?.user?.toDomain());
   }
 }
