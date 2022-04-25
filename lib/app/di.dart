@@ -7,7 +7,9 @@ import 'package:fota_mobile_app/data/network/network_info.dart';
 import 'package:fota_mobile_app/domain/repository/repository.dart';
 import 'package:fota_mobile_app/domain/repository/repository_implementer.dart';
 import 'package:fota_mobile_app/domain/usecase/login_usecase.dart';
+import 'package:fota_mobile_app/domain/usecase/register_usecase.dart';
 import 'package:fota_mobile_app/presentation/login/login_view_model.dart';
+import 'package:fota_mobile_app/presentation/register/register_view_model.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -41,6 +43,15 @@ Future<void>initLoginModule()async{
     {
       instance.registerFactory<LoginUseCase>(() => LoginUseCase(instance()));
       instance.registerFactory<LoginViewModel>(() => LoginViewModel(instance()));
+    }
+
+}
+
+Future<void>initRegisterModule()async{
+  if(!GetIt.I.isRegistered<RegisterUseCase>())
+    {
+      instance.registerFactory<RegisterUseCase>(() => RegisterUseCase(instance()));
+      instance.registerFactory<RegisterViewModel>(() => RegisterViewModel(instance()));
     }
 
 }

@@ -146,3 +146,178 @@ abstract class _LoginObject implements LoginObject {
   _$LoginObjectCopyWith<_LoginObject> get copyWith =>
       throw _privateConstructorUsedError;
 }
+
+/// @nodoc
+mixin _$RegisterObject {
+  String get fullName => throw _privateConstructorUsedError;
+  String get userName => throw _privateConstructorUsedError;
+  String get email => throw _privateConstructorUsedError;
+  String get password => throw _privateConstructorUsedError;
+
+  @JsonKey(ignore: true)
+  $RegisterObjectCopyWith<RegisterObject> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $RegisterObjectCopyWith<$Res> {
+  factory $RegisterObjectCopyWith(
+          RegisterObject value, $Res Function(RegisterObject) then) =
+      _$RegisterObjectCopyWithImpl<$Res>;
+  $Res call({String fullName, String userName, String email, String password});
+}
+
+/// @nodoc
+class _$RegisterObjectCopyWithImpl<$Res>
+    implements $RegisterObjectCopyWith<$Res> {
+  _$RegisterObjectCopyWithImpl(this._value, this._then);
+
+  final RegisterObject _value;
+  // ignore: unused_field
+  final $Res Function(RegisterObject) _then;
+
+  @override
+  $Res call({
+    Object? fullName = freezed,
+    Object? userName = freezed,
+    Object? email = freezed,
+    Object? password = freezed,
+  }) {
+    return _then(_value.copyWith(
+      fullName: fullName == freezed
+          ? _value.fullName
+          : fullName // ignore: cast_nullable_to_non_nullable
+              as String,
+      userName: userName == freezed
+          ? _value.userName
+          : userName // ignore: cast_nullable_to_non_nullable
+              as String,
+      email: email == freezed
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String,
+      password: password == freezed
+          ? _value.password
+          : password // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$RegisterObjectCopyWith<$Res>
+    implements $RegisterObjectCopyWith<$Res> {
+  factory _$RegisterObjectCopyWith(
+          _RegisterObject value, $Res Function(_RegisterObject) then) =
+      __$RegisterObjectCopyWithImpl<$Res>;
+  @override
+  $Res call({String fullName, String userName, String email, String password});
+}
+
+/// @nodoc
+class __$RegisterObjectCopyWithImpl<$Res>
+    extends _$RegisterObjectCopyWithImpl<$Res>
+    implements _$RegisterObjectCopyWith<$Res> {
+  __$RegisterObjectCopyWithImpl(
+      _RegisterObject _value, $Res Function(_RegisterObject) _then)
+      : super(_value, (v) => _then(v as _RegisterObject));
+
+  @override
+  _RegisterObject get _value => super._value as _RegisterObject;
+
+  @override
+  $Res call({
+    Object? fullName = freezed,
+    Object? userName = freezed,
+    Object? email = freezed,
+    Object? password = freezed,
+  }) {
+    return _then(_RegisterObject(
+      fullName: fullName == freezed
+          ? _value.fullName
+          : fullName // ignore: cast_nullable_to_non_nullable
+              as String,
+      userName: userName == freezed
+          ? _value.userName
+          : userName // ignore: cast_nullable_to_non_nullable
+              as String,
+      email: email == freezed
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String,
+      password: password == freezed
+          ? _value.password
+          : password // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_RegisterObject implements _RegisterObject {
+  const _$_RegisterObject(
+      {required this.fullName,
+      required this.userName,
+      required this.email,
+      required this.password});
+
+  @override
+  final String fullName;
+  @override
+  final String userName;
+  @override
+  final String email;
+  @override
+  final String password;
+
+  @override
+  String toString() {
+    return 'RegisterObject(fullName: $fullName, userName: $userName, email: $email, password: $password)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _RegisterObject &&
+            const DeepCollectionEquality().equals(other.fullName, fullName) &&
+            const DeepCollectionEquality().equals(other.userName, userName) &&
+            const DeepCollectionEquality().equals(other.email, email) &&
+            const DeepCollectionEquality().equals(other.password, password));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(fullName),
+      const DeepCollectionEquality().hash(userName),
+      const DeepCollectionEquality().hash(email),
+      const DeepCollectionEquality().hash(password));
+
+  @JsonKey(ignore: true)
+  @override
+  _$RegisterObjectCopyWith<_RegisterObject> get copyWith =>
+      __$RegisterObjectCopyWithImpl<_RegisterObject>(this, _$identity);
+}
+
+abstract class _RegisterObject implements RegisterObject {
+  const factory _RegisterObject(
+      {required final String fullName,
+      required final String userName,
+      required final String email,
+      required final String password}) = _$_RegisterObject;
+
+  @override
+  String get fullName => throw _privateConstructorUsedError;
+  @override
+  String get userName => throw _privateConstructorUsedError;
+  @override
+  String get email => throw _privateConstructorUsedError;
+  @override
+  String get password => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(ignore: true)
+  _$RegisterObjectCopyWith<_RegisterObject> get copyWith =>
+      throw _privateConstructorUsedError;
+}

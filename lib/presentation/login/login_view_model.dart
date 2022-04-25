@@ -19,7 +19,7 @@ class LoginViewModel extends BaseViewModel
   final StreamController isUserLoggedInSuccessfullyStreamController =
       StreamController<bool>();
 
-  var loginObject = LoginObject(userName: "", password: "");
+  var loginObject =  LoginObject(userName: "", password: "");
 
   final LoginUseCase _loginUseCase;
   LoginViewModel(this._loginUseCase);

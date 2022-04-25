@@ -8,3 +8,13 @@ class LoginObject with _$LoginObject{
     required String password,
 }) = _LoginObject;
 }
+
+@freezed
+class RegisterObject with _$RegisterObject{
+  const factory RegisterObject({
+    required String fullName,
+    required String userName,
+    required String email,
+    required String password,
+}) = _RegisterObject;
+}

@@ -16,5 +16,13 @@ abstract class AppServiceClient {
     @Field("password") String password,
   );
 
+   @POST("/register")
+  Future<AuthenticationResponse> register(
+    @Field("fullname") String fullname,
+    @Field("username") String username,
+    @Field("email") String email,
+    @Field("password") String password,
+  );
+
   
 }

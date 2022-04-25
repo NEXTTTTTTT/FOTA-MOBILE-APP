@@ -1,10 +1,218 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:fota_mobile_app/app/app_prefs.dart';
+import 'package:fota_mobile_app/app/di.dart';
+import 'package:fota_mobile_app/domain/usecase/register_usecase.dart';
+import 'package:fota_mobile_app/presentation/register/register_view_model.dart';
+import 'package:fota_mobile_app/presentation/resources/routes_manager.dart';
 
-class RegisterView extends StatelessWidget {
+import '../common/state_renderer/state_renderer_impl.dart';
+import '../resources/assets_manager.dart';
+import '../resources/color_manager.dart';
+import '../resources/strings_manager.dart';
+import '../resources/values_manager.dart';
+
+class RegisterView extends StatefulWidget {
   const RegisterView({Key? key}) : super(key: key);
 
   @override
+  State<RegisterView> createState() => _RegisterViewState();
+}
+
+class _RegisterViewState extends State<RegisterView> {
+  final RegisterViewModel _registerViewModel = RegisterViewModel(instance());
+  final AppPreferences _appPreferences = AppPreferences(instance());
+
+  final TextEditingController _fullnameContoller = TextEditingController();
+  final TextEditingController _usernameContoller = TextEditingController();
+  final TextEditingController _emailContoller = TextEditingController();
+  final TextEditingController _passwordContoller = TextEditingController();
+
+  final _formKey = GlobalKey<FormState>();
+
+  _bind() {
+    _registerViewModel.start();
+
+    _fullnameContoller.addListener(() {
+      _registerViewModel.setFullname(_fullnameContoller.text);
+    });
+    _usernameContoller.addListener(() {
+      _registerViewModel.setFullname(_usernameContoller.text);
+    });
+    _emailContoller.addListener(() {
+      _registerViewModel.setFullname(_emailContoller.text);
+    });
+    _passwordContoller.addListener(() {
+      _registerViewModel.setFullname(_passwordContoller.text);
+    });
+
+    _registerViewModel.registerSuccessfullyStreamController.stream
+        .listen((isSuccessRegisteration) {
+      SchedulerBinding.instance?.addPostFrameCallback((_) {
+        _appPreferences.setUserLoggIn();
+        Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    _bind();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _registerViewModel.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      body: StreamBuilder<FlowState>(
+          stream: _registerViewModel.outputState,
+          builder: ((context, snapshot) {
+            return snapshot.data?.getScreenWidget(context, _getContentWidget(),
+                () => _registerViewModel.register())??_getContentWidget();
+          })),
+    );
+  }
+
+   Widget _getContentWidget() {
+    return SingleChildScrollView(
+      child: Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            SvgPicture.asset(AssetsManager.splashLogo),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppPadding.p20),
+              child: StreamBuilder<bool>(
+                stream: _registerViewModel.outputFullNameIsValid,
+                builder: (context, snapshot) {
+                  return TextFormField(
+                    controller: _fullnameContoller,
+                    keyboardType: TextInputType.name,
+                    decoration: InputDecoration(
+                      hintText: AppStrings.fullname,
+                      labelText: AppStrings.fullname,
+                      errorText: (snapshot.data ?? true)
+                          ? null
+                          : AppStrings.fullnameError,
+                    ),
+                  );
+                },
+              ),
+            ),
+            const SizedBox(
+              height: AppSize.s10,
+            ),
+               Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppPadding.p20),
+              child: StreamBuilder<bool>(
+                stream: _registerViewModel.outputUserNameIsValid,
+                builder: (context, snapshot) {
+                  return TextFormField(
+                    controller: _usernameContoller,
+                    keyboardType: TextInputType.name,
+                    decoration: InputDecoration(
+                      hintText: AppStrings.userName,
+                      labelText: AppStrings.userName,
+                      errorText: (snapshot.data ?? true)
+                          ? null
+                          : AppStrings.userNameError,
+                    ),
+                  );
+                },
+              ),
+            ),
+               Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppPadding.p20),
+              child: StreamBuilder<bool>(
+                stream: _registerViewModel.outputEmailIsValid,
+                builder: (context, snapshot) {
+                  return TextFormField(
+                    controller: _emailContoller,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: InputDecoration(
+                      hintText: AppStrings.email,
+                      labelText: AppStrings.email,
+                      errorText: (snapshot.data ?? true)
+                          ? null
+                          : AppStrings.emailError,
+                    ),
+                  );
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppPadding.p20),
+              child: StreamBuilder<bool>(
+                stream: _registerViewModel.outputPasswordIsValid,
+                builder: (context, snapshot) {
+                  return TextFormField(
+                    controller: _passwordContoller,
+                    obscureText: true,
+                    keyboardType: TextInputType.visiblePassword,
+                    decoration: InputDecoration(
+                      hintText: AppStrings.password,
+                      labelText: AppStrings.password,
+                      errorText: (snapshot.data ?? true)
+                          ? null
+                          : AppStrings.passwordError,
+                    ),
+                  );
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppPadding.p20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // text Button
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, Routes.loginRoute);
+                    },
+                    child: const Text(AppStrings.loginText),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppPadding.p20),
+              child: StreamBuilder<bool>(
+                  stream: _registerViewModel.outputIsAllInputsValid,
+                  builder: (context, snapshot) {
+                    return SizedBox(
+                      width: double.infinity,
+                      height: AppSize.s50,
+                      child: ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: (snapshot.data ?? false)
+                                ? MaterialStateProperty.all(
+                                    ColorManager.primary)
+                                : MaterialStateProperty.all(
+                                    ColorManager.lightGrey),
+                          ),
+                          onPressed: () {
+                            if (snapshot.data ?? false) {
+                              _registerViewModel.register();
+                            }
+                          },
+                          child: Text(
+                            AppStrings.register,
+                            style: Theme.of(context).textTheme.headline2,
+                          )),
+                    );
+                  }),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
