@@ -38,13 +38,13 @@ class _RegisterViewState extends State<RegisterView> {
       _registerViewModel.setFullname(_fullnameContoller.text);
     });
     _usernameContoller.addListener(() {
-      _registerViewModel.setFullname(_usernameContoller.text);
+      _registerViewModel.setUserName(_usernameContoller.text);
     });
     _emailContoller.addListener(() {
-      _registerViewModel.setFullname(_emailContoller.text);
+      _registerViewModel.setEmail(_emailContoller.text);
     });
     _passwordContoller.addListener(() {
-      _registerViewModel.setFullname(_passwordContoller.text);
+      _registerViewModel.setPassword(_passwordContoller.text);
     });
 
     _registerViewModel.registerSuccessfullyStreamController.stream
@@ -75,12 +75,13 @@ class _RegisterViewState extends State<RegisterView> {
           stream: _registerViewModel.outputState,
           builder: ((context, snapshot) {
             return snapshot.data?.getScreenWidget(context, _getContentWidget(),
-                () => _registerViewModel.register())??_getContentWidget();
+                    () => _registerViewModel.register()) ??
+                _getContentWidget();
           })),
     );
   }
 
-   Widget _getContentWidget() {
+  Widget _getContentWidget() {
     return SingleChildScrollView(
       child: Form(
         key: _formKey,
@@ -109,7 +110,7 @@ class _RegisterViewState extends State<RegisterView> {
             const SizedBox(
               height: AppSize.s10,
             ),
-               Padding(
+            Padding(
               padding: const EdgeInsets.symmetric(horizontal: AppPadding.p20),
               child: StreamBuilder<bool>(
                 stream: _registerViewModel.outputUserNameIsValid,
@@ -128,7 +129,12 @@ class _RegisterViewState extends State<RegisterView> {
                 },
               ),
             ),
-               Padding(
+            const SizedBox(
+              height: AppSize.s10,
+            ),
+
+            //* Email Input
+            Padding(
               padding: const EdgeInsets.symmetric(horizontal: AppPadding.p20),
               child: StreamBuilder<bool>(
                 stream: _registerViewModel.outputEmailIsValid,
@@ -146,6 +152,9 @@ class _RegisterViewState extends State<RegisterView> {
                   );
                 },
               ),
+            ),
+            const SizedBox(
+              height: AppSize.s10,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: AppPadding.p20),
