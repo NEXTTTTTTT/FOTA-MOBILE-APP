@@ -3,11 +3,11 @@ import 'package:fota_mobile_app/data/mapper/mapper.dart';
 import 'package:fota_mobile_app/data/network/network_info.dart';
 import 'package:fota_mobile_app/domain/repository/repository.dart';
 
-import '../../data/data_source/remote_data_source.dart';
-import '../../data/network/error_handler.dart';
-import '../../data/network/failure.dart';
-import '../../data/request/request.dart';
-import '../model/model.dart';
+import '../data_source/remote_data_source.dart';
+import '../network/error_handler.dart';
+import '../network/failure.dart';
+import '../request/request.dart';
+import '../../domain/model/model.dart';
 
 class RepositoryImplementer extends Repository {
   final RemoteDataSource _remoteDataSource;

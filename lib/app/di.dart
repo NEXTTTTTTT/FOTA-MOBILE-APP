@@ -5,7 +5,7 @@ import 'package:fota_mobile_app/data/network/app_api.dart';
 import 'package:fota_mobile_app/data/network/dio_factory.dart';
 import 'package:fota_mobile_app/data/network/network_info.dart';
 import 'package:fota_mobile_app/domain/repository/repository.dart';
-import 'package:fota_mobile_app/domain/repository/repository_implementer.dart';
+import 'package:fota_mobile_app/data/repository/repository_implementer.dart';
 import 'package:fota_mobile_app/domain/usecase/login_usecase.dart';
 import 'package:fota_mobile_app/domain/usecase/register_usecase.dart';
 import 'package:fota_mobile_app/presentation/login/login_view_model.dart';
