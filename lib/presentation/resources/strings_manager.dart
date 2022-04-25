@@ -28,4 +28,9 @@ class AppStrings{
   static const String emailError='Invalid email';
   static const String register='Register';
   static const String loginText='Already have an account ?';
+
+  static const String settings='Settings';
+  static const String notifications='Notification';
+  static const String profile='Profile';
+  static const String home='Home';
 }
