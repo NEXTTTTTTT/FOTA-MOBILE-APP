@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:fota_mobile_app/app/app_prefs.dart';
-import 'package:fota_mobile_app/presentation/common/state_renderer/state_renderer_impl.dart';
-import 'package:fota_mobile_app/presentation/login/login_view_model.dart';
-import 'package:fota_mobile_app/presentation/resources/color_manager.dart';
-import 'package:fota_mobile_app/presentation/resources/strings_manager.dart';
-import 'package:fota_mobile_app/presentation/resources/values_manager.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import '../../app/app_prefs.dart';
+import '../common/state_renderer/state_renderer_impl.dart';
+import 'login_view_model.dart';
+import '../resources/color_manager.dart';
+import '../resources/strings_manager.dart';
+import '../resources/values_manager.dart';
 
 import '../../app/di.dart';
 import '../resources/assets_manager.dart';
@@ -36,10 +35,17 @@ class _LoginViewState extends State<LoginView> {
         () => _loginViewModel.setPassword(_passwordController.text));
 
     _loginViewModel.isUserLoggedInSuccessfullyStreamController.stream
-        .listen((_) {
-      _appPreferences.setUserLoggIn();
+        .listen((credentials) {
+      //* save credentials
+      _appPreferences.setToken(credentials.accesToken);
+      _appPreferences.setRefreshToken(credentials.refreshToken);
+      _appPreferences.setUserId(credentials.id);
+
+      //* reset dependency injection to update
+      resetAllModules();
+
       //* navigate to main screen
-      SchedulerBinding.instance?.addPostFrameCallback((_) {
+      SchedulerBinding.instance.addPostFrameCallback((_) {
         Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
       });
     });
@@ -56,7 +62,8 @@ class _LoginViewState extends State<LoginView> {
     _loginViewModel.dispose();
     super.dispose();
   }
-// commit 
+
+// commit
   @override
   Widget build(BuildContext context) {
     return Scaffold(

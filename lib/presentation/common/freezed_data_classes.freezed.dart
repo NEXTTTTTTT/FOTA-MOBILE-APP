@@ -321,3 +321,159 @@ abstract class _RegisterObject implements RegisterObject {
   _$RegisterObjectCopyWith<_RegisterObject> get copyWith =>
       throw _privateConstructorUsedError;
 }
+
+/// @nodoc
+mixin _$CredentialsObject {
+  String get accesToken => throw _privateConstructorUsedError;
+  String get refreshToken => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError;
+
+  @JsonKey(ignore: true)
+  $CredentialsObjectCopyWith<CredentialsObject> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $CredentialsObjectCopyWith<$Res> {
+  factory $CredentialsObjectCopyWith(
+          CredentialsObject value, $Res Function(CredentialsObject) then) =
+      _$CredentialsObjectCopyWithImpl<$Res>;
+  $Res call({String accesToken, String refreshToken, String id});
+}
+
+/// @nodoc
+class _$CredentialsObjectCopyWithImpl<$Res>
+    implements $CredentialsObjectCopyWith<$Res> {
+  _$CredentialsObjectCopyWithImpl(this._value, this._then);
+
+  final CredentialsObject _value;
+  // ignore: unused_field
+  final $Res Function(CredentialsObject) _then;
+
+  @override
+  $Res call({
+    Object? accesToken = freezed,
+    Object? refreshToken = freezed,
+    Object? id = freezed,
+  }) {
+    return _then(_value.copyWith(
+      accesToken: accesToken == freezed
+          ? _value.accesToken
+          : accesToken // ignore: cast_nullable_to_non_nullable
+              as String,
+      refreshToken: refreshToken == freezed
+          ? _value.refreshToken
+          : refreshToken // ignore: cast_nullable_to_non_nullable
+              as String,
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$CredentialsObjectCopyWith<$Res>
+    implements $CredentialsObjectCopyWith<$Res> {
+  factory _$CredentialsObjectCopyWith(
+          _CredentialsObject value, $Res Function(_CredentialsObject) then) =
+      __$CredentialsObjectCopyWithImpl<$Res>;
+  @override
+  $Res call({String accesToken, String refreshToken, String id});
+}
+
+/// @nodoc
+class __$CredentialsObjectCopyWithImpl<$Res>
+    extends _$CredentialsObjectCopyWithImpl<$Res>
+    implements _$CredentialsObjectCopyWith<$Res> {
+  __$CredentialsObjectCopyWithImpl(
+      _CredentialsObject _value, $Res Function(_CredentialsObject) _then)
+      : super(_value, (v) => _then(v as _CredentialsObject));
+
+  @override
+  _CredentialsObject get _value => super._value as _CredentialsObject;
+
+  @override
+  $Res call({
+    Object? accesToken = freezed,
+    Object? refreshToken = freezed,
+    Object? id = freezed,
+  }) {
+    return _then(_CredentialsObject(
+      accesToken: accesToken == freezed
+          ? _value.accesToken
+          : accesToken // ignore: cast_nullable_to_non_nullable
+              as String,
+      refreshToken: refreshToken == freezed
+          ? _value.refreshToken
+          : refreshToken // ignore: cast_nullable_to_non_nullable
+              as String,
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_CredentialsObject implements _CredentialsObject {
+  const _$_CredentialsObject(
+      {required this.accesToken, required this.refreshToken, required this.id});
+
+  @override
+  final String accesToken;
+  @override
+  final String refreshToken;
+  @override
+  final String id;
+
+  @override
+  String toString() {
+    return 'CredentialsObject(accesToken: $accesToken, refreshToken: $refreshToken, id: $id)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _CredentialsObject &&
+            const DeepCollectionEquality()
+                .equals(other.accesToken, accesToken) &&
+            const DeepCollectionEquality()
+                .equals(other.refreshToken, refreshToken) &&
+            const DeepCollectionEquality().equals(other.id, id));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(accesToken),
+      const DeepCollectionEquality().hash(refreshToken),
+      const DeepCollectionEquality().hash(id));
+
+  @JsonKey(ignore: true)
+  @override
+  _$CredentialsObjectCopyWith<_CredentialsObject> get copyWith =>
+      __$CredentialsObjectCopyWithImpl<_CredentialsObject>(this, _$identity);
+}
+
+abstract class _CredentialsObject implements CredentialsObject {
+  const factory _CredentialsObject(
+      {required final String accesToken,
+      required final String refreshToken,
+      required final String id}) = _$_CredentialsObject;
+
+  @override
+  String get accesToken => throw _privateConstructorUsedError;
+  @override
+  String get refreshToken => throw _privateConstructorUsedError;
+  @override
+  String get id => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(ignore: true)
+  _$CredentialsObjectCopyWith<_CredentialsObject> get copyWith =>
+      throw _privateConstructorUsedError;
+}

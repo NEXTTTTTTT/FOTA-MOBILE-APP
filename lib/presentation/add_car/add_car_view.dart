@@ -10,8 +10,8 @@ class AddCarView extends StatefulWidget {
 class _AddCarViewState extends State<AddCarView> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      
+    return Scaffold(
+      body: Container(child: Text('Hello'),),
     );
   }
 }

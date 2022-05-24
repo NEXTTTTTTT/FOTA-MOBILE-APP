@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:fota_mobile_app/presentation/resources/color_manager.dart';
-import 'package:fota_mobile_app/presentation/resources/font_manager.dart';
-import 'package:fota_mobile_app/presentation/resources/style_manager.dart';
-import 'package:fota_mobile_app/presentation/resources/values_manager.dart';
+import 'color_manager.dart';
+import 'font_manager.dart';
+import 'style_manager.dart';
+import 'values_manager.dart';
 
 ThemeData getApplicationTheme() {
   return ThemeData(
@@ -55,10 +55,17 @@ ThemeData getApplicationTheme() {
           color: ColorManager.darkGrey, fontSize: FontSizeManager.s24),
       headline2: getRegularStyle(
           color: ColorManager.white, fontSize: FontSizeManager.s20),
+      headline3: getRegularStyle(
+          color: ColorManager.darkGrey, fontSize: FontSizeManager.s18),
+      headline4: getRegularStyle(
+          color: ColorManager.primary, fontSize: FontSizeManager.s18), 
+      headline5: getRegularStyle(
+          color: ColorManager.red, fontSize: FontSizeManager.s18),   
       subtitle1: getRegularStyle(
           color: ColorManager.lightGrey, fontSize: FontSizeManager.s18),
       subtitle2: getRegularStyle(
           color: ColorManager.primary, fontSize: FontSizeManager.s14),
+          
       caption: getRegularStyle(color: ColorManager.grey1),
       bodyText1: getRegularStyle(color: ColorManager.grey),
     ),

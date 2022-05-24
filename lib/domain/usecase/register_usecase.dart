@@ -1,9 +1,9 @@
-import 'package:fota_mobile_app/data/network/failure.dart';
+import '../../data/network/failure.dart';
 import 'package:dartz/dartz.dart';
-import 'package:fota_mobile_app/data/request/request.dart';
-import 'package:fota_mobile_app/domain/model/model.dart';
-import 'package:fota_mobile_app/domain/repository/repository.dart';
-import 'package:fota_mobile_app/domain/usecase/base_usecase.dart';
+import '../../data/request/request.dart';
+import '../model/model.dart';
+import '../repository/repository.dart';
+import 'base_usecase.dart';
 
 
 

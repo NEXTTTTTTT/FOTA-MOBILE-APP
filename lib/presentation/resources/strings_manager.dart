@@ -33,4 +33,10 @@ class AppStrings{
   static const String notifications='Notification';
   static const String profile='Profile';
   static const String home='Home';
+  static const String online='Online';
+  static const String offline='Offline';
+  static const String noCarsYet='No cars added yet';
+  static const String myCars='My Cars';
+  static const String currentLocation='Current Location';
+  static const String logout='Logout';
 }

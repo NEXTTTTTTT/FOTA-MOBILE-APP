@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:fota_mobile_app/data/request/request.dart';
+import '../../data/request/request.dart';
 
 import '../../app/functions.dart';
 import '../../data/network/failure.dart';

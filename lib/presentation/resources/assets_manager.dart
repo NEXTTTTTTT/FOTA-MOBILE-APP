@@ -11,6 +11,11 @@ class AssetsManager{
   static const String leftArrow = "$IMAGE_PATH/left_arrow_ic.svg";
   static const String rightArrow = "$IMAGE_PATH/right_arrow_ic.svg";
   static const String solidCircle = "$IMAGE_PATH/solid_circle_ic.svg";
+  static const String carItem = "$IMAGE_PATH/carItem.svg";
+  static const String carMarker = "$IMAGE_PATH/car_marker.png";
+  static const String carMarkerBlue = "$IMAGE_PATH/car_marker_blue.png";
+  static const String userMarker = "$IMAGE_PATH/user_marker.png";
+
 
 
 }

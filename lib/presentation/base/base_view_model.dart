@@ -1,11 +1,12 @@
 import 'dart:async';
 
-import 'package:fota_mobile_app/presentation/common/state_renderer/state_renderer_impl.dart';
+import '../common/state_renderer/state_renderer_impl.dart';
+import 'package:rxdart/rxdart.dart';
 
 abstract class BaseViewModel extends BaseViewModelInputs
     with BaseViewModelOutputs {
   // shared variables and functions that will be through any view model.
-  StreamController _inputStateStreamController = StreamController<FlowState>.broadcast();
+  final StreamController _inputStateStreamController = BehaviorSubject<FlowState>();
 
 
   @override

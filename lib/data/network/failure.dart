@@ -1,12 +1,16 @@
-import 'package:fota_mobile_app/data/network/error_handler.dart';
+import 'error_handler.dart';
+import 'package:equatable/equatable.dart';
 
-class Failure{
+class Failure extends Equatable {
   int code;
   String message;
 
-  Failure(this.code,this.message);
+  Failure(this.code, this.message);
+
+  @override
+  List<Object> get props => [code];
 }
 
 class DefaultFailure extends Failure {
-  DefaultFailure():super(ResponseCode.DEFAULT,ResponseMessage.DEFAULT);
+  DefaultFailure() : super(ResponseCode.DEFAULT, ResponseMessage.DEFAULT);
 }

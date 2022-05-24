@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:fota_mobile_app/app/extentions.dart';
-import 'package:fota_mobile_app/data/network/failure.dart';
-import 'package:fota_mobile_app/presentation/resources/assets_manager.dart';
-import 'package:fota_mobile_app/presentation/resources/color_manager.dart';
-import 'package:fota_mobile_app/presentation/resources/font_manager.dart';
-import 'package:fota_mobile_app/presentation/resources/strings_manager.dart';
-import 'package:fota_mobile_app/presentation/resources/style_manager.dart';
-import 'package:fota_mobile_app/presentation/resources/values_manager.dart';
+import '../../../app/extentions.dart';
+import '../../../data/network/failure.dart';
+import '../../resources/assets_manager.dart';
+import '../../resources/color_manager.dart';
+import '../../resources/font_manager.dart';
+import '../../resources/strings_manager.dart';
+import '../../resources/style_manager.dart';
+import '../../resources/values_manager.dart';
 import 'package:lottie/lottie.dart';
 
 enum StateRendererType {

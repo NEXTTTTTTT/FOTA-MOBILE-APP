@@ -1,11 +1,13 @@
 import 'dart:async';
 
-import 'package:fota_mobile_app/domain/usecase/login_usecase.dart';
-import 'package:fota_mobile_app/presentation/base/base_view_model.dart';
-import 'package:fota_mobile_app/presentation/common/freezed_data_classes.dart';
-import 'package:fota_mobile_app/presentation/common/state_renderer/state_renderer.dart';
-import 'package:fota_mobile_app/presentation/common/state_renderer/state_renderer_impl.dart';
-import 'package:fota_mobile_app/presentation/resources/strings_manager.dart';
+
+import '../../domain/usecase/login_usecase.dart';
+import '../base/base_view_model.dart';
+import '../common/freezed_data_classes.dart';
+import '../common/state_renderer/state_renderer.dart';
+import '../common/state_renderer/state_renderer_impl.dart';
+
+
 
 class LoginViewModel extends BaseViewModel
     with LoginViewModelInputs, LoginViewModelOutputs {
@@ -16,10 +18,10 @@ class LoginViewModel extends BaseViewModel
   final StreamController _isAllInputsValidStreamController =
       StreamController<void>.broadcast();
 
-  final StreamController isUserLoggedInSuccessfullyStreamController =
-      StreamController<bool>();
+  final StreamController<CredentialsObject> isUserLoggedInSuccessfullyStreamController =
+      StreamController<CredentialsObject>();
 
-  var loginObject =  LoginObject(userName: "", password: "");
+  var loginObject = const LoginObject(userName: "", password: "");
 
   final LoginUseCase _loginUseCase;
   LoginViewModel(this._loginUseCase);
@@ -48,7 +50,6 @@ class LoginViewModel extends BaseViewModel
   @override
   Sink get inputIsAllInputsValid => _isAllInputsValidStreamController.sink;
 
-
   @override
   login() async {
     inputState.add(LoadingState(
@@ -60,10 +61,14 @@ class LoginViewModel extends BaseViewModel
       // left -> failure
       inputState.add(
           ErrorState(StateRendererType.POPUP_ERROR_STATE, failure.message));
-    }, (data) {
+    }, (data) async {
       //  right -> success (data)
       inputState.add(ContentState());
-      isUserLoggedInSuccessfullyStreamController.add(true);
+      isUserLoggedInSuccessfullyStreamController.add(CredentialsObject(
+        id: data.user!.id,
+        refreshToken: data.refreshToken!,
+        accesToken: data.accessToken!
+      ));
     });
   }
 
@@ -94,7 +99,6 @@ class LoginViewModel extends BaseViewModel
   @override
   Stream<bool> get outputIsAllInputsValid =>
       _isAllInputsValidStreamController.stream.map((_) => _isAllInputsValid());
-
 
   /// private functions
   bool _isPasswordValid(String password) {

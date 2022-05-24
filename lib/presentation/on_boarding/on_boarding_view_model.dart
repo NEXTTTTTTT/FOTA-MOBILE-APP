@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:fota_mobile_app/domain/model/model.dart';
-import 'package:fota_mobile_app/presentation/base/base_view_model.dart';
-import 'package:fota_mobile_app/presentation/resources/assets_manager.dart';
-import 'package:fota_mobile_app/presentation/resources/strings_manager.dart';
+import '../../domain/model/model.dart';
+import '../base/base_view_model.dart';
+import '../resources/assets_manager.dart';
+import '../resources/strings_manager.dart';
 
 class OnBoardingViewModel extends BaseViewModel
     with OnBoardingViewModelInputs, OnBoardingViewModelOutputs {

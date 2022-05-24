@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:fota_mobile_app/app/app_prefs.dart';
-import 'package:fota_mobile_app/app/di.dart';
-import 'package:fota_mobile_app/domain/usecase/register_usecase.dart';
-import 'package:fota_mobile_app/presentation/register/register_view_model.dart';
-import 'package:fota_mobile_app/presentation/resources/routes_manager.dart';
+import '../../app/app_prefs.dart';
+import '../../app/di.dart';
+import '../../domain/usecase/register_usecase.dart';
+import '../common/freezed_data_classes.dart';
+import 'register_view_model.dart';
+import '../resources/routes_manager.dart';
 
 import '../common/state_renderer/state_renderer_impl.dart';
 import '../resources/assets_manager.dart';
@@ -21,8 +22,8 @@ class RegisterView extends StatefulWidget {
 }
 
 class _RegisterViewState extends State<RegisterView> {
-  final RegisterViewModel _registerViewModel = RegisterViewModel(instance());
-  final AppPreferences _appPreferences = AppPreferences(instance());
+  final RegisterViewModel _registerViewModel = instance<RegisterViewModel>();
+  final AppPreferences _appPreferences = instance<AppPreferences>();
 
   final TextEditingController _fullnameContoller = TextEditingController();
   final TextEditingController _usernameContoller = TextEditingController();
@@ -48,9 +49,17 @@ class _RegisterViewState extends State<RegisterView> {
     });
 
     _registerViewModel.registerSuccessfullyStreamController.stream
-        .listen((isSuccessRegisteration) {
-      SchedulerBinding.instance?.addPostFrameCallback((_) {
-        _appPreferences.setUserLoggIn();
+        .listen((credentials) {
+      //* save credentials
+      _appPreferences.setToken(credentials.accesToken);
+      _appPreferences.setRefreshToken(credentials.refreshToken);
+      _appPreferences.setUserId(credentials.id);
+
+      //* reset dependency injection
+      resetAllModules();
+      
+      //* navigate to main screen
+      SchedulerBinding.instance.addPostFrameCallback((_) {
         Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
       });
     });

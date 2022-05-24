@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fota_mobile_app/presentation/resources/strings_manager.dart';
+import '../../resources/strings_manager.dart';
 
 class NotificationPage extends StatelessWidget {
   const NotificationPage({ Key? key }) : super(key: key);

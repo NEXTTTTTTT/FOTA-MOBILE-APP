@@ -11,3 +11,7 @@ class RegisterRequest {
   String password;
   RegisterRequest(this.fullname,this.username,this.email, this.password);
 }
+
+
+
+

@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fota_mobile_app/presentation/common/state_renderer/state_renderer.dart';
-import 'package:fota_mobile_app/presentation/resources/strings_manager.dart';
+import 'package:fota_mobile_app/app/functions.dart';
+import 'state_renderer.dart';
+import '../../resources/strings_manager.dart';
 
 import '../../../app/extentions.dart';
 
@@ -122,17 +123,12 @@ extension FlowStateExtention on FlowState {
     }
   }
 
-  dismissDialog(BuildContext context){
-    if(_isThereCurrentDialogShowing(context)){
-      Navigator.of(context,rootNavigator: true).pop(true);
-    }
 
-  }
-  _isThereCurrentDialogShowing(BuildContext context)=> ModalRoute.of(context)!.isCurrent !=true;
+  
 
   showPopUp(BuildContext context, StateRendererType stateRendererType,
       String message, Function retryActionFunction) {
-    WidgetsBinding.instance?.addPostFrameCallback((_) => showDialog(
+    WidgetsBinding.instance.addPostFrameCallback((_) => showDialog(
         context: context,
         builder: (BuildContext context) => StateRenderer(
               stateRendererType: stateRendererType,
