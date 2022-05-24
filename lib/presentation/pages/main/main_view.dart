@@ -1,17 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fota_mobile_app/presentation/resources/font_manager.dart';
-import 'package:fota_mobile_app/presentation/resources/routes_manager.dart';
-import 'package:fota_mobile_app/presentation/resources/style_manager.dart';
-import 'package:fota_mobile_app/presentation/resources/values_manager.dart';
-import '../../app/constants.dart';
+import '../../resources/color_manager.dart';
+import '../../resources/font_manager.dart';
+import '../../resources/routes_manager.dart';
+import '../../resources/strings_manager.dart';
+import '../../resources/style_manager.dart';
+import '../../resources/values_manager.dart';
+
 import 'home/home_veiw.dart';
 import 'notification/notification.dart';
 import 'profile/profile_view.dart';
 import 'setting/setting.dart';
-import '../resources/color_manager.dart';
-import '../resources/strings_manager.dart';
+
 
 class AddCarButtonWidget extends StatelessWidget {
   const AddCarButtonWidget({Key? key}) : super(key: key);

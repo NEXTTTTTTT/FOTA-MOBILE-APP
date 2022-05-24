@@ -1,5 +1,5 @@
-import 'package:fota_mobile_app/app/app_prefs.dart';
-import 'package:fota_mobile_app/app/di.dart';
+import 'app_prefs.dart';
+import 'di.dart';
 
 import '../domain/model/model.dart';
 

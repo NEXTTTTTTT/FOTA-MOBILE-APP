@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fota_mobile_app/app/functions.dart';
+import '../../../app/functions.dart';
 import 'state_renderer.dart';
 import '../../resources/strings_manager.dart';
 

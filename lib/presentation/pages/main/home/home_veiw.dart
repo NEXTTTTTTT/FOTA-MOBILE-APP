@@ -2,16 +2,18 @@ import 'dart:async';
 
 
 import 'package:flutter/material.dart';
-import 'package:fota_mobile_app/app/constants.dart';
-import 'package:fota_mobile_app/presentation/main/home/home_view_model.dart';
+import 'package:fota_mobile_app/app/di.dart';
+import 'package:fota_mobile_app/presentation/common/state_renderer/state_renderer_impl.dart';
+import 'package:fota_mobile_app/presentation/pages/main/home/home_view_model.dart';
+import 'package:fota_mobile_app/presentation/resources/routes_manager.dart';
+import '../../../../app/constants.dart';
+import '../../../../domain/model/model.dart';
+
 import 'package:geolocator/geolocator.dart';
 
-import '../../../app/di.dart';
-import '../../../domain/model/model.dart';
-import '../../common/state_renderer/state_renderer_impl.dart';
-import '../../resources/assets_manager.dart';
 
-import '../../resources/routes_manager.dart';
+import '../../../resources/assets_manager.dart';
+
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 

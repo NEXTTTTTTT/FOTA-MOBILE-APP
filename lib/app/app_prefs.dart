@@ -1,7 +1,7 @@
-import 'extentions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../presentation/resources/language_manager.dart';
+import 'extentions.dart';
 
 const String PREF_KEY_LANGUAGE = "PREF_KEY_LANGUAGE";
 const String PREF_KEY_ONBOARDING = "PREF_KEY_ONBOARDING";

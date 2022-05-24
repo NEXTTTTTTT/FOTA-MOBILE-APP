@@ -1,4 +1,4 @@
-import 'package:fota_mobile_app/data/network/mqtt/mqtt_states.dart';
+import 'mqtt_states.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 

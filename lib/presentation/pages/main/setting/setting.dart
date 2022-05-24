@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../resources/strings_manager.dart';
+import '../../../resources/strings_manager.dart';
+
 
 class SettingPage extends StatelessWidget {
   const SettingPage({ Key? key }) : super(key: key);

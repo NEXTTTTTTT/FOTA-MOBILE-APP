@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:fota_mobile_app/presentation/main/profile/profile_view_model.dart';
-import 'package:fota_mobile_app/presentation/resources/color_manager.dart';
-import 'package:fota_mobile_app/presentation/resources/font_manager.dart';
-import 'package:fota_mobile_app/presentation/resources/style_manager.dart';
-import 'package:geolocator/geolocator.dart';
-import '../../../app/di.dart';
-import '../../../app/functions.dart';
-import '../../common/state_renderer/state_renderer_impl.dart';
-import '../../resources/routes_manager.dart';
-import '../../resources/strings_manager.dart';
-import '../../resources/values_manager.dart';
+import 'package:fota_mobile_app/presentation/pages/main/profile/profile_view_model.dart';
+import '../../../../app/di.dart';
+import '../../../../app/functions.dart';
+import '../../../../domain/model/model.dart';
+import '../../../common/state_renderer/state_renderer_impl.dart';
 
-import '../../../domain/model/model.dart';
+import '../../../resources/color_manager.dart';
+import '../../../resources/font_manager.dart';
+import '../../../resources/routes_manager.dart';
+import '../../../resources/strings_manager.dart';
+import '../../../resources/style_manager.dart';
+import 'package:geolocator/geolocator.dart';
+
+import '../../../resources/values_manager.dart';
+
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);

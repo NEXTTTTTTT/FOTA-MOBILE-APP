@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/svg.dart';
-import '../../app/app_prefs.dart';
-import '../../app/di.dart';
-import '../../domain/usecase/register_usecase.dart';
-import '../common/freezed_data_classes.dart';
+import '../../resources/assets_manager.dart';
+import '../../resources/color_manager.dart';
+import '../../resources/strings_manager.dart';
+import '../../resources/values_manager.dart';
 import 'register_view_model.dart';
-import '../resources/routes_manager.dart';
+import '../../../app/app_prefs.dart';
+import '../../../app/di.dart';
+import '../../common/state_renderer/state_renderer_impl.dart';
+import '../../resources/routes_manager.dart';
 
-import '../common/state_renderer/state_renderer_impl.dart';
-import '../resources/assets_manager.dart';
-import '../resources/color_manager.dart';
-import '../resources/strings_manager.dart';
-import '../resources/values_manager.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({Key? key}) : super(key: key);

@@ -1,15 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:fota_mobile_app/presentation/splash/splash_view_model.dart';
-import '../../app/app_prefs.dart';
-import '../resources/assets_manager.dart';
-import '../resources/color_manager.dart';
-import '../resources/routes_manager.dart';
+import '../../../app/app_prefs.dart';
+import 'splash_view_model.dart';
+import '../../resources/routes_manager.dart';
 
-import '../../app/di.dart';
+import '../../../app/di.dart';
+import '../../resources/assets_manager.dart';
+import '../../resources/color_manager.dart';
+
 
 class SplashView extends StatefulWidget {
   const SplashView({Key? key}) : super(key: key);

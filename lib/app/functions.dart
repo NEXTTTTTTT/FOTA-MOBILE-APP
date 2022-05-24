@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fota_mobile_app/app/app_prefs.dart';
-import 'package:fota_mobile_app/app/di.dart';
+import 'app_prefs.dart';
+import 'di.dart';
 
 import '../domain/model/model.dart';
 import 'constants.dart';

@@ -1,18 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fota_mobile_app/app/constants.dart';
-import 'package:fota_mobile_app/domain/model/model.dart';
-import 'package:fota_mobile_app/presentation/car_details/cars_details_view_model.dart';
-import 'package:fota_mobile_app/presentation/common/state_renderer/state_renderer_impl.dart';
+import 'package:fota_mobile_app/presentation/pages/car_details/cars_details_view_model.dart';
+import '../../../app/constants.dart';
+import '../../../app/di.dart';
+import '../../../domain/model/model.dart';
+
+import '../../common/state_renderer/state_renderer_impl.dart';
 import 'package:geolocator/geolocator.dart';
 
-import '../../app/di.dart';
-import '../resources/color_manager.dart';
-import '../resources/font_manager.dart';
 
-import '../resources/style_manager.dart';
-import '../resources/values_manager.dart';
+import '../../resources/color_manager.dart';
+import '../../resources/font_manager.dart';
+import '../../resources/style_manager.dart';
+import '../../resources/values_manager.dart';
+
 
 class CarDetailsView extends StatefulWidget {
   const CarDetailsView({

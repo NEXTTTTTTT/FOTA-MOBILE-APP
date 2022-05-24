@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/svg.dart';
-import '../../app/app_prefs.dart';
-import '../common/state_renderer/state_renderer_impl.dart';
-import 'login_view_model.dart';
-import '../resources/color_manager.dart';
-import '../resources/strings_manager.dart';
-import '../resources/values_manager.dart';
+import 'package:fota_mobile_app/app/app_prefs.dart';
+import 'package:fota_mobile_app/presentation/pages/login/login_view_model.dart';
 
-import '../../app/di.dart';
-import '../resources/assets_manager.dart';
-import '../resources/routes_manager.dart';
+import '../../../app/di.dart';
+import '../../common/state_renderer/state_renderer_impl.dart';
+import '../../resources/assets_manager.dart';
+import '../../resources/color_manager.dart';
+import '../../resources/routes_manager.dart';
+import '../../resources/strings_manager.dart';
+import '../../resources/values_manager.dart';
+
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);

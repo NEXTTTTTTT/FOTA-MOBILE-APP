@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../app/app_prefs.dart';
-import '../../app/di.dart';
-import '../../domain/model/model.dart';
-import '../resources/assets_manager.dart';
-import '../resources/color_manager.dart';
-import '../resources/routes_manager.dart';
-import '../resources/strings_manager.dart';
-import '../resources/values_manager.dart';
+import '../../../app/app_prefs.dart';
+import '../../../app/di.dart';
+import '../../../domain/model/model.dart';
+import '../../resources/assets_manager.dart';
+import '../../resources/color_manager.dart';
+import '../../resources/routes_manager.dart';
+import '../../resources/strings_manager.dart';
+import '../../resources/values_manager.dart';
 import 'on_boarding_view_model.dart';
 
 class OnBoardingView extends StatefulWidget {
@@ -146,8 +146,8 @@ class _OnBoardingViewState extends State<OnBoardingView> {
 }
 
 class OnBoardingPage extends StatelessWidget {
-  SliderObject sliderObject;
-  OnBoardingPage({Key? key, required this.sliderObject}) : super(key: key);
+  final SliderObject sliderObject;
+  const OnBoardingPage({Key? key, required this.sliderObject}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

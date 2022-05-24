@@ -1,13 +1,13 @@
 import 'dart:async';
 
-import 'package:fota_mobile_app/app/app_prefs.dart';
-import 'package:fota_mobile_app/app/di.dart' as di;
+import '../../../app/app_prefs.dart';
+import '../../../app/di.dart' as di;
 
-import 'package:fota_mobile_app/domain/usecase/refresh_token_usecase.dart';
-import 'package:fota_mobile_app/presentation/base/base_view_model.dart';
+import '../../../domain/usecase/refresh_token_usecase.dart';
+import '../../base/base_view_model.dart';
 import 'package:rxdart/rxdart.dart';
-import '../../app/constants.dart';
-import '../../data/network/error_handler.dart';
+import '../../../app/constants.dart';
+import '../../../data/network/error_handler.dart';
 
 class SplashViewModel extends BaseViewModel
     with SplashViewInputs, SplashViewOutputs {

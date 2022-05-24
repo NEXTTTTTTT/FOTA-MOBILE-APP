@@ -1,14 +1,10 @@
 import 'dart:async';
 
-import '../../app/app_prefs.dart';
-import '../../data/request/request.dart';
-import '../base/base_view_model.dart';
-import '../common/freezed_data_classes.dart';
-import '../common/state_renderer/state_renderer.dart';
-import '../common/state_renderer/state_renderer_impl.dart';
-import '../resources/strings_manager.dart';
-
-import '../../domain/usecase/register_usecase.dart';
+import '../../../domain/usecase/register_usecase.dart';
+import '../../common/freezed_data_classes.dart';
+import '../../common/state_renderer/state_renderer.dart';
+import '../../common/state_renderer/state_renderer_impl.dart';
+import '../../base/base_view_model.dart';
 
 class RegisterViewModel extends BaseViewModel
     with RegisterViewModelInputs, RegisterViewModelOutputs {
@@ -22,14 +18,17 @@ class RegisterViewModel extends BaseViewModel
       StreamController<String>.broadcast();
   final StreamController _isAllInputsValidStreamController =
       StreamController<void>.broadcast();
-  final StreamController<CredentialsObject> registerSuccessfullyStreamController =
+  final StreamController<CredentialsObject>
+      registerSuccessfullyStreamController =
       StreamController<CredentialsObject>();
 
   var registerObject =
       RegisterObject(email: "", fullName: "", password: "", userName: "");
 
   final RegisterUseCase _registerUseCase;
-  RegisterViewModel(this._registerUseCase, );
+  RegisterViewModel(
+    this._registerUseCase,
+  );
 
   @override
   void dispose() {
@@ -63,11 +62,13 @@ class RegisterViewModel extends BaseViewModel
       // left -> failure
       inputState.add(
           ErrorState(StateRendererType.POPUP_ERROR_STATE, failure.message));
-    }, (data)async {
+    }, (data) async {
       // right -> data
       inputState.add(ContentState());
-      registerSuccessfullyStreamController.add(CredentialsObject(accesToken: data.accessToken!,refreshToken: data.refreshToken!, id: data.user!.id));
-
+      registerSuccessfullyStreamController.add(CredentialsObject(
+          accesToken: data.accessToken!,
+          refreshToken: data.refreshToken!,
+          id: data.user!.id));
     });
   }
 
@@ -159,8 +160,6 @@ class RegisterViewModel extends BaseViewModel
   void _validate() {
     _isAllInputsValidStreamController.add(null);
   }
-
-
 }
 
 abstract class RegisterViewModelInputs {

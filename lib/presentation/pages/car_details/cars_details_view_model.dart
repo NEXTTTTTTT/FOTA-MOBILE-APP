@@ -1,22 +1,21 @@
 import 'dart:async';
 
-import 'package:fota_mobile_app/presentation/base/base_view_model.dart';
+import 'package:fota_mobile_app/presentation/common/state_renderer/state_renderer_impl.dart';
+
+import '../../../domain/usecase/get_my_cars_usecase.dart';
+import '../../../domain/usecase/get_user_data_usecase.dart';
+import '../../base/base_view_model.dart';
 
 import '../../../app/app_prefs.dart';
-import '../../../app/constants.dart';
 
 import 'package:rxdart/rxdart.dart';
 
 import '../../../domain/model/model.dart';
-import '../../../domain/usecase/get_my_cars_usecase.dart';
-import '../../../domain/usecase/get_user_data_usecase.dart';
 import '../../common/state_renderer/state_renderer.dart';
-import '../../common/state_renderer/state_renderer_impl.dart';
-import '../../resources/strings_manager.dart';
 
 
-class ProfileViewModel extends BaseViewModel
-    with ProfileViewModelInputs, ProfileViewModelOutputs {
+class CarDetailsViewModel extends BaseViewModel
+    with CarDetailsViewModelInputs, CarDetailsViewModelOutputs {
   final GetMyCarsUseCase _getMyCarsUseCase;
   final GetUserDataUseCase _userDataUseCase;
   
@@ -26,7 +25,7 @@ class ProfileViewModel extends BaseViewModel
 
   final AppPreferences _appPreferences;
 
-  ProfileViewModel(
+  CarDetailsViewModel(
       this._getMyCarsUseCase, this._userDataUseCase, this._appPreferences);
   @override
   void start() {
@@ -86,12 +85,12 @@ class ProfileViewModel extends BaseViewModel
       _myCarsStreamController.stream.map((myCars) => myCars);
 }
 
-abstract class ProfileViewModelInputs {
+abstract class CarDetailsViewModelInputs {
   Sink get inputMyCarsList;
   Sink get inputUserData;
 }
 
-abstract class ProfileViewModelOutputs {
+abstract class CarDetailsViewModelOutputs {
   Stream<List<Car>> get outputMyCarsList;
   Stream<User> get outputUserData;
 }
