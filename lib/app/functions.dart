@@ -37,6 +37,10 @@ Future<DeviceInfo> getDeviceDetails() async {
 }
 
 
+setMyIdAsConst({required String id}) async {
+  /// set id in constants
+    Constants.myId = id;
+}
 
 bool isIamAdminOfTheCar(Car car) {
   return car.admin!.id == Constants.myId;
@@ -51,3 +55,10 @@ dismissDialog(BuildContext context) {
 
 _isThereCurrentDialogShowing(BuildContext context) =>
     ModalRoute.of(context)!.isCurrent != true;
+
+
+    bool isLocationValid(location) {
+    return location != null &&
+        location['lat'] != null &&
+        location['lng'] != null;
+  }

@@ -1,12 +1,10 @@
-import 'app_prefs.dart';
-import 'di.dart';
+import 'package:flutter/cupertino.dart';
 
 import '../domain/model/model.dart';
 
 class Constants {
-  AppPreferences _appPreferences = instance();
-
   static const String baseUrl = "http://fota2022.herokuapp.com/api/v1";
-  static late Car defaultCar;
-  static late String myId;
+  static Car? defaultCar;
+  static String? myId;
+  static GlobalKey<NavigatorState> navigatorKey= GlobalKey<NavigatorState>();
 }

@@ -1,11 +1,13 @@
 import 'package:data_connection_checker/data_connection_checker.dart';
-import 'package:fota_mobile_app/presentation/bloc/app_bloc.dart';
+import 'package:fota_mobile_app/presentation/bussiness_logic/map_cubit/map_cubit.dart';
 import 'package:get_it/get_it.dart';
 import '../domain/usecase/refresh_token_usecase.dart';
-import '../presentation/pages/car_details/cars_details_view_model.dart';
+import '../presentation/bussiness_logic/app_cubit/app_cubit.dart';
+import '../presentation/bussiness_logic/cars_bloc/cars_bloc.dart';
+import '../presentation/bussiness_logic/position_bloc/position_bloc.dart';
+import '../presentation/bussiness_logic/user_bloc/user_bloc.dart';
 import '../presentation/pages/login/login_view_model.dart';
-import '../presentation/pages/main/home/home_view_model.dart';
-import '../presentation/pages/main/profile/profile_view_model.dart';
+
 import '../presentation/pages/register/register_view_model.dart';
 import '../presentation/pages/splash/splash_view_model.dart';
 import 'app_prefs.dart';
@@ -54,9 +56,22 @@ Future<void> initAppModule() async {
   instance.registerLazySingleton<Repository>(
       () => RepositoryImplementer(instance(), instance(), instance()));
 
-  // bloc
-  instance.registerFactory<AppBloc>(() => AppBloc(instance(), instance(), instance()));
-  
+  // user bloc
+  instance.registerLazySingleton<UserBloc>(() => UserBloc(instance()));
+
+  // cars bloc
+  instance.registerLazySingleton<CarsBloc>(
+      () => CarsBloc(instance(), instance(), ));
+
+  // position bloc
+  instance.registerLazySingleton<PositionBloc>(() => PositionBloc(instance(),instance()));
+
+  //map cubit
+  instance.registerLazySingleton<MapCubit>(() => MapCubit());
+
+  // app cubit
+  instance.registerLazySingleton<AppCubit>(() => AppCubit());
+
   // getMyCarsUseCase
   instance.registerLazySingleton<GetMyCarsUseCase>(
       () => GetMyCarsUseCase(instance()));

@@ -1,5 +1,6 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:dartz/dartz.dart';
+import 'package:fota_mobile_app/data/responses/response.dart';
 import '../data_source/local_data_source.dart';
 import '../mapper/mapper.dart';
 import '../network/network_info.dart';
@@ -156,6 +157,7 @@ class RepositoryImplementer extends Repository {
           final response = await _remoteDataSource.refreshToken(refreshToken);
 
           if (response.status == ApiInternalStatus.SUCCESS) {
+             _localDataSource.saveUserDataToCache(UserDataResponse(response.user!), response.user!.id!);
             // success
             // return data
             // return right

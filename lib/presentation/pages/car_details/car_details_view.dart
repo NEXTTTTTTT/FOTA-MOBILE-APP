@@ -1,135 +1,101 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fota_mobile_app/presentation/pages/car_details/cars_details_view_model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fota_mobile_app/presentation/bussiness_logic/app_cubit/app_cubit.dart';
 import '../../../app/constants.dart';
 import '../../../app/di.dart';
 import '../../../domain/model/model.dart';
 
+import '../../bussiness_logic/cars_bloc/cars_bloc.dart';
 import '../../common/state_renderer/state_renderer_impl.dart';
 import 'package:geolocator/geolocator.dart';
-
 
 import '../../resources/color_manager.dart';
 import '../../resources/font_manager.dart';
 import '../../resources/style_manager.dart';
 import '../../resources/values_manager.dart';
 
-
-class CarDetailsView extends StatefulWidget {
-  const CarDetailsView({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  State<CarDetailsView> createState() => _CarDetailsViewState();
-}
-
-class _CarDetailsViewState extends State<CarDetailsView> {
-  final CarDetailsViewModel _viewModel = instance<CarDetailsViewModel>();
+class CarDetailsView extends StatelessWidget {
+  CarDetailsView({Key? key}) : super(key: key);
 
   final PageController _pageController = PageController(initialPage: 0);
-  int _currentIndex = 0;
-
-  _bind() {
-    _viewModel.start();
-    _viewModel.getMyCars();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _bind();
-  }
-
-  @override
-  void dispose() {
-    _viewModel.dispose();
-    _pageController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<FlowState>(
-        stream: _viewModel.outputState,
-        builder: (context, snapshot) {
-          return snapshot.data?.getScreenWidget(
-                      context, _getContentWidget(), _viewModel.start) !=
-                  null
-              ? _getContentWidget()
-              : Container();
-        });
+    return _getContentWidget();
   }
 
   _getContentWidget() {
-    return StreamBuilder<List<Car>>(
-        stream: _viewModel.outputMyCarsList,
-        builder: (context, snapshot) {
-          return snapshot.data != null
-              ? Scaffold(
-                  backgroundColor: ColorManager.background,
-                  appBar: AppBar(
-                    leading: IconButton(
-                      onPressed: () => Navigator.pop(context),
-                      icon: const Icon(CupertinoIcons.arrow_left),
-                      color: ColorManager.grey,
-                    ),
-                    centerTitle: true,
-                    systemOverlayStyle: const SystemUiOverlayStyle(
-                        statusBarColor: Colors.transparent,
-                        statusBarIconBrightness: Brightness.dark),
-                    backgroundColor: ColorManager.white,
-                    elevation: 0,
-                    title: Row(children: [
-                      Text(
-                        snapshot.data![_currentIndex].carType +
-                            ' ' +
-                            snapshot.data![_currentIndex].code,
-                        style: getRegularStyle(
-                            color: ColorManager.grey,
-                            fontSize: FontSizeManager.s24),
-                      ),
-                      const SizedBox(
-                        width: AppSize.s8,
-                      ),
-                      CircleAvatar(
-                          maxRadius: AppSize.s4,
-                          backgroundColor:
-                              snapshot.data![_currentIndex].isActive
-                                  ? ColorManager.green
-                                  : ColorManager.red),
-                    ]),
+    return BlocBuilder<CarsBloc, CarsState>(builder: (context, state) {
+      var _carsBloc = BlocProvider.of<CarsBloc>(context);
+      var _appCubit = BlocProvider.of<AppCubit>(context);
+      return _carsBloc.myCarsData != null && _carsBloc.myCarsData!.isNotEmpty
+          ? Scaffold(
+              backgroundColor: ColorManager.background,
+              appBar: AppBar(
+                leading: IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: const Icon(CupertinoIcons.arrow_left),
+                  color: ColorManager.grey,
+                ),
+                centerTitle: true,
+                systemOverlayStyle: const SystemUiOverlayStyle(
+                    statusBarColor: Colors.transparent,
+                    statusBarIconBrightness: Brightness.dark),
+                backgroundColor: ColorManager.white,
+                elevation: 0,
+                title: Row(children: [
+                  Text(
+                    _carsBloc.myCarsData![_appCubit.carsDetailsPageIndex]
+                            .carType +
+                        ' ' +
+                        _carsBloc
+                            .myCarsData![_appCubit.carsDetailsPageIndex].code,
+                    style: getRegularStyle(
+                        color: ColorManager.grey,
+                        fontSize: FontSizeManager.s24),
                   ),
-                  body: PageView.builder(
-                      controller: _pageController,
-                      onPageChanged: (index) {
-                        setState(() {
-                          _currentIndex = index;
-                        });
-
-                        Constants.defaultCar = snapshot.data![index];
-                      },
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (context, index) {
-                        List<Car> cars =
-                            _getSortedCarsListWithDefaultFirst(snapshot.data);
-                        return CarPage(
-                          myCar: cars[index],
-                        );
-                      }))
-              : Container();
-        });
+                  const SizedBox(
+                    width: AppSize.s8,
+                  ),
+                  CircleAvatar(
+                      maxRadius: AppSize.s4,
+                      backgroundColor: _carsBloc
+                              .myCarsData![_appCubit.carsDetailsPageIndex]
+                              .isActive
+                          ? ColorManager.green
+                          : ColorManager.red),
+                ]),
+              ),
+              body: PageView.builder(
+                  controller: _pageController,
+                  key: const ValueKey('pageView'),
+                  onPageChanged: (index) {
+                    _appCubit.carsDetailsPageIndex = index;
+                    Constants.defaultCar = _carsBloc.myCarsData![index];
+                  },
+                  itemCount: _carsBloc.myCarsData!.length,
+                  itemBuilder: (context, index) {
+                    List<Car> cars = _getSortedCarsListWithDefaultFirst(
+                        _carsBloc.myCarsData);
+                    return CarPage(
+                      key: ObjectKey(cars[index]),
+                      myCar: cars[index],
+                    );
+                  }))
+          : Container();
+    });
   }
 
   List<Car> _getSortedCarsListWithDefaultFirst(List<Car>? cars) {
     List<Car> newCarsList;
-    if (cars!.first.id == Constants.defaultCar.id) {
+    if (cars!.first.id == Constants.defaultCar!.id) {
       return cars;
     } else {
-      newCarsList = [Constants.defaultCar];
+      newCarsList = [Constants.defaultCar!];
       for (var car in cars) {
-        if (car.id != Constants.defaultCar.id) {
+        if (car.id != Constants.defaultCar!.id) {
           newCarsList.add(car);
         }
       }
@@ -458,54 +424,9 @@ class CustomContainer extends StatelessWidget {
   }
 }
 
-class PlaceDistanceWidget extends StatefulWidget {
+class PlaceDistanceWidget extends StatelessWidget {
   final Car myCar;
   const PlaceDistanceWidget({Key? key, required this.myCar}) : super(key: key);
-
-  @override
-  State<PlaceDistanceWidget> createState() => _PlaceDistanceWidgetState();
-}
-
-class _PlaceDistanceWidgetState extends State<PlaceDistanceWidget> {
-  @override
-  void initState() {
-    _getDistance();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  String? placemark;
-  int? distance;
-
-  
-   
-  _getDistance() async {
-     double carLat = double.parse(widget.myCar.carLocation['lat']);
-     double carLng = double.parse(widget.myCar.carLocation['lng']);
-    var position = await Geolocator().getCurrentPosition();
-    var placemarks = await Geolocator()
-        .placemarkFromCoordinates(carLat,carLng);
-    var distanceBetweenMeAndCar = await Geolocator().distanceBetween(
-        position.latitude,
-        position.longitude,
-        carLat,
-        carLng);
-
-    setState(() {
-      placemark = placemarks[0].country +
-          ' - ' +
-          placemarks[0].administrativeArea +
-          ' - ' +
-          placemarks[0].subAdministrativeArea +
-          ' - ' +
-          placemarks[0].locality;
-      distance = distanceBetweenMeAndCar ~/ 1000; // KM
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -516,12 +437,12 @@ class _PlaceDistanceWidgetState extends State<PlaceDistanceWidget> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(placemark ?? '-',
+              Text(myCar.placemark ?? '-',
                   maxLines: 3,
                   style: getRegularStyle(
                       color: ColorManager.darkGrey,
                       fontSize: FontSizeManager.s20)),
-              Text('${distance ?? '-'} KM to get this car',
+              Text('${myCar.distanceBetween ?? '-'} KM to get this car',
                   style: getRegularStyle(
                       color: ColorManager.grey, fontSize: FontSizeManager.s15)),
             ],

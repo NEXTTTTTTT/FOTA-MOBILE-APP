@@ -5,6 +5,7 @@ import 'package:fota_mobile_app/app/app_prefs.dart';
 import 'package:fota_mobile_app/presentation/pages/login/login_view_model.dart';
 
 import '../../../app/di.dart';
+import '../../../app/functions.dart';
 import '../../common/state_renderer/state_renderer_impl.dart';
 import '../../resources/assets_manager.dart';
 import '../../resources/color_manager.dart';
@@ -41,6 +42,9 @@ class _LoginViewState extends State<LoginView> {
       _appPreferences.setToken(credentials.accesToken);
       _appPreferences.setRefreshToken(credentials.refreshToken);
       _appPreferences.setUserId(credentials.id);
+
+      //* set my id as const
+      setMyIdAsConst(id:credentials.id);
 
       //* reset dependency injection to update
       resetAllModules();

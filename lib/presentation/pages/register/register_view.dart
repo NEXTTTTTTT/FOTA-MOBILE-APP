@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/svg.dart';
+import '../../../app/functions.dart';
 import '../../resources/assets_manager.dart';
 import '../../resources/color_manager.dart';
 import '../../resources/strings_manager.dart';
@@ -10,7 +11,6 @@ import '../../../app/app_prefs.dart';
 import '../../../app/di.dart';
 import '../../common/state_renderer/state_renderer_impl.dart';
 import '../../resources/routes_manager.dart';
-
 
 class RegisterView extends StatefulWidget {
   const RegisterView({Key? key}) : super(key: key);
@@ -52,10 +52,13 @@ class _RegisterViewState extends State<RegisterView> {
       _appPreferences.setToken(credentials.accesToken);
       _appPreferences.setRefreshToken(credentials.refreshToken);
       _appPreferences.setUserId(credentials.id);
+      
+      //* set my id as const
+      setMyIdAsConst(id:credentials.id);
 
       //* reset dependency injection
       resetAllModules();
-      
+
       //* navigate to main screen
       SchedulerBinding.instance.addPostFrameCallback((_) {
         Navigator.of(context).pushReplacementNamed(Routes.mainRoute);

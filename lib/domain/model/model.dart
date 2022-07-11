@@ -31,7 +31,7 @@ class Authentication {
   String? accessToken;
   String? refreshToken;
   User? user;
-  Authentication(this.accessToken,this.refreshToken, this.user);
+  Authentication(this.accessToken, this.refreshToken, this.user);
 }
 
 class DeviceInfo {
@@ -54,6 +54,10 @@ class Car {
   Map carLocation;
   Map firmware;
   String createdAt;
+
+  // will be added after fetching data from APIs
+  double? distanceBetween;
+  String? placemark;
   Car(
       {required this.id,
       required this.code,

@@ -4,7 +4,7 @@ import '../../../domain/usecase/register_usecase.dart';
 import '../../common/freezed_data_classes.dart';
 import '../../common/state_renderer/state_renderer.dart';
 import '../../common/state_renderer/state_renderer_impl.dart';
-import '../../base/base_view_model.dart';
+import '../../base_view_model/base_view_model.dart';
 
 class RegisterViewModel extends BaseViewModel
     with RegisterViewModelInputs, RegisterViewModelOutputs {

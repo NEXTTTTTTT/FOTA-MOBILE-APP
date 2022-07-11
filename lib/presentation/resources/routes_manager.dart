@@ -49,7 +49,7 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const MainView());
 
       case Routes.carDetailsRoute:
-        return MaterialPageRoute(builder: (_) => const CarDetailsView());
+        return MaterialPageRoute(builder: (_) =>  CarDetailsView());
 
       case Routes.addCar:
         return MaterialPageRoute(builder: (_) => const AddCarView());
