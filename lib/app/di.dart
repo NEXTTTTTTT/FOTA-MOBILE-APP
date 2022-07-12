@@ -1,15 +1,13 @@
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:fota_mobile_app/presentation/bussiness_logic/map_cubit/map_cubit.dart';
 import 'package:get_it/get_it.dart';
-import '../domain/usecase/refresh_token_usecase.dart';
 import '../presentation/bussiness_logic/app_cubit/app_cubit.dart';
-import '../presentation/bussiness_logic/cars_bloc/cars_bloc.dart';
-import '../presentation/bussiness_logic/position_bloc/position_bloc.dart';
-import '../presentation/bussiness_logic/user_bloc/user_bloc.dart';
+import '../presentation/bussiness_logic/car_cubit/car_cubit.dart';
+import '../presentation/bussiness_logic/position_cubit/position_cubit.dart';
+import '../presentation/bussiness_logic/user_cubit/user_cubit.dart';
 import '../presentation/pages/login/login_view_model.dart';
 
 import '../presentation/pages/register/register_view_model.dart';
-import '../presentation/pages/splash/splash_view_model.dart';
 import 'app_prefs.dart';
 import '../data/data_source/local_data_source.dart';
 import '../data/data_source/remote_data_source.dart';
@@ -56,19 +54,20 @@ Future<void> initAppModule() async {
   instance.registerLazySingleton<Repository>(
       () => RepositoryImplementer(instance(), instance(), instance()));
 
+  //* BLOCS
   // user bloc
-  instance.registerLazySingleton<UserBloc>(() => UserBloc(instance()));
-
+  instance.registerLazySingleton<UserCubit>(
+      () => UserCubit(instance(), instance()));
   // cars bloc
-  instance.registerLazySingleton<CarsBloc>(
-      () => CarsBloc(instance(), instance(), ));
-
+  instance.registerLazySingleton<CarCubit>(() => CarCubit(
+        instance(),
+        instance(),
+      ));
   // position bloc
-  instance.registerLazySingleton<PositionBloc>(() => PositionBloc(instance(),instance()));
-
+  instance.registerLazySingleton<PositionCubit>(
+      () => PositionCubit(instance(), instance()));
   //map cubit
   instance.registerLazySingleton<MapCubit>(() => MapCubit());
-
   // app cubit
   instance.registerLazySingleton<AppCubit>(() => AppCubit());
 
@@ -100,22 +99,9 @@ Future<void> initRegisterModule() async {
   }
 }
 
-Future<void> initSplashModule() async {
-  // refresh token usecase
-  instance.registerFactory<RefreshTokenUseCase>(() => RefreshTokenUseCase(
-        instance(),
-      ));
-  // splashViewModel
-  instance.registerFactory<SplashViewModel>(() => SplashViewModel(
-        instance(),
-        instance(),
-      ));
-}
-
 resetAllModules() {
   instance.reset(dispose: false);
   initAppModule();
-  initSplashModule();
   initLoginModule();
   initRegisterModule();
 }

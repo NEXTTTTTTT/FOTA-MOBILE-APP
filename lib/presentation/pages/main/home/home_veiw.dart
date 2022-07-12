@@ -5,12 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 
 import 'package:fota_mobile_app/presentation/bussiness_logic/map_cubit/map_cubit.dart';
-import 'package:fota_mobile_app/presentation/bussiness_logic/position_bloc/position_bloc.dart';
 
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import '../../../bussiness_logic/cars_bloc/cars_bloc.dart';
+import '../../../bussiness_logic/car_cubit/car_cubit.dart';
+import '../../../bussiness_logic/position_cubit/position_cubit.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -22,7 +22,7 @@ class HomePage extends StatelessWidget {
 
   Widget _getContentWidget() {
     
-    return BlocBuilder<CarsBloc, CarsState>(
+    return BlocBuilder<CarCubit, CarState>(
       builder: (context, state) {
         if (state is MyCarsLoadedState) {
           return MyGoogleMapWidget();
@@ -44,7 +44,7 @@ class MyGoogleMapWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _mapCubit = BlocProvider.of<MapCubit>(context);
-    final _positionBloc = BlocProvider.of<PositionBloc>(context);
+    final _positionBloc = BlocProvider.of<PositionCubit>(context);
     return _positionBloc.myPosition != null
         ? GoogleMap(
             initialCameraPosition: CameraPosition(

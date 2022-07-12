@@ -8,4 +8,9 @@ class AppCubit extends Cubit<AppState> {
 
   // car details page index
   int carsDetailsPageIndex = 0;
+
+  changeIndex(index) {
+    carsDetailsPageIndex = index;
+    emit(CarsDetailsPageIndexChangedSuccessState(index));
+  }
 }

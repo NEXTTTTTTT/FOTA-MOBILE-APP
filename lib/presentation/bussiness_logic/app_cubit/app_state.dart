@@ -8,3 +8,11 @@ abstract class AppState extends Equatable {
 }
 
 class AppInitial extends AppState {}
+
+class CarsDetailsPageIndexChangedSuccessState extends AppState {
+  final int index;
+
+  const CarsDetailsPageIndexChangedSuccessState(this.index);
+  @override
+  List<Object> get props => [index];
+}

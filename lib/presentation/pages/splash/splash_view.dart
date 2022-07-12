@@ -1,15 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fota_mobile_app/app/constants.dart';
+import 'package:fota_mobile_app/presentation/bussiness_logic/user_cubit/user_cubit.dart';
 import '../../../app/app_prefs.dart';
-import 'splash_view_model.dart';
 import '../../resources/routes_manager.dart';
 
 import '../../../app/di.dart';
 import '../../resources/assets_manager.dart';
 import '../../resources/color_manager.dart';
-
 
 class SplashView extends StatefulWidget {
   const SplashView({Key? key}) : super(key: key);
@@ -21,17 +22,19 @@ class SplashView extends StatefulWidget {
 class _SplashViewState extends State<SplashView> {
   late Timer _timer;
   final AppPreferences _appPreferences = instance<AppPreferences>();
-  final SplashViewModel _splashViewModel = instance<SplashViewModel>();
 
   _startDelay() {
-    _timer = Timer(const Duration(seconds: 1), _goNext);
+    _timer = Timer(const Duration(seconds: 2), _goNext);
   }
 
   _goNext() async {
     _appPreferences.isUserLoggedIn().then((isUserLoggedIn) async {
       if (isUserLoggedIn) {
-        // refresh token
-        _splashViewModel.refreshToken();
+        await _appPreferences.getUserId().then((value) {
+          Constants.myId = value;
+          BlocProvider.of<UserCubit>(context).getMyData();
+          Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
+        });
       } else {
         _appPreferences
             .isOnBoardingScreenViewed()
@@ -48,30 +51,14 @@ class _SplashViewState extends State<SplashView> {
     });
   }
 
-  _bind() {
-    _splashViewModel.start();
-    _splashViewModel.isRefreshSuccess.stream.listen((isSuccess) {
-      if (isSuccess) {
-        //* navigate to main screen
-        Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
-        
-      } else {
-        //* navigate to login screen
-        Navigator.of(context).pushReplacementNamed(Routes.loginRoute);
-      }
-    });
-  }
-
   @override
   void initState() {
     super.initState();
-    _bind();
     _startDelay();
   }
 
   @override
   void dispose() {
-    _splashViewModel.dispose();
     _timer.cancel();
     super.dispose();
   }

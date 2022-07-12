@@ -5,17 +5,16 @@ import 'app/di.dart' as di;
 import 'app/app.dart';
 import 'bloc_observer.dart';
 
-void main() async{
-
-  
-  // bloc observer
-  BlocOverrides.runZoned(() {}, blocObserver: SimpleBlocObserver());
-    // ensure initialized
+void main() async {
+  // ensure initialized
   WidgetsFlutterBinding.ensureInitialized();
   // dependency injection
   await di.initAppModule();
-  // run app
-  runApp( const MyApp());
+
+  // bloc observer
+  BlocOverrides.runZoned(
+      () =>
+          // run app
+          runApp(const MyApp()),
+      blocObserver: MyBlocObserver());
 }
-
-

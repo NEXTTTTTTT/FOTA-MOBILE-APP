@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fota_mobile_app/presentation/bussiness_logic/map_cubit/map_cubit.dart';
 
 import '../../../../app/functions.dart';
 
-import '../../../bussiness_logic/app_cubit/app_cubit.dart';
-import '../../../bussiness_logic/cars_bloc/cars_bloc.dart';
-import '../../../bussiness_logic/position_bloc/position_bloc.dart';
-import '../../../bussiness_logic/user_bloc/user_bloc.dart';
+import '../../../bussiness_logic/car_cubit/car_cubit.dart';
 
+
+import '../../../bussiness_logic/position_cubit/position_cubit.dart';
+import '../../../bussiness_logic/user_cubit/user_cubit.dart';
 import '../../../resources/color_manager.dart';
 import '../../../resources/font_manager.dart';
 import '../../../resources/routes_manager.dart';
@@ -44,7 +43,7 @@ class ProfilePage extends StatelessWidget {
   }
 
   getUserRow() {
-    return BlocBuilder<UserBloc, UserState>(
+    return BlocBuilder<UserCubit, UserState>(
       builder: (context, state) {
         if (state is UserDataLoadedState) {
           return Padding(
@@ -99,7 +98,7 @@ class ProfilePage extends StatelessWidget {
   }
 
   getCarsNumberWidget() {
-    return BlocBuilder<CarsBloc, CarsState>(
+    return BlocBuilder<CarCubit, CarState>(
       builder: (context, state) {
         if (state is MyCarsLoadedState) {
           return Row(
@@ -169,7 +168,7 @@ class ProfilePage extends StatelessWidget {
   }
 
   getEmailWidget() {
-    return BlocBuilder<UserBloc, UserState>(
+    return BlocBuilder<UserCubit, UserState>(
       builder: (context, state) {
         if (state is UserDataLoadedState) {
           return Padding(
@@ -242,7 +241,7 @@ class PlaceMarkWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var _bloc = BlocProvider.of<PositionBloc>(context);
+    var _bloc = BlocProvider.of<PositionCubit>(context);
     return Padding(
       padding: const EdgeInsets.symmetric(
           horizontal: AppPadding.p20, vertical: AppPadding.p8),

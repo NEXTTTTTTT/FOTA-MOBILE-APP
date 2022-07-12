@@ -1,4 +1,4 @@
-part of 'position_bloc.dart';
+part of 'position_cubit.dart';
 
 abstract class PositionState extends Equatable {
   const PositionState();
@@ -7,8 +7,7 @@ abstract class PositionState extends Equatable {
   List<Object> get props => [];
 }
 
-//*  INITIAL STATE
-class PositionInitialState extends PositionState {}
+class PositionInitial extends PositionState {}
 
 //*  USER LOCATION
 class UserPositionLoadingState extends PositionState {}

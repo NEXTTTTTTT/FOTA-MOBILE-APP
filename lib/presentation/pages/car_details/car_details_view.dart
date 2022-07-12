@@ -4,12 +4,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fota_mobile_app/presentation/bussiness_logic/app_cubit/app_cubit.dart';
 import '../../../app/constants.dart';
-import '../../../app/di.dart';
 import '../../../domain/model/model.dart';
 
-import '../../bussiness_logic/cars_bloc/cars_bloc.dart';
-import '../../common/state_renderer/state_renderer_impl.dart';
-import 'package:geolocator/geolocator.dart';
+import '../../bussiness_logic/car_cubit/car_cubit.dart';
 
 import '../../resources/color_manager.dart';
 import '../../resources/font_manager.dart';
@@ -27,8 +24,8 @@ class CarDetailsView extends StatelessWidget {
   }
 
   _getContentWidget() {
-    return BlocBuilder<CarsBloc, CarsState>(builder: (context, state) {
-      var _carsBloc = BlocProvider.of<CarsBloc>(context);
+    return BlocBuilder<CarCubit, CarState>(builder: (context, state) {
+      var _carsBloc = BlocProvider.of<CarCubit>(context);
       var _appCubit = BlocProvider.of<AppCubit>(context);
       return _carsBloc.myCarsData != null && _carsBloc.myCarsData!.isNotEmpty
           ? Scaffold(
@@ -72,7 +69,7 @@ class CarDetailsView extends StatelessWidget {
                   controller: _pageController,
                   key: const ValueKey('pageView'),
                   onPageChanged: (index) {
-                    _appCubit.carsDetailsPageIndex = index;
+                    _appCubit.changeIndex(index) ;
                     Constants.defaultCar = _carsBloc.myCarsData![index];
                   },
                   itemCount: _carsBloc.myCarsData!.length,
