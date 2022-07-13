@@ -54,6 +54,7 @@ abstract class AppServiceClient {
   Future<MyCarsResponse> connectCar(
     @Field() String code,
     @Field() String password,
+    @Field() String carType,
   );
    @PATCH("/car/dissconnect")
   Future<MyCarsResponse> disconnectCar(

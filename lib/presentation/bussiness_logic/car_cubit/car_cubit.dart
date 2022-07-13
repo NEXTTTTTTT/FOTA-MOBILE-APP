@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fota_mobile_app/app/extentions.dart';
 import 'package:fota_mobile_app/domain/usecase/base_usecase.dart';
+import 'package:fota_mobile_app/domain/usecase/connect_car_usecase.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -16,13 +17,26 @@ part 'car_state.dart';
 
 class CarCubit extends Cubit<CarState> {
   final GetMyCarsUseCase _getMyCars;
+  final ConnectCarUseCase _connectCar;
   final MapCubit _mapCubit;
   StreamSubscription? mapOnWindowTap;
-  CarCubit(this._getMyCars, this._mapCubit) : super(CarInitial()) {
+  CarCubit(this._getMyCars, this._mapCubit, this._connectCar)
+      : super(CarInitial()) {
     _mapCubit.stream.listen((state) {
       if (state is WindowOnTapChangeCarSelected) {
         selectedCarCode = state.code;
       }
+    });
+  }
+
+  void connectCar(String code, String password, String name) async {
+    emit(ConnectCarLoadingState());
+    (await _connectCar.execute(ConnectCarInput(code, password, name))).fold(
+        (failure) {
+      emit(ConnectCarErrorState(failure.message));
+    }, (data) {
+      myCarsData = data;
+      emit(ConnectCarSuccessState());
     });
   }
 
@@ -49,11 +63,13 @@ class CarCubit extends Cubit<CarState> {
       if (isLocationValid(car.carLocation)) {
         var carLatLng = mapToLatLng(car.carLocation);
         car.distanceBetween = (await Geolocator().distanceBetween(
-          position.latitude,
-          position.longitude,
-          carLatLng!.latitude,
-          carLatLng.longitude,
-        )).round()/1000;
+              position.latitude,
+              position.longitude,
+              carLatLng!.latitude,
+              carLatLng.longitude,
+            ))
+                .round() /
+            1000;
       } else {
         car.distanceBetween = null;
       }

@@ -19,9 +19,10 @@ class ConnectCarUseCase extends BaseUseCase<ConnectCarInput, List<Car>> {
 class ConnectCarInput extends Equatable {
   final String code;
   final String password;
+  final String carName;
 
-  const ConnectCarInput(this.code, this.password);
+  const ConnectCarInput(this.code, this.password, this.carName);
 
   @override
-  List<Object> get props => [code, password];
+  List<Object> get props => [code, password,carName];
 }

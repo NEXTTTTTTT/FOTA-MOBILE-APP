@@ -16,7 +16,6 @@ import '../../resources/values_manager.dart';
 class CarDetailsView extends StatelessWidget {
   CarDetailsView({Key? key}) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
     return _getContentWidget();
@@ -245,13 +244,13 @@ class CarPage extends StatelessWidget {
                 height: AppSize.s5,
               ),
               Text(
-                '110 KM/H',
+                '${myCar.currentSpeed} KM/H',
                 style: getBoldStyle(
                     color: ColorManager.darkGrey,
                     fontSize: FontSizeManager.s25),
               ),
               Text(
-                'Maximum speed is 200',
+                'Maximum speed is ${myCar.defaultSpeed}',
                 maxLines: 2,
                 style: getBoldStyle(
                     color: ColorManager.grey, fontSize: FontSizeManager.s15),
@@ -290,7 +289,7 @@ class CarPage extends StatelessWidget {
                 height: AppSize.s4,
               ),
               Text(
-                '22 C',
+                '${myCar.temperature} C',
                 style: getBoldStyle(
                     color: ColorManager.darkGrey,
                     fontSize: FontSizeManager.s25),
@@ -339,13 +338,14 @@ class CarPage extends StatelessWidget {
           ],
         ),
         Row(
-          children: [5, 5, 6, 7]
-              .map((userImage) => const Padding(
-                    padding: EdgeInsets.only(right: AppPadding.p3),
+          children: myCar.users!
+              .map((user) => Padding(
+                    padding: const EdgeInsets.only(right: AppPadding.p3),
                     child: CircleAvatar(
                       radius: AppSize.s16,
-                      backgroundImage: NetworkImage(
-                          'https://i.pinimg.com/564x/1b/e1/3f/1be13feb311ab005aca97ddf6e34df4a.jpg'),
+                      backgroundImage: NetworkImage(user.profileImage.isNotEmpty
+                          ? user.profileImage
+                          : 'https://i.pinimg.com/564x/1b/e1/3f/1be13feb311ab005aca97ddf6e34df4a.jpg'),
                     ),
                   ))
               .toList(),

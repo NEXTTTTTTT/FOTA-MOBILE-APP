@@ -96,7 +96,7 @@ flutter:
      - assets/images/solid_circle_ic.svg
      - assets/images/right_arrow_ic.svg
      - assets/images/carItem.svg
-     - assets/images/car_marker.png
+     - assets/images/car_image.png
      - assets/images/car_marker_blue.png
      - assets/images/user_marker.png
      - assets/json/empty-illustration-animation.json

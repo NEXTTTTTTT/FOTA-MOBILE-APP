@@ -10,7 +10,7 @@ abstract class RemoteDataSource {
   Future<AuthenticationResponse> refreshToken(String refreshToken);
   Future<UserDataListResponse> searchUser(String username);
   Future<UserDataResponse> updateUser(String fullname, String profileImage);
-  Future<MyCarsResponse> connectCar(String code, String password);
+  Future<MyCarsResponse> connectCar(String code, String password,String carName);
   Future<MyCarsResponse> disconnectCar(String code, String password);
   Future<MyCarsResponse> shareCar(String userId, String carId);
   Future<MyCarsResponse> removeUserAwayMyCar(String userId, String carId);
@@ -55,8 +55,8 @@ class RemoteDataSourceImplementer implements RemoteDataSource {
   }
 
   @override
-  Future<MyCarsResponse> connectCar(String code, String password) async {
-    return await _appServiceClient.connectCar(code, password);
+  Future<MyCarsResponse> connectCar(String code, String password, String carName) async {
+    return await _appServiceClient.connectCar(code, password,carName);
   }
 
   @override

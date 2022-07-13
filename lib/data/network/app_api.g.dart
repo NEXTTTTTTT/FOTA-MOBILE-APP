@@ -136,11 +136,11 @@ class _AppServiceClient implements AppServiceClient {
   }
 
   @override
-  Future<MyCarsResponse> connectCar(code, password) async {
+  Future<MyCarsResponse> connectCar(code, password, carType) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = {'code': code, 'password': password};
+    final _data = {'code': code, 'password': password, 'carType': carType};
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<MyCarsResponse>(
             Options(method: 'PATCH', headers: _headers, extra: _extra)

@@ -62,6 +62,7 @@ Future<void> initAppModule() async {
   instance.registerLazySingleton<CarCubit>(() => CarCubit(
         instance(),
         instance(),
+        instance(),
       ));
   // position bloc
   instance.registerLazySingleton<PositionCubit>(

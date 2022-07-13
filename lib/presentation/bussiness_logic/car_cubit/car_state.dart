@@ -26,3 +26,15 @@ class MyCarsErrorState extends CarState {
   @override
   List<Object> get props => [errorMessage];
 }
+
+class ConnectCarLoadingState extends CarState {}
+
+class ConnectCarSuccessState extends CarState {}
+
+class ConnectCarErrorState extends CarState {
+  final String msg;
+
+  const ConnectCarErrorState(this.msg);
+  @override
+  List<Object> get props => [msg];
+}

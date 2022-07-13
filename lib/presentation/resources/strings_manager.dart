@@ -39,4 +39,7 @@ class AppStrings{
   static const String myCars='My Cars';
   static const String currentLocation='Current Location';
   static const String logout='Logout';
+  static const String carCode='Car code';
+  static const String carPassword='Car password';
+  static const String putNameToYourCar='Put name to your car';
 }

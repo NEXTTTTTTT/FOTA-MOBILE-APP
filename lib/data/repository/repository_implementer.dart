@@ -192,7 +192,7 @@ class RepositoryImplementer extends Repository {
       try {
         // safe to call APIs
         final response =
-            await _remoteDataSource.connectCar(input.code, input.password);
+            await _remoteDataSource.connectCar(input.code, input.password,input.carName);
 
         if (response.status == ApiInternalStatus.SUCCESS) {
           // success
@@ -249,9 +249,34 @@ class RepositoryImplementer extends Repository {
 
   @override
   Future<Either<Failure, List<Car>>> removeUserAwayMyCar(
-      RemoveUserAwayMyCarInput input) {
-    // TODO: implement removeUserAwayMyCar
-    throw UnimplementedError();
+      RemoveUserAwayMyCarInput input) async{
+   // call apis
+    if (await _networkInfo.isConnected) {
+      try {
+        // safe to call APIs
+        final response =
+            await _remoteDataSource.removeUserAwayMyCar(input.userId, input.carId);
+
+        if (response.status == ApiInternalStatus.SUCCESS) {
+          // success
+          // save data to cache
+          _localDataSource.saveMyCarsToCache(response,);
+          // return data
+          // return right
+          return Right(response.toDomain());
+        } else {
+          // return biz logic error
+          // return left
+          return Left(Failure(response.status ?? ApiInternalStatus.FAILURE,
+              response.msg ?? ResponseMessage.DEFAULT));
+        }
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    } else {
+      // return connection error
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
   }
 
   @override
@@ -284,20 +309,95 @@ class RepositoryImplementer extends Repository {
   }
 
   @override
-  Future<Either<Failure, List<Car>>> sharedCar(ShareCarInput input) {
-    // TODO: implement sharedCar
-    throw UnimplementedError();
+  Future<Either<Failure, List<Car>>> sharedCar(ShareCarInput input)async {
+    // call apis
+    if (await _networkInfo.isConnected) {
+      try {
+        // safe to call APIs
+        final response =
+            await _remoteDataSource.shareCar(input.userId, input.carId);
+
+        if (response.status == ApiInternalStatus.SUCCESS) {
+          // success
+          // save data to cache
+          _localDataSource.saveMyCarsToCache(response,);
+          // return data
+          // return right
+          return Right(response.toDomain());
+        } else {
+          // return biz logic error
+          // return left
+          return Left(Failure(response.status ?? ApiInternalStatus.FAILURE,
+              response.msg ?? ResponseMessage.DEFAULT));
+        }
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    } else {
+      // return connection error
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
   }
 
   @override
-  Future<Either<Failure, List<Car>>> unshareCar(String input) {
-    // TODO: implement unshareCar
-    throw UnimplementedError();
+  Future<Either<Failure, List<Car>>> unshareCar(String input)async {
+    // call apis
+    if (await _networkInfo.isConnected) {
+      try {
+        // safe to call APIs
+        final response =
+            await _remoteDataSource.unshareCar(input);
+
+        if (response.status == ApiInternalStatus.SUCCESS) {
+          // success
+          // save data to cache
+          _localDataSource.saveMyCarsToCache(response,);
+          // return data
+          // return right
+          return Right(response.toDomain());
+        } else {
+          // return biz logic error
+          // return left
+          return Left(Failure(response.status ?? ApiInternalStatus.FAILURE,
+              response.msg ?? ResponseMessage.DEFAULT));
+        }
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    } else {
+      // return connection error
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
   }
 
   @override
-  Future<Either<Failure, User>> updateUser(UpdateUserInput input) {
-    // TODO: implement updateUser
-    throw UnimplementedError();
+  Future<Either<Failure, User>> updateUser(UpdateUserInput input)async {
+   // call apis
+    if (await _networkInfo.isConnected) {
+      try {
+        // safe to call APIs
+        final response =
+            await _remoteDataSource.updateUser(input.fullname, input.profileImage);
+
+        if (response.status == ApiInternalStatus.SUCCESS) {
+          // success
+          // save data to cache
+          _localDataSource.saveUserDataToCache(response,);
+          // return data
+          // return right
+          return Right(response.toDomain());
+        } else {
+          // return biz logic error
+          // return left
+          return Left(Failure(response.status ?? ApiInternalStatus.FAILURE,
+              response.msg ?? ResponseMessage.DEFAULT));
+        }
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    } else {
+      // return connection error
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
   }
 }
