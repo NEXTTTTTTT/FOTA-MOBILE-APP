@@ -5,12 +5,12 @@ import '../model/model.dart';
 import '../repository/repository.dart';
 import 'base_usecase.dart';
 
-class GetUserDataUseCase extends BaseUseCase<NoParams,User> {
+class SearchUserDataUseCase extends BaseUseCase<String,List<User>> {
   final Repository _repository;
-  GetUserDataUseCase(this._repository);
+  SearchUserDataUseCase(this._repository);
 
   @override
-  Future<Either<Failure, User>> execute(NoParams input) async {
-    return await _repository.getUserData(input);
+  Future<Either<Failure, List<User>>> execute(String input) async {
+    return await _repository.searchUser(input);
   }
 }

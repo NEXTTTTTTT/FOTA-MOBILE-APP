@@ -27,6 +27,9 @@ class MapCubit extends Cubit<MapState> {
   // markers
   final Set<Marker> markers = {};
 
+  // selected car
+  String? selectedCarCodeToBeShown;
+
   Future<void> _setUpMyMarkersIcons() async {
     await _setCustomCarIconMarker();
     await _setCustomUserIconMarker();
@@ -48,8 +51,6 @@ class MapCubit extends Cubit<MapState> {
     userMarkerIcon = _icon;
   }
 
-  
-
   void setCarsMarkers(List<Car> myCarsData) {
     debugPrint('${myCarsData.length}');
     for (Car car in myCarsData) {
@@ -64,7 +65,8 @@ class MapCubit extends Cubit<MapState> {
                 ' | ' +
                 '${car.currentSpeed.toString()} KM/H',
             onTap: () {
-              Constants.defaultCar = car;
+              selectedCarCodeToBeShown = car.code;
+              emit(WindowOnTapChangeCarSelected(car.code));
               Constants.navigatorKey.currentState!
                   .pushNamed(Routes.carDetailsRoute);
             },

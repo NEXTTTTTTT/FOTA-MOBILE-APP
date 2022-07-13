@@ -47,11 +47,16 @@ class Car {
   String carType;
   String password;
   bool isActive;
+  bool isLocked;
+  bool isAcOn;
+  bool isBagOn;
+  int temperature;
   User? admin;
   List<User>? users;
   int defaultSpeed;
   int currentSpeed;
   Map carLocation;
+
   Map firmware;
   String createdAt;
 
@@ -64,6 +69,10 @@ class Car {
       required this.carType,
       required this.password,
       required this.isActive,
+      required this.isAcOn,
+      required this.isBagOn,
+      required this.isLocked,
+      required this.temperature,
       required this.admin,
       required this.users,
       required this.firmware,
@@ -71,4 +80,10 @@ class Car {
       required this.defaultSpeed,
       required this.carLocation,
       required this.createdAt});
+}
+
+class Success {
+  final String msg;
+
+  Success(this.msg);
 }

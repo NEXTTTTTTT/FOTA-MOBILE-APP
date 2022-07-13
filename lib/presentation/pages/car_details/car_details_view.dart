@@ -16,7 +16,6 @@ import '../../resources/values_manager.dart';
 class CarDetailsView extends StatelessWidget {
   CarDetailsView({Key? key}) : super(key: key);
 
-  final PageController _pageController = PageController(initialPage: 0);
 
   @override
   Widget build(BuildContext context) {
@@ -26,11 +25,12 @@ class CarDetailsView extends StatelessWidget {
   _getContentWidget() {
     return BlocBuilder<CarCubit, CarState>(builder: (context, state) {
       var _carsBloc = BlocProvider.of<CarCubit>(context);
-      var _appCubit = BlocProvider.of<AppCubit>(context);
-      return _carsBloc.myCarsData != null && _carsBloc.myCarsData!.isNotEmpty
-          ? Scaffold(
-              backgroundColor: ColorManager.background,
-              appBar: AppBar(
+      if (_carsBloc.myCarsData != null && _carsBloc.myCarsData!.isNotEmpty) {
+        Car myCar = _carsBloc.myCarsData!
+            .firstWhere((element) => element.code == _carsBloc.selectedCarCode);
+        return Scaffold(
+            backgroundColor: ColorManager.background,
+            appBar: AppBar(
                 leading: IconButton(
                   onPressed: () => Navigator.pop(context),
                   icon: const Icon(CupertinoIcons.arrow_left),
@@ -44,11 +44,7 @@ class CarDetailsView extends StatelessWidget {
                 elevation: 0,
                 title: Row(children: [
                   Text(
-                    _carsBloc.myCarsData![_appCubit.carsDetailsPageIndex]
-                            .carType +
-                        ' ' +
-                        _carsBloc
-                            .myCarsData![_appCubit.carsDetailsPageIndex].code,
+                    myCar.carType + ' ' + myCar.code,
                     style: getRegularStyle(
                         color: ColorManager.grey,
                         fontSize: FontSizeManager.s24),
@@ -58,46 +54,15 @@ class CarDetailsView extends StatelessWidget {
                   ),
                   CircleAvatar(
                       maxRadius: AppSize.s4,
-                      backgroundColor: _carsBloc
-                              .myCarsData![_appCubit.carsDetailsPageIndex]
-                              .isActive
+                      backgroundColor: myCar.isActive
                           ? ColorManager.green
                           : ColorManager.red),
-                ]),
-              ),
-              body: PageView.builder(
-                  controller: _pageController,
-                  key: const ValueKey('pageView'),
-                  onPageChanged: (index) {
-                    _appCubit.changeIndex(index) ;
-                    Constants.defaultCar = _carsBloc.myCarsData![index];
-                  },
-                  itemCount: _carsBloc.myCarsData!.length,
-                  itemBuilder: (context, index) {
-                    List<Car> cars = _getSortedCarsListWithDefaultFirst(
-                        _carsBloc.myCarsData);
-                    return CarPage(
-                      key: ObjectKey(cars[index]),
-                      myCar: cars[index],
-                    );
-                  }))
-          : Container();
-    });
-  }
-
-  List<Car> _getSortedCarsListWithDefaultFirst(List<Car>? cars) {
-    List<Car> newCarsList;
-    if (cars!.first.id == Constants.defaultCar!.id) {
-      return cars;
-    } else {
-      newCarsList = [Constants.defaultCar!];
-      for (var car in cars) {
-        if (car.id != Constants.defaultCar!.id) {
-          newCarsList.add(car);
-        }
+                ])),
+            body: CarPage(myCar: myCar));
+      } else {
+        return Container();
       }
-    }
-    return newCarsList;
+    });
   }
 }
 

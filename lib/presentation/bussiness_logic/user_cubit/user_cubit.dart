@@ -5,6 +5,7 @@ import 'package:fota_mobile_app/domain/usecase/get_user_data_usecase.dart';
 
 import '../../../app/constants.dart';
 import '../../../domain/model/model.dart';
+import '../../../domain/usecase/base_usecase.dart';
 
 part 'user_state.dart';
 
@@ -15,7 +16,7 @@ class UserCubit extends Cubit<UserState> {
 
   Future<void> getMyData() async {
     emit(UserDataLoadingState());
-    (await _getUserData.execute(Constants.myId!)).fold((failure) {
+    (await _getUserData.execute(NoParams())).fold((failure) {
       emit(UserDataErrorState(errorMessage: failure.message));
     }, (userData) {
       emit(UserDataLoadedState(userData: userData));

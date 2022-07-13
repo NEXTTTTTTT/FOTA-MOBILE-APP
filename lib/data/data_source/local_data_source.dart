@@ -10,20 +10,21 @@ const int CACHE_MY_DATA_INTERVAL = 5 * 60 * 1000;
 abstract class LocalDataSource {
   void clearCache();
   void clearFromCache(String key);
-  Future<MyCarsResponse> getMyCars(String id);
-  Future<void> saveMyCarsToCache(MyCarsResponse myCarsResponse, String id);
 
-  Future<UserDataResponse> getUserData(String id);
+  Future<MyCarsResponse> getMyCars();
+  Future<void> saveMyCarsToCache(MyCarsResponse myCarsResponse);
+
+  Future<UserDataResponse> getUserData();
   Future<void> saveUserDataToCache(
-      UserDataResponse userDataResponse, String id);
+      UserDataResponse userDataResponse,);
 }
 
 class LocalDataSourceImpl implements LocalDataSource {
   Map<String, CachedItem> cacheMap = {};
 
   @override
-  Future<MyCarsResponse> getMyCars(String id) async {
-    CachedItem? cachedItem = cacheMap[MY_CARS_DATA_KEY + id];
+  Future<MyCarsResponse> getMyCars() async {
+    CachedItem? cachedItem = cacheMap[MY_CARS_DATA_KEY];
 
     if (cachedItem != null && cachedItem.isValid(CACHE_MY_CARS_DATA_INTERVAL)) {
       // get data from cached
@@ -35,8 +36,8 @@ class LocalDataSourceImpl implements LocalDataSource {
   }
 
   @override
-  Future<UserDataResponse> getUserData(String id) async {
-    CachedItem? cachedItem = cacheMap[MY_DATA_KEY + id];
+  Future<UserDataResponse> getUserData() async {
+    CachedItem? cachedItem = cacheMap[MY_DATA_KEY];
 
     if (cachedItem != null && cachedItem.isValid(CACHE_MY_DATA_INTERVAL)) {
       // get data from cached
@@ -49,14 +50,14 @@ class LocalDataSourceImpl implements LocalDataSource {
 
   @override
   Future<void> saveMyCarsToCache(
-      MyCarsResponse myCarsResponse, String id) async {
-    cacheMap[MY_CARS_DATA_KEY + id] = CachedItem(myCarsResponse);
+      MyCarsResponse myCarsResponse,) async {
+    cacheMap[MY_CARS_DATA_KEY] = CachedItem(myCarsResponse);
   }
 
   @override
   Future<void> saveUserDataToCache(
-      UserDataResponse userDataResponse, String id) async {
-    cacheMap[MY_DATA_KEY + id] = CachedItem(userDataResponse);
+      UserDataResponse userDataResponse) async {
+    cacheMap[MY_DATA_KEY ] = CachedItem(userDataResponse);
   }
 
   @override

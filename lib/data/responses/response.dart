@@ -7,6 +7,10 @@ class BaseResponse {
   int? status;
   @JsonKey(name: "msg")
   String? msg;
+  BaseResponse({this.status, this.msg});
+  factory BaseResponse.fromJson(Map<String, dynamic> json) =>
+      _$BaseResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$BaseResponseToJson(this);
 }
 
 @JsonSerializable()
@@ -30,8 +34,15 @@ class UserResponse {
   @JsonKey(name: "createdAt")
   String? createdAt;
 
-  UserResponse(this.id, this.fullname, this.email, this.profileImage,
-      this.deviceToken, this.isActive, this.currentLocation, this.createdAt);
+  UserResponse(
+      {this.id,
+      this.fullname,
+      this.email,
+      this.profileImage,
+      this.deviceToken,
+      this.isActive,
+      this.currentLocation,
+      this.createdAt});
   // from json
   factory UserResponse.fromJson(Map<String, dynamic> json) =>
       _$UserResponseFromJson(json);
@@ -48,7 +59,7 @@ class AuthenticationResponse extends BaseResponse {
   @JsonKey(name: "user")
   UserResponse? user;
 
-  AuthenticationResponse(this.accessToken, this.user ,this.refreshToken);
+  AuthenticationResponse({this.accessToken, this.user, this.refreshToken});
   // from json
   factory AuthenticationResponse.fromJson(Map<String, dynamic> json) =>
       _$AuthenticationResponseFromJson(json);
@@ -68,6 +79,14 @@ class CarResponse {
   String? password;
   @JsonKey(name: "isActive")
   bool? isActive;
+  @JsonKey(name: "isLocked")
+  bool? isLocked;
+  @JsonKey(name: "isACOn")
+  bool? isACOn;
+  @JsonKey(name: "temperature")
+  int? temperature;
+  @JsonKey(name: "isBagOn")
+  bool? isBagOn;
   @JsonKey(name: "admin")
   UserResponse? admin;
   @JsonKey(name: "users")
@@ -84,7 +103,7 @@ class CarResponse {
   String? createdAt;
 
   CarResponse(
-      this.id,
+      {this.id,
       this.code,
       this.carType,
       this.password,
@@ -95,7 +114,7 @@ class CarResponse {
       this.currentSpeed,
       this.defaultSpeed,
       this.carLocation,
-      this.createdAt);
+      this.createdAt});
   // from json
   factory CarResponse.fromJson(Map<String, dynamic> json) =>
       _$CarResponseFromJson(json);
@@ -107,7 +126,7 @@ class CarResponse {
 class MyCarsResponse extends BaseResponse {
   @JsonKey(name: "my_cars")
   List<CarResponse>? myCars;
-  MyCarsResponse(this.myCars);
+  MyCarsResponse({this.myCars});
   // from json
   factory MyCarsResponse.fromJson(Map<String, dynamic> json) =>
       _$MyCarsResponseFromJson(json);
@@ -118,11 +137,23 @@ class MyCarsResponse extends BaseResponse {
 @JsonSerializable()
 class UserDataResponse extends BaseResponse {
   @JsonKey(name: "user")
-  UserResponse user;
-  UserDataResponse(this.user);
+  UserResponse? user;
+  UserDataResponse({this.user});
   // from json
   factory UserDataResponse.fromJson(Map<String, dynamic> json) =>
       _$UserDataResponseFromJson(json);
   // to json
   Map<String, dynamic> toJson() => _$UserDataResponseToJson(this);
+}
+
+@JsonSerializable()
+class UserDataListResponse extends BaseResponse {
+  @JsonKey(name: "users")
+  List<UserResponse>? users;
+  UserDataListResponse({this.users});
+  // from json
+  factory UserDataListResponse.fromJson(Map<String, dynamic> json) =>
+      _$UserDataListResponseFromJson(json);
+  // to json
+  Map<String, dynamic> toJson() => _$UserDataListResponseToJson(this);
 }
