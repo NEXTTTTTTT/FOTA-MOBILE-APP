@@ -1,6 +1,7 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:dartz/dartz.dart';
 import 'package:fota_mobile_app/data/responses/response.dart';
+import 'package:fota_mobile_app/domain/usecase/search_user_usecase.dart';
 import 'package:fota_mobile_app/domain/usecase/update_user_usecase.dart';
 import 'package:fota_mobile_app/domain/usecase/share_car_usecase.dart';
 import 'package:fota_mobile_app/domain/usecase/remove_user_away_my_car_usecase.dart';
@@ -187,17 +188,20 @@ class RepositoryImplementer extends Repository {
 
   @override
   Future<Either<Failure, List<Car>>> connectCar(ConnectCarInput input) async {
+    print('hhhhhhhhhhh');
     // call apis
     if (await _networkInfo.isConnected) {
       try {
         // safe to call APIs
-        final response =
-            await _remoteDataSource.connectCar(input.code, input.password,input.carName);
+        final response = await _remoteDataSource.connectCar(
+            input.code, input.password, input.carName);
 
         if (response.status == ApiInternalStatus.SUCCESS) {
           // success
           // save data to cache
-          _localDataSource.saveMyCarsToCache(response,);
+          _localDataSource.saveMyCarsToCache(
+            response,
+          );
           // return data
           // return right
           return Right(response.toDomain());
@@ -217,8 +221,9 @@ class RepositoryImplementer extends Repository {
   }
 
   @override
-  Future<Either<Failure, List<Car>>> disconnectCar(DisConnectCarInput input)async {
-   // call apis
+  Future<Either<Failure, List<Car>>> disconnectCar(
+      DisConnectCarInput input) async {
+    // call apis
     if (await _networkInfo.isConnected) {
       try {
         // safe to call APIs
@@ -228,7 +233,9 @@ class RepositoryImplementer extends Repository {
         if (response.status == ApiInternalStatus.SUCCESS) {
           // success
           // save data to cache
-          _localDataSource.saveMyCarsToCache(response,);
+          _localDataSource.saveMyCarsToCache(
+            response,
+          );
           // return data
           // return right
           return Right(response.toDomain());
@@ -249,18 +256,20 @@ class RepositoryImplementer extends Repository {
 
   @override
   Future<Either<Failure, List<Car>>> removeUserAwayMyCar(
-      RemoveUserAwayMyCarInput input) async{
-   // call apis
+      RemoveUserAwayMyCarInput input) async {
+    // call apis
     if (await _networkInfo.isConnected) {
       try {
         // safe to call APIs
-        final response =
-            await _remoteDataSource.removeUserAwayMyCar(input.userId, input.carId);
+        final response = await _remoteDataSource.removeUserAwayMyCar(
+            input.userId, input.code);
 
         if (response.status == ApiInternalStatus.SUCCESS) {
           // success
           // save data to cache
-          _localDataSource.saveMyCarsToCache(response,);
+          _localDataSource.saveMyCarsToCache(
+            response,
+          );
           // return data
           // return right
           return Right(response.toDomain());
@@ -280,13 +289,13 @@ class RepositoryImplementer extends Repository {
   }
 
   @override
-  Future<Either<Failure, List<User>>> searchUser(String username)async {
+  Future<Either<Failure, List<User>>> searchUser(SearchUserInput input) async {
     // call apis
     if (await _networkInfo.isConnected) {
       try {
         // safe to call APIs
         final response =
-            await _remoteDataSource.searchUser(username);
+            await _remoteDataSource.searchUser(input.username, input.code);
 
         if (response.status == ApiInternalStatus.SUCCESS) {
           // success
@@ -309,18 +318,20 @@ class RepositoryImplementer extends Repository {
   }
 
   @override
-  Future<Either<Failure, List<Car>>> sharedCar(ShareCarInput input)async {
+  Future<Either<Failure, List<Car>>> sharedCar(ShareCarInput input) async {
     // call apis
     if (await _networkInfo.isConnected) {
       try {
         // safe to call APIs
         final response =
-            await _remoteDataSource.shareCar(input.userId, input.carId);
+            await _remoteDataSource.shareCar(input.userId, input.code);
 
         if (response.status == ApiInternalStatus.SUCCESS) {
           // success
           // save data to cache
-          _localDataSource.saveMyCarsToCache(response,);
+          _localDataSource.saveMyCarsToCache(
+            response,
+          );
           // return data
           // return right
           return Right(response.toDomain());
@@ -340,18 +351,19 @@ class RepositoryImplementer extends Repository {
   }
 
   @override
-  Future<Either<Failure, List<Car>>> unshareCar(String input)async {
+  Future<Either<Failure, List<Car>>> unshareCar(String input) async {
     // call apis
     if (await _networkInfo.isConnected) {
       try {
         // safe to call APIs
-        final response =
-            await _remoteDataSource.unshareCar(input);
+        final response = await _remoteDataSource.unshareCar(input);
 
         if (response.status == ApiInternalStatus.SUCCESS) {
           // success
           // save data to cache
-          _localDataSource.saveMyCarsToCache(response,);
+          _localDataSource.saveMyCarsToCache(
+            response,
+          );
           // return data
           // return right
           return Right(response.toDomain());
@@ -371,18 +383,20 @@ class RepositoryImplementer extends Repository {
   }
 
   @override
-  Future<Either<Failure, User>> updateUser(UpdateUserInput input)async {
-   // call apis
+  Future<Either<Failure, User>> updateUser(UpdateUserInput input) async {
+    // call apis
     if (await _networkInfo.isConnected) {
       try {
         // safe to call APIs
-        final response =
-            await _remoteDataSource.updateUser(input.fullname, input.profileImage);
+        final response = await _remoteDataSource.updateUser(
+            input.fullname, input.profileImage);
 
         if (response.status == ApiInternalStatus.SUCCESS) {
           // success
           // save data to cache
-          _localDataSource.saveUserDataToCache(response,);
+          _localDataSource.saveUserDataToCache(
+            response,
+          );
           // return data
           // return right
           return Right(response.toDomain());

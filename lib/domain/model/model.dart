@@ -1,3 +1,5 @@
+import 'package:equatable/equatable.dart';
+
 class SliderObject {
   String title;
   String subTitle;
@@ -5,7 +7,7 @@ class SliderObject {
   SliderObject(this.title, this.subTitle, this.image);
 }
 
-class User {
+class User extends Equatable {
   String id;
   String fullname;
   String username;
@@ -25,6 +27,9 @@ class User {
       required this.deviceToken,
       required this.currentLocation,
       required this.createdAt});
+
+  @override
+  List<Object> get props => [id, username, createdAt];
 }
 
 class Authentication {
@@ -41,7 +46,7 @@ class DeviceInfo {
   DeviceInfo(this.name, this.identifier, this.version);
 }
 
-class Car {
+class Car extends Equatable {
   String id;
   String code;
   String carType;
@@ -56,8 +61,7 @@ class Car {
   int defaultSpeed;
   int currentSpeed;
   Map carLocation;
-
-  Map firmware;
+  String firmware;
   String createdAt;
 
   // will be added after fetching data from APIs
@@ -80,10 +84,23 @@ class Car {
       required this.defaultSpeed,
       required this.carLocation,
       required this.createdAt});
+
+  @override
+  List<Object?> get props => [users, id, code, admin];
 }
 
 class Success {
   final String msg;
 
   Success(this.msg);
+}
+
+class Notify {
+  final String id;
+  final User? user;
+  final String text;
+  final bool isRead;
+  final Car? car;
+
+  Notify(this.id, this.user, this.text, this.isRead, this.car);
 }

@@ -3,9 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
 import 'package:fota_mobile_app/presentation/bussiness_logic/map_cubit/map_cubit.dart';
-
+import 'package:fota_mobile_app/presentation/common/state_renderer/state_renderer.dart';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -17,17 +16,26 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _getContentWidget();
+    return _getContentWidget(context);
   }
 
-  Widget _getContentWidget() {
-    
+  Widget _getContentWidget(context) {
+    var carCubit = BlocProvider.of<CarCubit>(context);
     return BlocBuilder<CarCubit, CarState>(
       builder: (context, state) {
-        if (state is MyCarsLoadedState) {
+        if (carCubit.myCarsData.isNotEmpty) {
           return MyGoogleMapWidget();
-        } else {
-          return const Center(child: Text('LOADING'),);
+        }
+        else if(state is MyCarsLoadingState)
+        {
+          return StateRenderer(
+              stateRendererType: StateRendererType.FULL_SCREEN_LOADING_STATE,
+              retryActionFunction: () {});
+        }
+         else {
+          return StateRenderer(
+              stateRendererType: StateRendererType.EMPTY_SCREEN_STATE,
+              retryActionFunction: null, message: 'No cars yet',);
         }
       },
     );
@@ -50,7 +58,7 @@ class MyGoogleMapWidget extends StatelessWidget {
             initialCameraPosition: CameraPosition(
                 target: LatLng(_positionBloc.myPosition!.latitude,
                     _positionBloc.myPosition!.longitude),
-                zoom: 7),
+                zoom: 7.5),
             onMapCreated: (controller) {
               _controller.complete(controller);
               // _bloc.add(SetMarkersEvent());

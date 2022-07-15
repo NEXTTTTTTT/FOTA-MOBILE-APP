@@ -104,11 +104,14 @@ class _AppServiceClient implements AppServiceClient {
   }
 
   @override
-  Future<UserDataListResponse> searchUser(username) async {
+  Future<UserDataListResponse> searchUser(username, code) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'username': username,
+      r'code': code
+    };
     final _headers = <String, dynamic>{};
-    final _data = {'username': username};
+    final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<UserDataListResponse>(
             Options(method: 'GET', headers: _headers, extra: _extra)
@@ -128,7 +131,7 @@ class _AppServiceClient implements AppServiceClient {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<UserDataResponse>(
             Options(method: 'PATCH', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/user/',
+                .compose(_dio.options, '/user',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = UserDataResponse.fromJson(_result.data!);
@@ -168,11 +171,11 @@ class _AppServiceClient implements AppServiceClient {
   }
 
   @override
-  Future<MyCarsResponse> shareCar(userId, carId) async {
+  Future<MyCarsResponse> shareCar(userId, code) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = {'userId': userId, 'carId': carId};
+    final _data = {'userId': userId, 'code': code};
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<MyCarsResponse>(
             Options(method: 'PATCH', headers: _headers, extra: _extra)
@@ -184,11 +187,11 @@ class _AppServiceClient implements AppServiceClient {
   }
 
   @override
-  Future<MyCarsResponse> removeUserAwayMyCar(userId, carId) async {
+  Future<MyCarsResponse> removeUserAwayMyCar(userId, code) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = {'userId': userId, 'carId': carId};
+    final _data = {'userId': userId, 'code': code};
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<MyCarsResponse>(
             Options(method: 'PATCH', headers: _headers, extra: _extra)
@@ -200,11 +203,11 @@ class _AppServiceClient implements AppServiceClient {
   }
 
   @override
-  Future<MyCarsResponse> unshareCar(carId) async {
+  Future<MyCarsResponse> unshareCar(code) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = {'carId': carId};
+    final _data = {'code': code};
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<MyCarsResponse>(
             Options(method: 'PATCH', headers: _headers, extra: _extra)

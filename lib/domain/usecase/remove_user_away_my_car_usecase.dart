@@ -18,10 +18,10 @@ class RemoveUserAwayMyCarUseCase extends BaseUseCase<RemoveUserAwayMyCarInput, L
 
 class RemoveUserAwayMyCarInput extends Equatable {
   final String userId;
-  final String carId;
+  final String code;
 
-  const RemoveUserAwayMyCarInput(this.userId, this.carId);
+  const RemoveUserAwayMyCarInput(this.userId, this.code);
 
   @override
-  List<Object> get props => [userId, carId];
+  List<Object> get props => [userId, code];
 }

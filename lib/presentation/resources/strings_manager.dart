@@ -20,6 +20,7 @@ class AppStrings{
   static const String forgetPassword='Forget Password';
   static const String registerText='Not member ? Sign up';
   static const String loading='Loading..';
+  static const String empty='Empty';
   static const String retryAgain='Retry again';
   static const String ok='Ok';
   static const String fullname='Full name';

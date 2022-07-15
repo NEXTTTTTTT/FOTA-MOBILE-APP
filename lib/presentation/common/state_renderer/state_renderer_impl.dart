@@ -48,8 +48,8 @@ class ContentState extends FlowState {
 }
 
 class EmptyState extends FlowState {
-  String message;
-  EmptyState(this.message);
+  String message ;
+  EmptyState(this.message) ;
 
   @override
   String getMessage() => message;

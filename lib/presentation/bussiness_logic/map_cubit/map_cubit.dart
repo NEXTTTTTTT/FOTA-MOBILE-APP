@@ -60,10 +60,10 @@ class MapCubit extends Cubit<MapState> {
           position: LatLng(double.parse(car.carLocation['lat']),
               double.parse(car.carLocation['lng'])),
           infoWindow: InfoWindow(
-            title: car.carType + " " + car.code + ' (${car.admin!.username})',
-            snippet: (car.isActive ? 'Active' : 'Offline') +
+            title: car.carType + " " + car.code ,
+            snippet: (car.isActive ? 'Running' : 'Available') +
                 ' | ' +
-                '${car.currentSpeed.toString()} KM/H',
+                 ' ${car.admin!.username}',
             onTap: () {
               selectedCarCodeToBeShown = car.code;
               emit(WindowOnTapChangeCarSelected(car.code));
@@ -78,21 +78,26 @@ class MapCubit extends Cubit<MapState> {
     emit(SetCarMarkerSuccessState());
   }
 
-  void setMyCurrentLocationMarker(myPosition) {
+  void setMyCurrentLocationMarker(
+    myPosition,
+  ) {
     if (myPosition != null) {
       markers.add(Marker(
         markerId: const MarkerId('1'),
         position: LatLng(myPosition!.latitude, myPosition!.longitude),
         infoWindow: InfoWindow(
           title: 'You',
-          snippet: 'Get My Nearest Car',
-          onTap: () {
-            // TODO: navigate to nearest car
-          },
+          snippet: 'look for available cars',
+          onTap: () {},
         ),
         icon: userMarkerIcon!,
       ));
     }
     emit(SetMyPositionMarkerSuccessState());
+  }
+
+  void resetMap() {
+    markers.clear();
+    emit(MapInitial());
   }
 }

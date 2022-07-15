@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'app_prefs.dart';
 import 'di.dart';
 
@@ -36,10 +37,9 @@ Future<DeviceInfo> getDeviceDetails() async {
   return DeviceInfo(name, identifier, version);
 }
 
-
 setMyIdAsConst({required String id}) async {
   /// set id in constants
-    Constants.myId = id;
+  Constants.myId = id;
 }
 
 bool isIamAdminOfTheCar(Car car) {
@@ -56,9 +56,27 @@ dismissDialog(BuildContext context) {
 _isThereCurrentDialogShowing(BuildContext context) =>
     ModalRoute.of(context)!.isCurrent != true;
 
+bool isLocationValid(location) {
+  return location != null && location['lat'] != null && location['lng'] != null;
+}
 
-    bool isLocationValid(location) {
-    return location != null &&
-        location['lat'] != null &&
-        location['lng'] != null;
+String getChars(String name) {
+  var names = name.split(' ');
+  String chars = '';
+  if (names.length == 3) {
+    chars = names[0].substring(0, 1) + names[2].substring(0, 1);
+  }
+  else if (names.length == 2) {
+    chars = names[0].substring(0, 1) + names[1].substring(0, 1);
+  } else {
+    chars = names[0].substring(0, 1);
+  }
+  return chars.toUpperCase();
+}
+
+void showShortToast(String msg) {
+    Fluttertoast.showToast(
+        msg:msg,
+        toastLength: Toast.LENGTH_SHORT,
+        timeInSecForIosWeb: 1);
   }

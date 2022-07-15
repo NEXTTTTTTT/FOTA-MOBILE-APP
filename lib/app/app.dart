@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fota_mobile_app/app/di.dart';
 import 'package:fota_mobile_app/presentation/bussiness_logic/app_cubit/app_cubit.dart';
 import 'package:fota_mobile_app/presentation/bussiness_logic/map_cubit/map_cubit.dart';
+import 'package:fota_mobile_app/presentation/bussiness_logic/notify_cubit/notify_cubit.dart';
+import 'package:fota_mobile_app/presentation/bussiness_logic/search_cubit/search_cubit.dart';
 
 import '../presentation/bussiness_logic/car_cubit/car_cubit.dart';
 import '../presentation/bussiness_logic/position_cubit/position_cubit.dart';
@@ -23,21 +25,26 @@ class MyApp extends StatelessWidget {
           lazy: false,
         ),
         BlocProvider(
-          create: (context) =>
-              instance<PositionCubit>()..getPostition(),
+          create: (context) => instance<PositionCubit>(),
           lazy: false,
         ),
         BlocProvider(
-          create: (context) =>
-              instance<CarCubit>(),
+          create: (context) => instance<CarCubit>(),
           lazy: false,
         ),
         BlocProvider(
-          create: (context) =>
-              instance<UserCubit>(),
+          create: (context) => instance<UserCubit>(),
           lazy: false,
         ),
-        BlocProvider(create: (context) => AppCubit()),
+        BlocProvider(create: (context) => instance<AppCubit>()),
+        BlocProvider(
+          create: (context) => instance<NotifyCubit>(),
+          lazy: false,
+        ),
+        BlocProvider(
+          create: (context) => instance<SearchCubit>(),
+          lazy: false,
+        ),
       ],
       child: MaterialApp(
         navigatorKey: Constants.navigatorKey,

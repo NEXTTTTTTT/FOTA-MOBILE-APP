@@ -14,6 +14,7 @@ class ConnectCarUseCase extends BaseUseCase<ConnectCarInput, List<Car>> {
   Future<Either<Failure, List<Car>>> execute(ConnectCarInput input) async {
     return await _repository.connectCar(input);
   }
+  
 }
 
 class ConnectCarInput extends Equatable {

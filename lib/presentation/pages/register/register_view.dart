@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fota_mobile_app/presentation/bussiness_logic/user_cubit/user_cubit.dart';
 import '../../../app/functions.dart';
+import '../../bussiness_logic/position_cubit/position_cubit.dart';
 import '../../resources/assets_manager.dart';
 import '../../resources/color_manager.dart';
 import '../../resources/strings_manager.dart';
@@ -47,17 +50,21 @@ class _RegisterViewState extends State<RegisterView> {
     });
 
     _registerViewModel.registerSuccessfullyStreamController.stream
-        .listen((credentials) {
+        .listen((credentials) async{
       //* save credentials
-      _appPreferences.setToken(credentials.accesToken);
-      _appPreferences.setRefreshToken(credentials.refreshToken);
-      _appPreferences.setUserId(credentials.id);
-      
+      await _appPreferences.setToken(credentials.accesToken);
+     await  _appPreferences.setRefreshToken(credentials.refreshToken);
+      await _appPreferences.setUserId(credentials.id);
+
       //* set my id as const
-      setMyIdAsConst(id:credentials.id);
+      await setMyIdAsConst(id: credentials.id);
 
       //* reset dependency injection
-      resetAllModules();
+      await resetAllModules();
+
+      //* get position and user data to start the sequence
+      BlocProvider.of<PositionCubit>(context).getPostition();
+      BlocProvider.of<UserCubit>(context).getMyData();
 
       //* navigate to main screen
       SchedulerBinding.instance.addPostFrameCallback((_) {
@@ -85,7 +92,7 @@ class _RegisterViewState extends State<RegisterView> {
           stream: _registerViewModel.outputState,
           builder: ((context, snapshot) {
             return snapshot.data?.getScreenWidget(context, _getContentWidget(),
-                    () => _registerViewModel.register()) ??
+                    () =>dismissDialog(context)) ??
                 _getContentWidget();
           })),
     );
@@ -98,6 +105,7 @@ class _RegisterViewState extends State<RegisterView> {
         child: Column(
           children: [
             SvgPicture.asset(AssetsManager.splashLogo),
+
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: AppPadding.p20),
               child: StreamBuilder<bool>(
@@ -186,20 +194,8 @@ class _RegisterViewState extends State<RegisterView> {
                 },
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppPadding.p20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // text Button
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, Routes.loginRoute);
-                    },
-                    child: const Text(AppStrings.loginText),
-                  ),
-                ],
-              ),
+               const SizedBox(
+              height: AppSize.s10,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: AppPadding.p20),
@@ -228,6 +224,21 @@ class _RegisterViewState extends State<RegisterView> {
                           )),
                     );
                   }),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppPadding.p20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // text Button
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, Routes.loginRoute);
+                    },
+                    child: const Text(AppStrings.loginText),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

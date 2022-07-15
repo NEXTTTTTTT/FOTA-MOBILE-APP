@@ -75,7 +75,7 @@ CarResponse _$CarResponseFromJson(Map<String, dynamic> json) => CarResponse(
       users: (json['users'] as List<dynamic>?)
           ?.map((e) => UserResponse.fromJson(e as Map<String, dynamic>))
           .toList(),
-      firmware: json['firmware'] as Map<String, dynamic>?,
+      firmware: json['firmware'] as String?,
       currentSpeed: json['currentSpeed'] as int?,
       defaultSpeed: json['defaultSpeed'] as int?,
       carLocation: json['carLocation'] as Map<String, dynamic>?,

@@ -2,9 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fota_mobile_app/presentation/bussiness_logic/app_cubit/app_cubit.dart';
-import '../../../app/constants.dart';
+import 'package:fota_mobile_app/presentation/resources/routes_manager.dart';
+import '../../../app/functions.dart';
 import '../../../domain/model/model.dart';
+import 'dart:math' as math;
 
 import '../../bussiness_logic/car_cubit/car_cubit.dart';
 
@@ -14,7 +15,7 @@ import '../../resources/style_manager.dart';
 import '../../resources/values_manager.dart';
 
 class CarDetailsView extends StatelessWidget {
-  CarDetailsView({Key? key}) : super(key: key);
+  const CarDetailsView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +25,13 @@ class CarDetailsView extends StatelessWidget {
   _getContentWidget() {
     return BlocBuilder<CarCubit, CarState>(builder: (context, state) {
       var _carsBloc = BlocProvider.of<CarCubit>(context);
-      if (_carsBloc.myCarsData != null && _carsBloc.myCarsData!.isNotEmpty) {
-        Car myCar = _carsBloc.myCarsData!
+      if (_carsBloc.myCarsData.isNotEmpty) {
+        Car myCar = _carsBloc.myCarsData
             .firstWhere((element) => element.code == _carsBloc.selectedCarCode);
         return Scaffold(
             backgroundColor: ColorManager.background,
             appBar: AppBar(
+                titleSpacing: 0,
                 leading: IconButton(
                   onPressed: () => Navigator.pop(context),
                   icon: const Icon(CupertinoIcons.arrow_left),
@@ -46,14 +48,14 @@ class CarDetailsView extends StatelessWidget {
                     myCar.carType + ' ' + myCar.code,
                     style: getRegularStyle(
                         color: ColorManager.grey,
-                        fontSize: FontSizeManager.s24),
+                        fontSize: FontSizeManager.s22),
                   ),
                   const SizedBox(
                     width: AppSize.s8,
                   ),
                   CircleAvatar(
                       maxRadius: AppSize.s4,
-                      backgroundColor: myCar.isActive
+                      backgroundColor: !myCar.isActive
                           ? ColorManager.green
                           : ColorManager.red),
                 ])),
@@ -118,8 +120,11 @@ class CarPage extends StatelessWidget {
             flex: 2,
             child: SizedBox(
               width: double.infinity,
-              child: _getUsersWidget(myCar),
+              child: _getUsersWidget(myCar, context),
             )),
+        const SizedBox(
+          height: AppSize.s3,
+        )
       ]),
     );
   }
@@ -129,12 +134,16 @@ class CarPage extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // TODO: change profile pic
-          const CircleAvatar(
-            backgroundImage: NetworkImage(
-                'https://i.pinimg.com/564x/1b/e1/3f/1be13feb311ab005aca97ddf6e34df4a.jpg'),
-            radius: AppSize.s25,
-          ),
+          CircleAvatar(
+              child: Text(
+                getChars(user.fullname),
+                style: getRegularStyle(
+                    color: ColorManager.white, fontSize: FontSizeManager.s20),
+              ),
+              backgroundColor:
+                  Color((math.Random().nextDouble() * 0xFFFFFF).toInt())
+                      .withOpacity(1.0),
+              radius: AppSize.s25),
           const SizedBox(
             width: AppSize.s14,
           ),
@@ -171,20 +180,22 @@ class CarPage extends StatelessWidget {
   _getRemoteControlWidget(Car myCar) {
     return CustomContainer(
         child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         ElevatedButton(
             style: ButtonStyle(
+                elevation: MaterialStateProperty.all(0),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(AppSize.s18),
                 )),
-                backgroundColor: MaterialStateProperty.all(ColorManager.red)),
+                backgroundColor: MaterialStateProperty.all(ColorManager.primary)),
             onPressed: () {
               print('force stop');
             },
             child: Text('Force Stop',
-                style: getRegularStyle(color: ColorManager.white))),
+                style: getRegularStyle(
+                    color: ColorManager.white, fontSize: FontSizeManager.s14))),
         CircleAvatar(
           backgroundColor: ColorManager.background,
           child: IconButton(
@@ -204,7 +215,7 @@ class CarPage extends StatelessWidget {
               print('center lock');
             },
             icon: const Icon(
-              CupertinoIcons.lock_open_fill,
+              CupertinoIcons.bolt_fill,
             ),
             color: ColorManager.darkGrey,
           ),
@@ -317,7 +328,7 @@ class CarPage extends StatelessWidget {
     ));
   }
 
-  _getUsersWidget(Car myCar) {
+  _getUsersWidget(Car myCar, context) {
     return CustomContainer(
         child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -332,7 +343,7 @@ class CarPage extends StatelessWidget {
             const Spacer(),
             TextButton(
                 onPressed: () {
-                  print('modify users');
+                  Navigator.pushNamed(context, Routes.carUsers);
                 },
                 child: const Text('Modify users'))
           ],
@@ -343,9 +354,15 @@ class CarPage extends StatelessWidget {
                     padding: const EdgeInsets.only(right: AppPadding.p3),
                     child: CircleAvatar(
                       radius: AppSize.s16,
-                      backgroundImage: NetworkImage(user.profileImage.isNotEmpty
-                          ? user.profileImage
-                          : 'https://i.pinimg.com/564x/1b/e1/3f/1be13feb311ab005aca97ddf6e34df4a.jpg'),
+                      child: Text(
+                        getChars(user.fullname),
+                        style: getRegularStyle(
+                            color: ColorManager.white,
+                            fontSize: FontSizeManager.s10),
+                      ),
+                      backgroundColor:
+                          Color((math.Random().nextDouble() * 0xFFFFFF).toInt())
+                              .withOpacity(1.0),
                     ),
                   ))
               .toList(),

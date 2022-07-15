@@ -8,13 +8,13 @@ abstract class RemoteDataSource {
   Future<MyCarsResponse> getMyCars();
   Future<UserDataResponse> getUserData();
   Future<AuthenticationResponse> refreshToken(String refreshToken);
-  Future<UserDataListResponse> searchUser(String username);
+  Future<UserDataListResponse> searchUser(String username, String code);
   Future<UserDataResponse> updateUser(String fullname, String profileImage);
   Future<MyCarsResponse> connectCar(String code, String password,String carName);
   Future<MyCarsResponse> disconnectCar(String code, String password);
-  Future<MyCarsResponse> shareCar(String userId, String carId);
-  Future<MyCarsResponse> removeUserAwayMyCar(String userId, String carId);
-  Future<MyCarsResponse> unshareCar(String carId);
+  Future<MyCarsResponse> shareCar(String userId, String code);
+  Future<MyCarsResponse> removeUserAwayMyCar(String userId, String code);
+  Future<MyCarsResponse> unshareCar(String code);
 }
 
 class RemoteDataSourceImplementer implements RemoteDataSource {
@@ -66,23 +66,23 @@ class RemoteDataSourceImplementer implements RemoteDataSource {
 
   @override
   Future<MyCarsResponse> removeUserAwayMyCar(
-      String userId, String carId) async {
-    return await _appServiceClient.removeUserAwayMyCar(userId, carId);
+      String userId, String code) async {
+    return await _appServiceClient.removeUserAwayMyCar(userId, code);
   }
 
   @override
-  Future<UserDataListResponse> searchUser(String username) async {
-    return await _appServiceClient.searchUser(username);
+  Future<UserDataListResponse> searchUser(String username, String code) async {
+    return await _appServiceClient.searchUser(username,code);
   }
 
   @override
-  Future<MyCarsResponse> shareCar(String userId, String carId) async{
-    return await _appServiceClient.shareCar(userId, carId);
+  Future<MyCarsResponse> shareCar(String userId, String code) async{
+    return await _appServiceClient.shareCar(userId, code);
   }
 
   @override
-  Future<MyCarsResponse> unshareCar(String carId) async {
-    return await _appServiceClient.unshareCar(carId);
+  Future<MyCarsResponse> unshareCar(String code) async {
+    return await _appServiceClient.unshareCar(code);
   }
 
   @override

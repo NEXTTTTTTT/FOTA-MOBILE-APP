@@ -21,6 +21,7 @@ class LoginViewModel extends BaseViewModel
   final StreamController<CredentialsObject> isUserLoggedInSuccessfullyStreamController =
       StreamController<CredentialsObject>();
 
+  
   var loginObject = const LoginObject(userName: "", password: "");
 
   final LoginUseCase _loginUseCase;

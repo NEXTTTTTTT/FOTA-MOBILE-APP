@@ -64,6 +64,7 @@ class AuthenticationResponse extends BaseResponse {
   factory AuthenticationResponse.fromJson(Map<String, dynamic> json) =>
       _$AuthenticationResponseFromJson(json);
   // to json
+  @override
   Map<String, dynamic> toJson() => _$AuthenticationResponseToJson(this);
 }
 
@@ -98,7 +99,7 @@ class CarResponse {
   @JsonKey(name: "carLocation")
   Map? carLocation;
   @JsonKey(name: "firmware")
-  Map? firmware;
+  String? firmware;
   @JsonKey(name: "createdAt")
   String? createdAt;
 
@@ -131,6 +132,7 @@ class MyCarsResponse extends BaseResponse {
   factory MyCarsResponse.fromJson(Map<String, dynamic> json) =>
       _$MyCarsResponseFromJson(json);
   // to json
+  @override
   Map<String, dynamic> toJson() => _$MyCarsResponseToJson(this);
 }
 
@@ -143,6 +145,7 @@ class UserDataResponse extends BaseResponse {
   factory UserDataResponse.fromJson(Map<String, dynamic> json) =>
       _$UserDataResponseFromJson(json);
   // to json
+  @override
   Map<String, dynamic> toJson() => _$UserDataResponseToJson(this);
 }
 
@@ -155,5 +158,6 @@ class UserDataListResponse extends BaseResponse {
   factory UserDataListResponse.fromJson(Map<String, dynamic> json) =>
       _$UserDataListResponseFromJson(json);
   // to json
+  @override
   Map<String, dynamic> toJson() => _$UserDataListResponseToJson(this);
 }

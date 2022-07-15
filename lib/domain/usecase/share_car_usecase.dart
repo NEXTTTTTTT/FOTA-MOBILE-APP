@@ -18,10 +18,10 @@ class ShareCarUseCase extends BaseUseCase<ShareCarInput, List<Car>> {
 
 class ShareCarInput extends Equatable {
   final String userId;
-  final String carId;
+  final String code;
 
-  const ShareCarInput(this.userId, this.carId);
+  const ShareCarInput(this.userId, this.code);
 
   @override
-  List<Object> get props => [userId, carId];
+  List<Object> get props => [userId, code];
 }

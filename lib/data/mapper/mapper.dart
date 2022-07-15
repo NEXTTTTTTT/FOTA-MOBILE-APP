@@ -39,7 +39,7 @@ extension CarResponseMapper on CarResponse? {
       temperature: this?.temperature?.orZero() ?? ZERO,
       admin: this?.admin.toDomain(),
       users: this?.users?.map((user) => user.toDomain()).toList(),
-      firmware: this?.firmware?.orEmptyMap() ?? EMPTY_MAP,
+      firmware: this?.firmware?.orEmpty() ?? EMPTY,
       currentSpeed: this?.currentSpeed?.orZero() ?? ZERO,
       defaultSpeed: this?.defaultSpeed?.orZero() ?? ZERO,
       carLocation: this?.carLocation?.orEmptyMap() ?? EMPTY_MAP,

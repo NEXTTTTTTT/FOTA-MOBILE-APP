@@ -42,9 +42,9 @@ class _AddCarViewState extends State<AddCarView> {
         title: Row(
           children: [
             Text(
-              'Connect New Car',
+              'Connect your car',
               style: getRegularStyle(
-                  color: ColorManager.grey, fontSize: FontSizeManager.s22),
+                  color: ColorManager.grey, fontSize: FontSizeManager.s20),
             ),
           ],
         ),
@@ -84,6 +84,15 @@ class _AddCarViewState extends State<AddCarView> {
                           children: [
                             TextFormField(
                               controller: _carCodeController,
+                              autovalidateMode: AutovalidateMode.onUserInteraction,
+                              validator: (text) {
+                                if (text!.isEmpty) {
+                                  return 'Code is empty';
+                                } else if (text.contains(' ')) {
+                                  return 'Code contains spaces';
+                                }
+                                return null;
+                              },
                               keyboardType: TextInputType.emailAddress,
                               decoration: const InputDecoration(
                                 hintText: AppStrings.carCode,
@@ -94,6 +103,12 @@ class _AddCarViewState extends State<AddCarView> {
                             ),
                             TextFormField(
                               controller: _passwordController,
+                              autovalidateMode: AutovalidateMode.onUserInteraction,
+                              validator: (text) {
+                                if (text!.isEmpty) return 'Password is empty';
+                                return null;
+                              },
+                              obscureText: true,
                               keyboardType: TextInputType.visiblePassword,
                               decoration: const InputDecoration(
                                 hintText: AppStrings.carPassword,

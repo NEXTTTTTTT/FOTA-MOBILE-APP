@@ -40,10 +40,11 @@ abstract class AppServiceClient {
 
   @GET("/search")
   Future<UserDataListResponse> searchUser(
-    @Field() String username,
+    @Query("username") String username,
+    @Query("code") String code,
   );
 
-  @PATCH("/user/")
+  @PATCH("/user")
   Future<UserDataResponse> updateUser(
     @Field() String fullname,
     @Field() String profileImage,
@@ -65,17 +66,17 @@ abstract class AppServiceClient {
    @PATCH("/car/share")
   Future<MyCarsResponse> shareCar(
     @Field() String userId,
-    @Field() String carId,
+    @Field() String code,
   );
 
   @PATCH("/car/user/remove")
   Future<MyCarsResponse> removeUserAwayMyCar(
     @Field() String userId,
-    @Field() String carId,
+    @Field() String code,
   );
 
   @PATCH("/car/unshare")
   Future<MyCarsResponse> unshareCar(
-    @Field() String carId,
+    @Field() String code,
   );
 }

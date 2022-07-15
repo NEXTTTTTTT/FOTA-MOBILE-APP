@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:fota_mobile_app/domain/usecase/connect_car_usecase.dart';
+import 'package:fota_mobile_app/domain/usecase/search_user_usecase.dart';
 import 'package:fota_mobile_app/domain/usecase/share_car_usecase.dart';
 
 import '../../data/network/failure.dart';
@@ -18,7 +19,7 @@ abstract class Repository {
 
   Future<Either<Failure, List<Car>>> getMyCars(NoParams input);
   Future<Either<Failure, User>> getUserData(NoParams input);
-  Future<Either<Failure, List<User>>> searchUser(String username);
+  Future<Either<Failure, List<User>>> searchUser(SearchUserInput input);
   Future<Either<Failure, User>> updateUser(UpdateUserInput input);
 
   Future<Either<Failure, List<Car>>> connectCar(ConnectCarInput input);

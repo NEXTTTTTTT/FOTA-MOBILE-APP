@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fota_mobile_app/app/constants.dart';
+import 'package:fota_mobile_app/presentation/bussiness_logic/position_cubit/position_cubit.dart';
 import 'package:fota_mobile_app/presentation/bussiness_logic/user_cubit/user_cubit.dart';
 import '../../../app/app_prefs.dart';
 import '../../resources/routes_manager.dart';
@@ -24,7 +25,7 @@ class _SplashViewState extends State<SplashView> {
   final AppPreferences _appPreferences = instance<AppPreferences>();
 
   _startDelay() {
-    _timer = Timer(const Duration(seconds: 2), _goNext);
+    _timer = Timer(const Duration(seconds: 1), _goNext);
   }
 
   _goNext() async {
@@ -33,6 +34,7 @@ class _SplashViewState extends State<SplashView> {
         await _appPreferences.getUserId().then((value) {
           Constants.myId = value;
           BlocProvider.of<UserCubit>(context).getMyData();
+          BlocProvider.of<PositionCubit>(context).getPostition();
           Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
         });
       } else {

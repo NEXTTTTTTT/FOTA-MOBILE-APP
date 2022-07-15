@@ -19,13 +19,15 @@ class UserCubit extends Cubit<UserState> {
     (await _getUserData.execute(NoParams())).fold((failure) {
       emit(UserDataErrorState(errorMessage: failure.message));
     }, (userData) {
+      this.userData = userData;
       emit(UserDataLoadedState(userData: userData));
     });
   }
 
+  User? userData;
+
   Future<void> resetUserData() async {
     //* RESET
     await _appPreferences.clearAllMyData().then((_) => emit(UserInitial()));
-   
   }
 }
