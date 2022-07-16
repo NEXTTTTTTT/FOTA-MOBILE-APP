@@ -6,6 +6,7 @@ import 'package:fota_mobile_app/domain/usecase/share_car_usecase.dart';
 import 'package:fota_mobile_app/domain/usecase/unshare_car_usecase.dart';
 import 'package:fota_mobile_app/domain/usecase/update_user_usecase.dart';
 import 'package:fota_mobile_app/presentation/bussiness_logic/map_cubit/map_cubit.dart';
+import 'package:fota_mobile_app/presentation/bussiness_logic/mqtt_cubit/mqtt_cubit.dart';
 import 'package:fota_mobile_app/presentation/bussiness_logic/search_cubit/search_cubit.dart';
 import 'package:get_it/get_it.dart';
 import '../domain/usecase/disconnect_car_usecase.dart';
@@ -91,6 +92,9 @@ Future<void> initAppModule() async {
   //*7 search cubit
   instance.registerLazySingleton<SearchCubit>(
       () => SearchCubit(instance(), instance(), ));
+      //*8 mqtt cubit
+  instance.registerLazySingleton<MqttCubit>(
+      () => MqttCubit());
 //********************************** */
 
 //* USECASES
