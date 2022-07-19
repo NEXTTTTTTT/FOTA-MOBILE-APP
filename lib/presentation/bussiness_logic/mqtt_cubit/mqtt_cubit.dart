@@ -1,13 +1,17 @@
+import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:fota_mobile_app/presentation/bussiness_logic/car_cubit/car_cubit.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 
 part 'mqtt_state.dart';
 
 class MqttCubit extends Cubit<MqttState> {
-  MqttCubit() : super(MqttInitial());
+  final CarCubit _carCubit;
+  MqttCubit(this._carCubit) : super(MqttInitial());
 
   MqttServerClient? _client;
   final String _identifier = 'mahmoud';
@@ -62,7 +66,7 @@ class MqttCubit extends Cubit<MqttState> {
     _client!.disconnect();
   }
 
-  void publish(String message,String topic) {
+  void publish(String message, String topic) {
     final MqttClientPayloadBuilder builder = MqttClientPayloadBuilder();
     builder.addString(message);
     _client!.publishMessage(topic, MqttQos.exactlyOnce, builder.payload!);
@@ -102,26 +106,25 @@ class MqttCubit extends Cubit<MqttState> {
       // final MqttPublishMessage recMess = c![0].payload;
       final String pt =
           MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
-      _setReceivedText(pt);
+
+      final List<String> topic = c[0].topic.split('/');
+      // dividing path to source ,code , interface
+      final String source = topic[0];
+      final String carCode = topic[1];
+      final String interface = topic[2];
+
+      
+
+      _carCubit.changeCarDataInRealTime(source, interface, carCode, pt);
+
       if (kDebugMode) {
         print(
             'EXAMPLE::Change notification:: topic is <${c[0].topic}>, payload is <-- $pt -->');
-      }
-      if (kDebugMode) {
-        print('');
       }
     });
     if (kDebugMode) {
       print(
           'EXAMPLE::OnConnected client callback - Client connection was sucessful');
     }
-  }
-
-  String _receivedText = '';
-  String _historyText = '';
-  void _setReceivedText(String text) {
-    _receivedText = text;
-    _historyText = _historyText + '\n' + _receivedText;
-    emit(MqttReceivedText());
   }
 }

@@ -32,17 +32,17 @@ extension CarResponseMapper on CarResponse? {
       code: this?.code?.orEmpty() ?? EMPTY,
       password: this?.password?.orEmpty() ?? EMPTY,
       carType: this?.carType?.orEmpty() ?? EMPTY,
-      isActive: this?.isActive?.orFalse() ?? FALSE,
+      isMotorOn: this?.isMotorOn.orFalse() ?? FALSE,
       isAcOn: this?.isACOn?.orFalse() ?? FALSE,
       isBagOn: this?.isBagOn?.orFalse() ?? FALSE,
-      isLocked: this?.isLocked?.orFalse() ?? FALSE,
+      isDoorLocked: this?.isDoorLocked?.orFalse() ?? FALSE,
       temperature: this?.temperature?.orZero() ?? ZERO,
       admin: this?.admin.toDomain(),
       users: this?.users?.map((user) => user.toDomain()).toList(),
       firmware: this?.firmware?.orEmpty() ?? EMPTY,
       currentSpeed: this?.currentSpeed?.orZero() ?? ZERO,
       defaultSpeed: this?.defaultSpeed?.orZero() ?? ZERO,
-      carLocation: this?.carLocation?.orEmptyMap() ?? EMPTY_MAP,
+      carLocation: this?.carLocation?.orEmpty() ?? EMPTY,
       createdAt: this?.createdAt?.orEmpty() ?? EMPTY,
     );
   }
@@ -68,6 +68,24 @@ extension BaseResponseMapper on BaseResponse? {
 
 extension UserDataListResponseMapper on UserDataListResponse? {
   List<User> toDomain() {
-    return this?.users?.map((user) => user.toDomain()).toList() ??[];
+    return this?.users?.map((user) => user.toDomain()).toList() ?? [];
+  }
+}
+
+extension NotfiyResponseMapper on NotifyResponse? {
+  Notify toDomain() {
+    return Notify(
+        id: this?.id?.orEmpty() ?? EMPTY,
+        user: this?.user.toDomain(),
+        action: this?.action.orEmpty()?? EMPTY,
+        isRead: this?.isRead?.orFalse() ?? FALSE,
+        car: this?.car?.toDomain(),
+        createdAt: this?.createdAt.orEmpty() ?? EMPTY);
+  }
+}
+
+extension NotifyListResponseMapper on NotifyListResponse? {
+  List<Notify> toDomain() {
+    return this?.notifies?.map((notify) => notify.toDomain()).toList() ?? [];
   }
 }

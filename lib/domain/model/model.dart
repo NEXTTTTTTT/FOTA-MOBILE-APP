@@ -51,8 +51,8 @@ class Car extends Equatable {
   String code;
   String carType;
   String password;
-  bool isActive;
-  bool isLocked;
+  bool isMotorOn;
+  bool isDoorLocked;
   bool isAcOn;
   bool isBagOn;
   int temperature;
@@ -60,7 +60,7 @@ class Car extends Equatable {
   List<User>? users;
   int defaultSpeed;
   int currentSpeed;
-  Map carLocation;
+  String carLocation;
   String firmware;
   String createdAt;
 
@@ -72,10 +72,10 @@ class Car extends Equatable {
       required this.code,
       required this.carType,
       required this.password,
-      required this.isActive,
+      required this.isMotorOn,
       required this.isAcOn,
       required this.isBagOn,
-      required this.isLocked,
+      required this.isDoorLocked,
       required this.temperature,
       required this.admin,
       required this.users,
@@ -98,9 +98,16 @@ class Success {
 class Notify {
   final String id;
   final User? user;
-  final String text;
+  final String action;
   final bool isRead;
   final Car? car;
+  final String createdAt;
 
-  Notify(this.id, this.user, this.text, this.isRead, this.car);
+  Notify(
+      {required this.id,
+      required this.user,
+      required this.action,
+      required this.isRead,
+      required this.car,
+      required this.createdAt});
 }

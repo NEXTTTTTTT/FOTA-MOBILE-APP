@@ -1,6 +1,7 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:dartz/dartz.dart';
 import 'package:fota_mobile_app/data/responses/response.dart';
+import 'package:fota_mobile_app/domain/usecase/base_usecase.dart';
 import 'package:fota_mobile_app/domain/usecase/search_user_usecase.dart';
 import 'package:fota_mobile_app/domain/usecase/update_user_usecase.dart';
 import 'package:fota_mobile_app/domain/usecase/share_car_usecase.dart';
@@ -188,7 +189,6 @@ class RepositoryImplementer extends Repository {
 
   @override
   Future<Either<Failure, List<Car>>> connectCar(ConnectCarInput input) async {
-    print('hhhhhhhhhhh');
     // call apis
     if (await _networkInfo.isConnected) {
       try {
@@ -389,7 +389,7 @@ class RepositoryImplementer extends Repository {
       try {
         // safe to call APIs
         final response = await _remoteDataSource.updateUser(
-            input.fullname, input.profileImage);
+            input.fullname, input.profileImage,input.deviceToken);
 
         if (response.status == ApiInternalStatus.SUCCESS) {
           // success
@@ -413,5 +413,72 @@ class RepositoryImplementer extends Repository {
       // return connection error
       return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
     }
+  }
+
+  @override
+  Future<Either<Failure, List<Notify>>> getNotifys(NoParams input) async {
+    try {
+      // get from cache
+      final response = await _localDataSource.getNotifys();
+      return Right(response.toDomain());
+    } catch (cacheError) {
+      // call api
+      if (await _networkInfo.isConnected) {
+        try {
+          // safe to call APIs
+          final response = await _remoteDataSource.getNotifyList();
+
+          if (response.status == ApiInternalStatus.SUCCESS) {
+            // success
+            // save data to cache
+            _localDataSource.saveNotifys(response);
+            // return data
+            // return right
+
+            return Right(response.toDomain());
+          } else {
+            // return biz logic error
+            // return left
+            return Left(Failure(response.status ?? ApiInternalStatus.FAILURE,
+                response.msg ?? ResponseMessage.DEFAULT));
+          }
+        } catch (error) {
+          return Left(ErrorHandler.handle(error).failure);
+        }
+      } else {
+        // return connection error
+        return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+      }
+    }
+  }
+
+  @override
+  Future<Either<Failure, Success>> readNotify(String id) async {
+    // call api
+    if (await _networkInfo.isConnected) {
+      try {
+        // safe to call APIs
+        final response = await _remoteDataSource.readNotify(id);
+
+        if (response.status == ApiInternalStatus.SUCCESS) {
+          // success
+          // return data
+          // return right
+
+          return Right(response.toDomain());
+        } else {
+          // return biz logic error
+          // return left
+          return Left(Failure(response.status ?? ApiInternalStatus.FAILURE,
+              response.msg ?? ResponseMessage.DEFAULT));
+        }
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    }
+    else {
+        // return connection error
+        return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+      }
   }
 }

@@ -9,12 +9,15 @@ abstract class RemoteDataSource {
   Future<UserDataResponse> getUserData();
   Future<AuthenticationResponse> refreshToken(String refreshToken);
   Future<UserDataListResponse> searchUser(String username, String code);
-  Future<UserDataResponse> updateUser(String fullname, String profileImage);
-  Future<MyCarsResponse> connectCar(String code, String password,String carName);
+  Future<UserDataResponse> updateUser(String fullname, String profileImage,String deviceToken);
+  Future<MyCarsResponse> connectCar(
+      String code, String password, String carName);
   Future<MyCarsResponse> disconnectCar(String code, String password);
   Future<MyCarsResponse> shareCar(String userId, String code);
   Future<MyCarsResponse> removeUserAwayMyCar(String userId, String code);
   Future<MyCarsResponse> unshareCar(String code);
+  Future<NotifyListResponse> getNotifyList();
+  Future<BaseResponse> readNotify(String id);
 }
 
 class RemoteDataSourceImplementer implements RemoteDataSource {
@@ -55,8 +58,9 @@ class RemoteDataSourceImplementer implements RemoteDataSource {
   }
 
   @override
-  Future<MyCarsResponse> connectCar(String code, String password, String carName) async {
-    return await _appServiceClient.connectCar(code, password,carName);
+  Future<MyCarsResponse> connectCar(
+      String code, String password, String carName) async {
+    return await _appServiceClient.connectCar(code, password, carName);
   }
 
   @override
@@ -65,18 +69,17 @@ class RemoteDataSourceImplementer implements RemoteDataSource {
   }
 
   @override
-  Future<MyCarsResponse> removeUserAwayMyCar(
-      String userId, String code) async {
+  Future<MyCarsResponse> removeUserAwayMyCar(String userId, String code) async {
     return await _appServiceClient.removeUserAwayMyCar(userId, code);
   }
 
   @override
   Future<UserDataListResponse> searchUser(String username, String code) async {
-    return await _appServiceClient.searchUser(username,code);
+    return await _appServiceClient.searchUser(username, code);
   }
 
   @override
-  Future<MyCarsResponse> shareCar(String userId, String code) async{
+  Future<MyCarsResponse> shareCar(String userId, String code) async {
     return await _appServiceClient.shareCar(userId, code);
   }
 
@@ -86,7 +89,18 @@ class RemoteDataSourceImplementer implements RemoteDataSource {
   }
 
   @override
-  Future<UserDataResponse> updateUser(String fullname, String profileImage)async {
-    return await _appServiceClient.updateUser(fullname, profileImage);
+  Future<UserDataResponse> updateUser(
+      String fullname, String profileImage,String deviceToken) async {
+    return await _appServiceClient.updateUser(fullname, profileImage,deviceToken);
+  }
+
+  @override
+  Future<NotifyListResponse> getNotifyList() async {
+    return await _appServiceClient.getNotifys();
+  }
+  
+  @override
+  Future<BaseResponse> readNotify(String id)async {
+    return await _appServiceClient.readNotify(id);
   }
 }

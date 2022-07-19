@@ -78,10 +78,10 @@ class CarResponse {
   String? carType;
   @JsonKey(name: "password")
   String? password;
-  @JsonKey(name: "isActive")
-  bool? isActive;
-  @JsonKey(name: "isLocked")
-  bool? isLocked;
+  @JsonKey(name: "isMotorOn")
+  bool? isMotorOn;
+  @JsonKey(name: "isDoorLocked")
+  bool? isDoorLocked;
   @JsonKey(name: "isACOn")
   bool? isACOn;
   @JsonKey(name: "temperature")
@@ -97,7 +97,7 @@ class CarResponse {
   @JsonKey(name: "currentSpeed")
   int? currentSpeed;
   @JsonKey(name: "carLocation")
-  Map? carLocation;
+  String? carLocation;
   @JsonKey(name: "firmware")
   String? firmware;
   @JsonKey(name: "createdAt")
@@ -108,7 +108,7 @@ class CarResponse {
       this.code,
       this.carType,
       this.password,
-      this.isActive,
+      this.isMotorOn,
       this.admin,
       this.users,
       this.firmware,
@@ -160,4 +160,41 @@ class UserDataListResponse extends BaseResponse {
   // to json
   @override
   Map<String, dynamic> toJson() => _$UserDataListResponseToJson(this);
+}
+
+//* Notification 
+@JsonSerializable()
+class NotifyListResponse extends BaseResponse {
+  @JsonKey(name: "notifies")
+  List<NotifyResponse>? notifies;
+  NotifyListResponse({this.notifies});
+  // from json
+  factory NotifyListResponse.fromJson(Map<String, dynamic> json) =>
+      _$NotifyListResponseFromJson(json);
+  // to json
+  @override
+  Map<String, dynamic> toJson() => _$NotifyListResponseToJson(this);
+}
+
+@JsonSerializable()
+class NotifyResponse {
+  @JsonKey(name: "_id")
+  String? id;
+  @JsonKey(name: "action")
+  String? action;
+  @JsonKey(name: "isRead")
+  bool? isRead;
+  @JsonKey(name: "createdAt")
+  String? createdAt;
+  @JsonKey(name: "user")
+  UserResponse? user;
+  @JsonKey(name: "car")
+  CarResponse? car;
+  NotifyResponse({this.id, this.action, this.isRead, this.createdAt, this.user,this.car});
+  // from json
+  factory NotifyResponse.fromJson(Map<String, dynamic> json) =>
+      _$NotifyResponseFromJson(json);
+  // to json
+  Map<String, dynamic> toJson() => _$NotifyResponseToJson(this);
+
 }

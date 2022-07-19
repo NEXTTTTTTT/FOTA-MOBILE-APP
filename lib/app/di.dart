@@ -1,5 +1,7 @@
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:fota_mobile_app/domain/usecase/connect_car_usecase.dart';
+import 'package:fota_mobile_app/domain/usecase/get_notifys_usecase.dart';
+import 'package:fota_mobile_app/domain/usecase/read_notify_usecase.dart';
 import 'package:fota_mobile_app/domain/usecase/remove_user_away_my_car_usecase.dart';
 import 'package:fota_mobile_app/domain/usecase/search_user_usecase.dart';
 import 'package:fota_mobile_app/domain/usecase/share_car_usecase.dart';
@@ -67,7 +69,7 @@ Future<void> initAppModule() async {
   //* BLOCS
   //*1 user bloc
   instance.registerLazySingleton<UserCubit>(
-      () => UserCubit(instance(), instance()));
+      () => UserCubit(instance(), instance(),instance()));
   //*2 cars bloc
   instance.registerLazySingleton<CarCubit>(() => CarCubit(
         instance(),
@@ -90,11 +92,12 @@ Future<void> initAppModule() async {
   //*6 notify cubit
   instance.registerLazySingleton<NotifyCubit>(() => NotifyCubit());
   //*7 search cubit
-  instance.registerLazySingleton<SearchCubit>(
-      () => SearchCubit(instance(), instance(), ));
-      //*8 mqtt cubit
-  instance.registerLazySingleton<MqttCubit>(
-      () => MqttCubit());
+  instance.registerLazySingleton<SearchCubit>(() => SearchCubit(
+        instance(),
+        instance(),
+      ));
+  //*8 mqtt cubit
+  instance.registerLazySingleton<MqttCubit>(() => MqttCubit(instance()));
 //********************************** */
 
 //* USECASES
@@ -130,6 +133,12 @@ Future<void> initAppModule() async {
   // updateUserUseCase
   instance.registerLazySingleton<UpdateUserDataUseCase>(
       () => UpdateUserDataUseCase(instance()));
+  // get Notifys UseCase
+  instance.registerLazySingleton<GetNotifysUseCase>(
+      () => GetNotifysUseCase(instance()));
+  // readnotifyUseCase
+  instance.registerLazySingleton<ReadNotifysUseCase>(
+      () => ReadNotifysUseCase(instance()));
 }
 
 Future<void> initLoginModule() async {

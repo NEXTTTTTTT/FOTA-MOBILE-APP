@@ -68,7 +68,7 @@ CarResponse _$CarResponseFromJson(Map<String, dynamic> json) => CarResponse(
       code: json['code'] as String?,
       carType: json['carType'] as String?,
       password: json['password'] as String?,
-      isActive: json['isActive'] as bool?,
+      isMotorOn: json['isMotorOn'] as bool?,
       admin: json['admin'] == null
           ? null
           : UserResponse.fromJson(json['admin'] as Map<String, dynamic>),
@@ -78,10 +78,10 @@ CarResponse _$CarResponseFromJson(Map<String, dynamic> json) => CarResponse(
       firmware: json['firmware'] as String?,
       currentSpeed: json['currentSpeed'] as int?,
       defaultSpeed: json['defaultSpeed'] as int?,
-      carLocation: json['carLocation'] as Map<String, dynamic>?,
+      carLocation: json['carLocation'] as String?,
       createdAt: json['createdAt'] as String?,
     )
-      ..isLocked = json['isLocked'] as bool?
+      ..isDoorLocked = json['isDoorLocked'] as bool?
       ..isACOn = json['isACOn'] as bool?
       ..temperature = json['temperature'] as int?
       ..isBagOn = json['isBagOn'] as bool?;
@@ -92,8 +92,8 @@ Map<String, dynamic> _$CarResponseToJson(CarResponse instance) =>
       'code': instance.code,
       'carType': instance.carType,
       'password': instance.password,
-      'isActive': instance.isActive,
-      'isLocked': instance.isLocked,
+      'isMotorOn': instance.isMotorOn,
+      'isDoorLocked': instance.isDoorLocked,
       'isACOn': instance.isACOn,
       'temperature': instance.temperature,
       'isBagOn': instance.isBagOn,
@@ -154,4 +154,44 @@ Map<String, dynamic> _$UserDataListResponseToJson(
       'status': instance.status,
       'msg': instance.msg,
       'users': instance.users,
+    };
+
+NotifyListResponse _$NotifyListResponseFromJson(Map<String, dynamic> json) =>
+    NotifyListResponse(
+      notifies: (json['notifies'] as List<dynamic>?)
+          ?.map((e) => NotifyResponse.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    )
+      ..status = json['status'] as int?
+      ..msg = json['msg'] as String?;
+
+Map<String, dynamic> _$NotifyListResponseToJson(NotifyListResponse instance) =>
+    <String, dynamic>{
+      'status': instance.status,
+      'msg': instance.msg,
+      'notifies': instance.notifies,
+    };
+
+NotifyResponse _$NotifyResponseFromJson(Map<String, dynamic> json) =>
+    NotifyResponse(
+      id: json['_id'] as String?,
+      action: json['action'] as String?,
+      isRead: json['isRead'] as bool?,
+      createdAt: json['createdAt'] as String?,
+      user: json['user'] == null
+          ? null
+          : UserResponse.fromJson(json['user'] as Map<String, dynamic>),
+      car: json['car'] == null
+          ? null
+          : CarResponse.fromJson(json['car'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$NotifyResponseToJson(NotifyResponse instance) =>
+    <String, dynamic>{
+      '_id': instance.id,
+      'action': instance.action,
+      'isRead': instance.isRead,
+      'createdAt': instance.createdAt,
+      'user': instance.user,
+      'car': instance.car,
     };

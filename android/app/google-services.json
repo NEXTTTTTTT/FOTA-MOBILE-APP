@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "167034715045",
+    "project_id": "fota-4a39d",
+    "storage_bucket": "fota-4a39d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:167034715045:android:05651c52b3e2b79ece064c",
+        "android_client_info": {
+          "package_name": "com.example.fota_mobile_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "167034715045-mrdnefdrlb95si2ts9o744hgiop2658m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA585ZoRe1FDeFGc3HN28b-vnJgRMPF-0c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "167034715045-mrdnefdrlb95si2ts9o744hgiop2658m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fota_mobile_app/app/constants.dart';
+import 'package:fota_mobile_app/presentation/bussiness_logic/mqtt_cubit/mqtt_cubit.dart';
 import 'package:fota_mobile_app/presentation/resources/routes_manager.dart';
 import '../../../app/functions.dart';
 import '../../../domain/model/model.dart';
@@ -55,7 +57,7 @@ class CarDetailsView extends StatelessWidget {
                   ),
                   CircleAvatar(
                       maxRadius: AppSize.s4,
-                      backgroundColor: !myCar.isActive
+                      backgroundColor: !myCar.isMotorOn
                           ? ColorManager.green
                           : ColorManager.red),
                 ])),
@@ -94,7 +96,7 @@ class CarPage extends StatelessWidget {
         Expanded(
             flex: 1,
             child: SizedBox(
-              child: _getRemoteControlWidget(myCar),
+              child: _getRemoteControlWidget(myCar, context),
               width: double.infinity,
             )),
         _spaceHeight(),
@@ -110,7 +112,7 @@ class CarPage extends StatelessWidget {
                 Expanded(
                     flex: 2,
                     child: SizedBox(
-                      child: _getTempWidget(myCar),
+                      child: _getTempWidget(myCar,context),
                       width: double.infinity,
                     )),
               ],
@@ -177,7 +179,8 @@ class CarPage extends StatelessWidget {
     );
   }
 
-  _getRemoteControlWidget(Car myCar) {
+  _getRemoteControlWidget(Car myCar, context) {
+    var mqttCubit = BlocProvider.of<MqttCubit>(context);
     return CustomContainer(
         child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -189,47 +192,57 @@ class CarPage extends StatelessWidget {
                     RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(AppSize.s18),
                 )),
-                backgroundColor: MaterialStateProperty.all(ColorManager.primary)),
+                backgroundColor:
+                    MaterialStateProperty.all(ColorManager.primary)),
             onPressed: () {
-              print('force stop');
+              //todo:
             },
             child: Text('Force Stop',
                 style: getRegularStyle(
                     color: ColorManager.white, fontSize: FontSizeManager.s14))),
         CircleAvatar(
-          backgroundColor: ColorManager.background,
+          backgroundColor:
+              myCar.isDoorLocked ? ColorManager.background : Colors.orange,
           child: IconButton(
             onPressed: () {
-              print('center lock');
+              mqttCubit.publish((!myCar.isDoorLocked).toString(),
+                  '${Constants.myId}/${myCar.code}/lock');
             },
-            icon: const Icon(
-              CupertinoIcons.lock_fill,
+            icon: Icon(
+              myCar.isDoorLocked
+                  ? CupertinoIcons.lock_fill
+                  : CupertinoIcons.lock_open,
             ),
-            color: ColorManager.darkGrey,
+            color:
+                myCar.isDoorLocked ? ColorManager.darkGrey : ColorManager.white,
           ),
         ),
         CircleAvatar(
-          backgroundColor: ColorManager.background,
+          backgroundColor:
+              myCar.isMotorOn ? ColorManager.background : ColorManager.green,
           child: IconButton(
             onPressed: () {
-              print('center lock');
+              mqttCubit.publish((!myCar.isMotorOn).toString(),
+                  '${Constants.myId}/${myCar.code}/motor');
             },
             icon: const Icon(
               CupertinoIcons.bolt_fill,
             ),
-            color: ColorManager.darkGrey,
+            color: myCar.isMotorOn ? ColorManager.darkGrey : ColorManager.white,
           ),
         ),
         CircleAvatar(
-          backgroundColor: ColorManager.background,
+          backgroundColor:
+              myCar.isBagOn ? ColorManager.background : Colors.amber,
           child: IconButton(
             onPressed: () {
-              print('center lock');
+              mqttCubit.publish((!myCar.isBagOn).toString(),
+                  '${Constants.myId}/${myCar.code}/bag');
             },
             icon: const Icon(
               CupertinoIcons.car_detailed,
             ),
-            color: ColorManager.darkGrey,
+            color: myCar.isBagOn ? ColorManager.darkGrey : ColorManager.white,
           ),
         ),
       ],
@@ -274,14 +287,15 @@ class CarPage extends StatelessWidget {
         ),
         TextButton(
             onPressed: () {
-              print('change max speed');
+              //todo:
             },
             child: const Text('change default\nmaximum speed'))
       ],
     ));
   }
 
-  _getTempWidget(Car myCar) {
+  _getTempWidget(Car myCar, context) {
+    var mqttCubit = BlocProvider.of<MqttCubit>(context);
     return CustomContainer(
         child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -320,9 +334,9 @@ class CarPage extends StatelessWidget {
           height: AppSize.s4,
         ),
         CupertinoSwitch(
-            value: true,
+            value: myCar.isAcOn,
             onChanged: (value) {
-              print('air conditioner');
+              mqttCubit.publish((!myCar.isAcOn).toString(), '${Constants.myId}/${myCar.code}/ac');
             })
       ],
     ));

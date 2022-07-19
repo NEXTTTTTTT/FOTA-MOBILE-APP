@@ -54,16 +54,16 @@ class MapCubit extends Cubit<MapState> {
   void setCarsMarkers(List<Car> myCarsData) {
     debugPrint('${myCarsData.length}');
     for (Car car in myCarsData) {
-      if (isLocationValid(car.carLocation)) {
+      LatLng? loc = nmeaToDecimal(car.carLocation);
+      if (loc !=null) {
         markers.add(Marker(
           markerId: MarkerId(car.id),
-          position: LatLng(double.parse(car.carLocation['lat']),
-              double.parse(car.carLocation['lng'])),
+          position: loc,
           infoWindow: InfoWindow(
-            title: car.carType + " " + car.code ,
-            snippet: (car.isActive ? 'Running' : 'Available') +
+            title: car.carType + " " + car.code,
+            snippet: (car.isMotorOn ? 'Running' : 'Available') +
                 ' | ' +
-                 ' ${car.admin!.username}',
+                ' ${car.admin!.username}',
             onTap: () {
               selectedCarCodeToBeShown = car.code;
               emit(WindowOnTapChangeCarSelected(car.code));

@@ -11,6 +11,5 @@ class MqttInitial extends MqttState {}
 class MqttConnectedState extends MqttState {}
 class MqttDisConnectedState extends MqttState {}
 class MqttConnectingState extends MqttState {}
-class MqttReceivedText extends MqttState {
-}
+
 

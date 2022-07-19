@@ -44,7 +44,7 @@ class NotificationPage extends StatelessWidget {
                   color: ColorManager.darkGrey, fontSize: FontSizeManager.s16),
             ),
             Text(
-              notify.text,
+              notify.action,
               style: getRegularStyle(
                   color: ColorManager.darkGrey, fontSize: FontSizeManager.s13),
             ),

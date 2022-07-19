@@ -123,11 +123,16 @@ class _AppServiceClient implements AppServiceClient {
   }
 
   @override
-  Future<UserDataResponse> updateUser(fullname, profileImage) async {
+  Future<UserDataResponse> updateUser(
+      fullname, profileImage, deviceToken) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = {'fullname': fullname, 'profileImage': profileImage};
+    final _data = {
+      'fullname': fullname,
+      'profileImage': profileImage,
+      'deviceToken': deviceToken
+    };
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<UserDataResponse>(
             Options(method: 'PATCH', headers: _headers, extra: _extra)
@@ -215,6 +220,38 @@ class _AppServiceClient implements AppServiceClient {
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = MyCarsResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<NotifyListResponse> getNotifys() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NotifyListResponse>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/notify/all',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NotifyListResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<BaseResponse> readNotify(id) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<BaseResponse>(
+            Options(method: 'PATCH', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/notify/${id}/read',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = BaseResponse.fromJson(_result.data!);
     return value;
   }
 

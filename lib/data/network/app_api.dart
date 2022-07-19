@@ -48,22 +48,23 @@ abstract class AppServiceClient {
   Future<UserDataResponse> updateUser(
     @Field() String fullname,
     @Field() String profileImage,
+    @Field() String deviceToken,
   );
 
 //* Car
-   @PATCH("/car/connect")
+  @PATCH("/car/connect")
   Future<MyCarsResponse> connectCar(
     @Field() String code,
     @Field() String password,
     @Field() String carType,
   );
-   @PATCH("/car/dissconnect")
+  @PATCH("/car/dissconnect")
   Future<MyCarsResponse> disconnectCar(
     @Field() String code,
     @Field() String password,
   );
 
-   @PATCH("/car/share")
+  @PATCH("/car/share")
   Future<MyCarsResponse> shareCar(
     @Field() String userId,
     @Field() String code,
@@ -78,5 +79,14 @@ abstract class AppServiceClient {
   @PATCH("/car/unshare")
   Future<MyCarsResponse> unshareCar(
     @Field() String code,
+  );
+
+  //* Notification
+  @GET("/notify/all")
+  Future<NotifyListResponse> getNotifys();
+
+  @PATCH("/notify/{id}/read")
+  Future<BaseResponse> readNotify(
+    @Path("id") String id,
   );
 }

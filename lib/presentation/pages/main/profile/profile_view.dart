@@ -33,8 +33,10 @@ class ProfilePage extends StatelessWidget {
             retryActionFunction: () {});
       } else {
         return StateRenderer(
-            stateRendererType: StateRendererType.EMPTY_SCREEN_STATE,
-            retryActionFunction: () {}, message: "No data yet",);
+          stateRendererType: StateRendererType.EMPTY_SCREEN_STATE,
+          retryActionFunction: () {},
+          message: "No data yet",
+        );
       }
     });
   }
@@ -50,12 +52,12 @@ class ProfilePage extends StatelessWidget {
         const SizedBox(
           height: AppSize.s12,
         ),
-        getGreyLine(),
 
-        getCarsNumberWidget(),
-        getGreyLine(),
+        
+        getCarsNumberWidget(context),
+        
         // email
-        getEmailWidget(context,user),
+        getEmailWidget(context, user),
         // currnet location
         const PlaceMarkWidget(),
         const SizedBox(
@@ -107,7 +109,8 @@ class ProfilePage extends StatelessWidget {
 
   Widget getGreyLine() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal:  AppPadding.p20,vertical: AppPadding.p15),
+      padding: const EdgeInsets.symmetric(
+          horizontal: AppPadding.p20, vertical: AppPadding.p15),
       child: Container(
         height: AppSize.s1,
         width: double.infinity,
@@ -116,70 +119,77 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  getCarsNumberWidget() {
+  getCarsNumberWidget(context) {
+    var carCubit = BlocProvider.of<CarCubit>(context);
     return BlocBuilder<CarCubit, CarState>(
       builder: (context, state) {
-        if (state is MyCarsLoadedState) {
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+        if (carCubit.myCarsData.isNotEmpty) {
+          return Column(
             children: [
-              Column(
+              getGreyLine(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Text(
-                    state.myCars
-                        .where((car) => isIamAdminOfTheCar(car))
-                        .length
-                        .toString(),
-                    style: getBoldStyle(
-                        color: ColorManager.darkGrey,
-                        fontSize: FontSizeManager.s30),
+                  Column(
+                    children: [
+                      Text(
+                        carCubit.myCarsData
+                            .where((car) => isIamAdminOfTheCar(car))
+                            .length
+                            .toString(),
+                        style: getBoldStyle(
+                            color: ColorManager.darkGrey,
+                            fontSize: FontSizeManager.s30),
+                      ),
+                      Text(
+                        'Owned cars',
+                        style: getRegularStyle(
+                            color: ColorManager.grey,
+                            fontSize: FontSizeManager.s14),
+                      ),
+                    ],
                   ),
-                  Text(
-                    'Owned cars',
-                    style: getRegularStyle(
-                        color: ColorManager.grey,
-                        fontSize: FontSizeManager.s14),
+                  Column(
+                    children: [
+                      Text(
+                        carCubit.myCarsData
+                            .where((car) => !isIamAdminOfTheCar(car))
+                            .length
+                            .toString(),
+                        style: getBoldStyle(
+                            color: ColorManager.darkGrey,
+                            fontSize: FontSizeManager.s30),
+                      ),
+                      Text(
+                        'Shared cars',
+                        style: getRegularStyle(
+                            color: ColorManager.grey,
+                            fontSize: FontSizeManager.s14),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Text(
+                        carCubit.myCarsData
+                            .where((car) => !car.isMotorOn)
+                            .length
+                            .toString(),
+                        style: getBoldStyle(
+                            color: ColorManager.darkGrey,
+                            fontSize: FontSizeManager.s30),
+                      ),
+                      Text(
+                        'Available cars',
+                        style: getRegularStyle(
+                            color: ColorManager.grey,
+                            fontSize: FontSizeManager.s14),
+                      ),
+                    ],
                   ),
                 ],
               ),
-              Column(
-                children: [
-                  Text(
-                    state.myCars
-                        .where((car) => !isIamAdminOfTheCar(car))
-                        .length
-                        .toString(),
-                    style: getBoldStyle(
-                        color: ColorManager.darkGrey,
-                        fontSize: FontSizeManager.s30),
-                  ),
-                  Text(
-                    'Shared cars',
-                    style: getRegularStyle(
-                        color: ColorManager.grey,
-                        fontSize: FontSizeManager.s14),
-                  ),
-                ],
-              ),
-              Column(
-                children: [
-                  Text(
-                    state.myCars
-                        .where((car) => !car.isActive)
-                        .length
-                        .toString(),
-                    style: getBoldStyle(
-                        color: ColorManager.darkGrey,
-                        fontSize: FontSizeManager.s30),
-                  ),
-                  Text(
-                    'Available cars',
-                    style: getRegularStyle(
-                        color: ColorManager.grey,
-                        fontSize: FontSizeManager.s14),
-                  ),
-                ],
-              ),
+            getGreyLine(),
             ],
           );
         } else {

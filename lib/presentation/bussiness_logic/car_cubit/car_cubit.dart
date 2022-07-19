@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:fota_mobile_app/app/constants.dart';
 import 'package:fota_mobile_app/app/extentions.dart';
 import 'package:fota_mobile_app/domain/usecase/base_usecase.dart';
 import 'package:fota_mobile_app/domain/usecase/connect_car_usecase.dart';
@@ -53,6 +54,42 @@ class CarCubit extends Cubit<CarState> {
         getMyCars();
       }
     });
+  }
+
+  //*  REALTIME functions (MQTT)
+  void changeCarDataInRealTime(
+      String source, String interface, String code, String value) {
+    switch (interface) {
+      case "gps":
+        myCarsData.singleWhere((car) => car.code == code).carLocation = value;
+        break;
+      case 'speed':
+        myCarsData.singleWhere((car) => car.code == code).currentSpeed =
+            int.parse(value);
+        break;
+      case 'motor':
+        myCarsData.singleWhere((car) => car.code == code).isMotorOn =
+            bool.fromEnvironment(value);
+        break;
+      case 'lock':
+        myCarsData.singleWhere((car) => car.code == code).isDoorLocked =
+            bool.fromEnvironment(value);
+        break;
+      case 'ac':
+        myCarsData.singleWhere((car) => car.code == code).isAcOn =
+            bool.fromEnvironment(value);
+        break;
+      case 'temp':
+        myCarsData.singleWhere((car) => car.code == code).temperature =
+            int.parse(value);
+        break;
+      case 'bag':
+        myCarsData.singleWhere((car) => car.code == code).isBagOn =
+            bool.fromEnvironment(value);
+        break;
+    }
+
+    _resetMapData(myCarsData).then((_) => emit(MyCarsUpdatedSuccessState(interface: interface,value:value)));
   }
 
   void removeUserAwayMyCar(String userId, String carId) async {
@@ -152,13 +189,13 @@ class CarCubit extends Cubit<CarState> {
 
   _setCarDistanceFromMe(Position position) async {
     for (Car car in myCarsData) {
-      if (isLocationValid(car.carLocation)) {
-        var carLatLng = _mapToLatLng(car.carLocation);
+      var loc = nmeaToDecimal(car.carLocation);
+      if (loc != null) {
         car.distanceBetween = (await Geolocator().distanceBetween(
               position.latitude,
               position.longitude,
-              carLatLng!.latitude,
-              carLatLng.longitude,
+              loc.latitude,
+              loc.longitude,
             ))
                 .round() /
             1000;
@@ -170,26 +207,14 @@ class CarCubit extends Cubit<CarState> {
 
   _setCarPlacemark() async {
     for (Car car in myCarsData) {
-      if (isLocationValid(car.carLocation)) {
-        var carLatLng = _mapToLatLng(car.carLocation);
-        var placemarks = await Geolocator().placemarkFromCoordinates(
-          carLatLng!.latitude,
-          carLatLng.longitude,
-        );
+      var loc = nmeaToDecimal(car.carLocation);
+      if (loc != null) {
+        var placemarks = await Geolocator()
+            .placemarkFromCoordinates(loc.latitude, loc.longitude);
         car.placemark = placemarks[0].toAddress();
       } else {
         car.placemark = null;
       }
-    }
-  }
-
-  LatLng? _mapToLatLng(Map carLocation) {
-    if (isLocationValid(carLocation)) {
-      double lat = double.parse(carLocation['lat']);
-      double lng = double.parse(carLocation['lng']);
-      return LatLng(lat, lng);
-    } else {
-      return null;
     }
   }
 

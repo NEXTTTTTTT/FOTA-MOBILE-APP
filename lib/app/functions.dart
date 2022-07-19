@@ -4,6 +4,7 @@ import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'app_prefs.dart';
 import 'di.dart';
 
@@ -56,8 +57,41 @@ dismissDialog(BuildContext context) {
 _isThereCurrentDialogShowing(BuildContext context) =>
     ModalRoute.of(context)!.isCurrent != true;
 
-bool isLocationValid(location) {
-  return location != null && location['lat'] != null && location['lng'] != null;
+List<String> _validateLocation(String location) {
+  if (location.isNotEmpty) {
+    //lat ->  5132.0000,N
+    //lng -> 00005.0000,W
+    var nmeaList = location.replaceAll(' ', '').split(',');
+    if (nmeaList[0].length == 9 &&
+        (nmeaList[1] == 'N' || nmeaList[1] == 'S') &&
+        nmeaList[2].length == 10 &&
+        (nmeaList[3] == 'W' || nmeaList[3] == 'E')) {
+      return nmeaList;
+    }
+  }
+  return [];
+}
+
+LatLng? nmeaToDecimal(String carLocation) {
+  var nmea = _validateLocation(carLocation);
+  if (nmea.isNotEmpty) {
+    // 5132.0000,N
+    double lat = double.parse(nmea[0]);
+    int ddt = lat ~/ 100;
+    double mmt = lat - (ddt * 100);
+    double latDec = ddt + (mmt / 60); 
+    if (nmea[1] == 'S') latDec = latDec * -1; //* value i want
+
+    // 00005.0000,W
+    double lng = double.parse(nmea[2]);
+    int dddg = lng ~/ 100; //0
+    double mmg = lng - (dddg * 100);
+    double lngDec = dddg + (mmg / 60); 
+    if (nmea[3] == 'W') lngDec = lngDec * -1; //* value i want
+    return LatLng(latDec, lngDec);
+  } else {
+    return null;
+  }
 }
 
 String getChars(String name) {
@@ -65,8 +99,7 @@ String getChars(String name) {
   String chars = '';
   if (names.length == 3) {
     chars = names[0].substring(0, 1) + names[2].substring(0, 1);
-  }
-  else if (names.length == 2) {
+  } else if (names.length == 2) {
     chars = names[0].substring(0, 1) + names[1].substring(0, 1);
   } else {
     chars = names[0].substring(0, 1);
@@ -75,8 +108,6 @@ String getChars(String name) {
 }
 
 void showShortToast(String msg) {
-    Fluttertoast.showToast(
-        msg:msg,
-        toastLength: Toast.LENGTH_SHORT,
-        timeInSecForIosWeb: 1);
-  }
+  Fluttertoast.showToast(
+      msg: msg, toastLength: Toast.LENGTH_SHORT, timeInSecForIosWeb: 1);
+}

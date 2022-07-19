@@ -19,9 +19,10 @@ class UpdateUserDataUseCase extends BaseUseCase<UpdateUserInput, User> {
 class UpdateUserInput extends Equatable {
   final String fullname;
   final String profileImage;
+  final String deviceToken;
 
-  const UpdateUserInput(this.fullname, this.profileImage);
+  const UpdateUserInput(this.fullname, this.profileImage, this.deviceToken);
   
   @override
-  List<Object> get props => [fullname,profileImage];
+  List<Object> get props => [fullname,profileImage,deviceToken];
 }

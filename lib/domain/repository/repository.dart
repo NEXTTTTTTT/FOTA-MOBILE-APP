@@ -29,4 +29,7 @@ abstract class Repository {
       RemoveUserAwayMyCarInput input);
       Future<Either<Failure, List<Car>>> unshareCar(
       String input);
+
+      Future<Either<Failure, List<Notify>>> getNotifys(NoParams input);
+      Future<Either<Failure, Success>> readNotify(String  id);
 }

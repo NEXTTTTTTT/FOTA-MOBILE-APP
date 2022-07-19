@@ -29,4 +29,14 @@ class MyCarsErrorState extends CarState {
   List<Object> get props => [errorMessage];
 }
 
+class MyCarsUpdatedSuccessState extends CarState {
+  final String interface;
+  final String value;
+
+  const MyCarsUpdatedSuccessState({required this.interface,required this.value});
+
+  @override
+  List<Object> get props => [interface,value];
+}
+
 
