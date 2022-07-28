@@ -1,13 +1,13 @@
 # Smart Car Application with clean architecture
 ## main tools:
-### mvvm - bloc - RestFul Apis - mqtt client - notifications 
+#### mvvm - bloc - RestFul Apis - mqtt client - notifications 
 
 ## main features:
-### - Remote access (motor/lock/bag/AC)
-### - Car tracking (live location/speed /temperature)
-### - Car sharing (users can access multiple cars with Virtual key)
-### - Speed limitations
-### - Admin notifications (over speed/when users access the car/if there is new firmware upgrade)
+#### - Remote access (motor/lock/bag/AC)
+#### - Car tracking (live location/speed /temperature)
+#### - Car sharing (users can access multiple cars with Virtual key)
+#### - Speed limitations
+#### - Admin notifications (over speed/when users access the car/if there is new firmware upgrade)
 
 ## some screens of my app:
 ![CHEESE!](https://user-images.githubusercontent.com/73743979/181606946-3e35fed3-80a8-47c1-814a-e4e3def6fd63.png)
