@@ -1,5 +1,6 @@
-import 'error_handler.dart';
 import 'package:equatable/equatable.dart';
+
+import 'error_handler.dart';
 
 class Failure extends Equatable {
   int code;

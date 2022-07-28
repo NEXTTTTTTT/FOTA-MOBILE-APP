@@ -1,7 +1,7 @@
-import 'extentions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../presentation/resources/language_manager.dart';
+import 'extentions.dart';
 
 const String PREF_KEY_LANGUAGE = "PREF_KEY_LANGUAGE";
 const String PREF_KEY_ONBOARDING = "PREF_KEY_ONBOARDING";
@@ -58,7 +58,12 @@ class AppPreferences {
     String token = await getToken();
     String id = await getUserId();
     String refreshToken = await getRefreshToken();
-    return token != null && token.isNotEmpty && id != null && id.isNotEmpty && refreshToken!=null && refreshToken.isNotEmpty;
+    return token != null &&
+        token.isNotEmpty &&
+        id != null &&
+        id.isNotEmpty &&
+        refreshToken != null &&
+        refreshToken.isNotEmpty;
   }
 
   //* On Boarding prefs
@@ -81,5 +86,9 @@ class AppPreferences {
 
   Future<void> clearRefreshToken() async {
     _sharedPreferences.remove(PREF_KEY_REFRESH_TOKEN);
+  }
+
+  Future<void> clearAllMyData() async {
+    _sharedPreferences.clear();
   }
 }

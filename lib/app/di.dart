@@ -1,10 +1,25 @@
 import 'package:data_connection_checker/data_connection_checker.dart';
-import 'package:fota_mobile_app/domain/usecase/refresh_token_usecase.dart';
-import 'package:fota_mobile_app/presentation/car_details/cars_details_view_model.dart';
-import 'package:fota_mobile_app/presentation/splash/splash_view_model.dart';
+import 'package:fota_mobile_app/domain/usecase/connect_car_usecase.dart';
+import 'package:fota_mobile_app/domain/usecase/get_notifys_usecase.dart';
+import 'package:fota_mobile_app/domain/usecase/read_notify_usecase.dart';
+import 'package:fota_mobile_app/domain/usecase/remove_user_away_my_car_usecase.dart';
+import 'package:fota_mobile_app/domain/usecase/search_user_usecase.dart';
+import 'package:fota_mobile_app/domain/usecase/share_car_usecase.dart';
+import 'package:fota_mobile_app/domain/usecase/unshare_car_usecase.dart';
+import 'package:fota_mobile_app/domain/usecase/update_user_usecase.dart';
+import 'package:fota_mobile_app/presentation/bussiness_logic/map_cubit/map_cubit.dart';
+import 'package:fota_mobile_app/presentation/bussiness_logic/mqtt_cubit/mqtt_cubit.dart';
+import 'package:fota_mobile_app/presentation/bussiness_logic/search_cubit/search_cubit.dart';
+import 'package:get_it/get_it.dart';
+import '../domain/usecase/disconnect_car_usecase.dart';
+import '../presentation/bussiness_logic/app_cubit/app_cubit.dart';
+import '../presentation/bussiness_logic/car_cubit/car_cubit.dart';
+import '../presentation/bussiness_logic/notify_cubit/notify_cubit.dart';
+import '../presentation/bussiness_logic/position_cubit/position_cubit.dart';
+import '../presentation/bussiness_logic/user_cubit/user_cubit.dart';
+import '../presentation/pages/login/login_view_model.dart';
 
-import '../presentation/main/home/home_view_model.dart';
-import '../presentation/main/profile/profile_view_model.dart';
+import '../presentation/pages/register/register_view_model.dart';
 import 'app_prefs.dart';
 import '../data/data_source/local_data_source.dart';
 import '../data/data_source/remote_data_source.dart';
@@ -17,9 +32,7 @@ import '../domain/usecase/get_my_cars_usecase.dart';
 import '../domain/usecase/get_user_data_usecase.dart';
 import '../domain/usecase/login_usecase.dart';
 import '../domain/usecase/register_usecase.dart';
-import '../presentation/login/login_view_model.dart';
-import '../presentation/register/register_view_model.dart';
-import 'package:get_it/get_it.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 final instance = GetIt.instance;
@@ -53,8 +66,41 @@ Future<void> initAppModule() async {
   instance.registerLazySingleton<Repository>(
       () => RepositoryImplementer(instance(), instance(), instance()));
 
-  // usecases
+  //* BLOCS
+  //*1 user bloc
+  instance.registerLazySingleton<UserCubit>(
+      () => UserCubit(instance(), instance(),instance()));
+  //*2 cars bloc
+  instance.registerLazySingleton<CarCubit>(() => CarCubit(
+        instance(),
+        instance(),
+        instance(),
+        instance(),
+        instance(),
+        instance(),
+        instance(),
+        instance(),
+      ));
+  //*3 position bloc
+  instance.registerLazySingleton<PositionCubit>(() => PositionCubit(
+        instance(),
+      ));
+  //*4 map cubit
+  instance.registerLazySingleton<MapCubit>(() => MapCubit());
+  //*5 app cubit
+  instance.registerLazySingleton<AppCubit>(() => AppCubit());
+  //*6 notify cubit
+  instance.registerLazySingleton<NotifyCubit>(() => NotifyCubit());
+  //*7 search cubit
+  instance.registerLazySingleton<SearchCubit>(() => SearchCubit(
+        instance(),
+        instance(),
+      ));
+  //*8 mqtt cubit
+  instance.registerLazySingleton<MqttCubit>(() => MqttCubit(instance()));
+//********************************** */
 
+//* USECASES
   // getMyCarsUseCase
   instance.registerLazySingleton<GetMyCarsUseCase>(
       () => GetMyCarsUseCase(instance()));
@@ -62,6 +108,37 @@ Future<void> initAppModule() async {
   // getUserDataUseCase
   instance.registerLazySingleton<GetUserDataUseCase>(
       () => GetUserDataUseCase(instance()));
+  // connectCarUseCase
+  instance.registerLazySingleton<ConnectCarUseCase>(
+      () => ConnectCarUseCase(instance()));
+  // disconnectCarUseCase
+  instance.registerLazySingleton<DisConnectCarUseCase>(
+      () => DisConnectCarUseCase(instance()));
+  // removeUserAwayCarUseCase
+  instance.registerLazySingleton<RemoveUserAwayMyCarUseCase>(
+      () => RemoveUserAwayMyCarUseCase(instance()));
+
+  // SearchUserUseCase
+  instance.registerLazySingleton<SearchUserDataUseCase>(
+      () => SearchUserDataUseCase(instance()));
+
+  // shareCarUseCase
+  instance.registerLazySingleton<ShareCarUseCase>(
+      () => ShareCarUseCase(instance()));
+
+  // unshareCarUseCase
+  instance.registerLazySingleton<UnShareCarUseCase>(
+      () => UnShareCarUseCase(instance()));
+
+  // updateUserUseCase
+  instance.registerLazySingleton<UpdateUserDataUseCase>(
+      () => UpdateUserDataUseCase(instance()));
+  // get Notifys UseCase
+  instance.registerLazySingleton<GetNotifysUseCase>(
+      () => GetNotifysUseCase(instance()));
+  // readnotifyUseCase
+  instance.registerLazySingleton<ReadNotifysUseCase>(
+      () => ReadNotifysUseCase(instance()));
 }
 
 Future<void> initLoginModule() async {
@@ -83,47 +160,9 @@ Future<void> initRegisterModule() async {
   }
 }
 
-Future<void> initMainModule() async {
-  // homeViewModel
-
-  if (!GetIt.I.isRegistered<HomeViewModel>()) {
-    instance.registerFactory<HomeViewModel>(
-        () => HomeViewModel(instance(), instance(), instance()));
-  }
-
-  // profileViewModel
-  if (!GetIt.I.isRegistered<ProfileViewModel>()) {
-    instance.registerFactory<ProfileViewModel>(
-        () => ProfileViewModel(instance(), instance(), instance()));
-  }
-}
-
-Future<void> initCarDetailsModule() async {
-  // carDetailsViewModel
-  if(!GetIt.I.isRegistered<CarDetailsViewModel>()) {
-    instance.registerFactory<CarDetailsViewModel>(
-      () => CarDetailsViewModel(instance(), instance(), instance()));
-  }
-}
-
-Future<void> initSplashModule() async {
-  // refresh token usecase
-  instance.registerFactory<RefreshTokenUseCase>(() => RefreshTokenUseCase(
-        instance(),
-      ));
-  // splashViewModel
-  instance.registerFactory<SplashViewModel>(() => SplashViewModel(
-        instance(),
-        instance(),
-      ));
-}
-
 resetAllModules() {
   instance.reset(dispose: false);
   initAppModule();
   initLoginModule();
   initRegisterModule();
-  initMainModule();
-  initCarDetailsModule();
-  initSplashModule();
 }

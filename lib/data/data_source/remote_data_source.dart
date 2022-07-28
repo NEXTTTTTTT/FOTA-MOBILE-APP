@@ -5,9 +5,19 @@ import '../responses/response.dart';
 abstract class RemoteDataSource {
   Future<AuthenticationResponse> login(LoginRequest loginRequest);
   Future<AuthenticationResponse> register(RegisterRequest registerRequest);
-  Future<MyCarsResponse> getMyCars(String id);
-  Future<UserDataResponse> getUserData(String id);
+  Future<MyCarsResponse> getMyCars();
+  Future<UserDataResponse> getUserData();
   Future<AuthenticationResponse> refreshToken(String refreshToken);
+  Future<UserDataListResponse> searchUser(String username, String code);
+  Future<UserDataResponse> updateUser(String fullname, String profileImage,String deviceToken);
+  Future<MyCarsResponse> connectCar(
+      String code, String password, String carName);
+  Future<MyCarsResponse> disconnectCar(String code, String password);
+  Future<MyCarsResponse> shareCar(String userId, String code);
+  Future<MyCarsResponse> removeUserAwayMyCar(String userId, String code);
+  Future<MyCarsResponse> unshareCar(String code);
+  Future<NotifyListResponse> getNotifyList();
+  Future<BaseResponse> readNotify(String id);
 }
 
 class RemoteDataSourceImplementer implements RemoteDataSource {
@@ -33,17 +43,64 @@ class RemoteDataSourceImplementer implements RemoteDataSource {
   }
 
   @override
-  Future<MyCarsResponse> getMyCars(id) async {
-    return await _appServiceClient.getMyCars(id);
+  Future<MyCarsResponse> getMyCars() async {
+    return await _appServiceClient.getMyCars();
   }
 
   @override
-  Future<UserDataResponse> getUserData(String id) async {
-    return await _appServiceClient.getUserData(id);
+  Future<UserDataResponse> getUserData() async {
+    return await _appServiceClient.getUserData();
   }
 
   @override
   Future<AuthenticationResponse> refreshToken(refreshToken) async {
     return await _appServiceClient.refreshToken(refreshToken);
+  }
+
+  @override
+  Future<MyCarsResponse> connectCar(
+      String code, String password, String carName) async {
+    return await _appServiceClient.connectCar(code, password, carName);
+  }
+
+  @override
+  Future<MyCarsResponse> disconnectCar(String code, String password) async {
+    return await _appServiceClient.disconnectCar(code, password);
+  }
+
+  @override
+  Future<MyCarsResponse> removeUserAwayMyCar(String userId, String code) async {
+    return await _appServiceClient.removeUserAwayMyCar(userId, code);
+  }
+
+  @override
+  Future<UserDataListResponse> searchUser(String username, String code) async {
+    return await _appServiceClient.searchUser(username, code);
+  }
+
+  @override
+  Future<MyCarsResponse> shareCar(String userId, String code) async {
+    return await _appServiceClient.shareCar(userId, code);
+  }
+
+  @override
+  Future<MyCarsResponse> unshareCar(String code) async {
+    return await _appServiceClient.unshareCar(code);
+  }
+
+  @override
+  Future<UserDataResponse> updateUser(
+      String fullname, String profileImage,String deviceToken) async {
+    return await _appServiceClient.updateUser(fullname, profileImage,deviceToken);
+  }
+
+  @override
+  Future<NotifyListResponse> getNotifyList() async {
+    return await _appServiceClient.getNotifys();
+  }
+  
+  @override
+  Future<BaseResponse> readNotify(String id)async {
+    return await _appServiceClient.readNotify(id);
   }
 }

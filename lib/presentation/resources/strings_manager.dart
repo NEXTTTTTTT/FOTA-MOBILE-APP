@@ -20,6 +20,7 @@ class AppStrings{
   static const String forgetPassword='Forget Password';
   static const String registerText='Not member ? Sign up';
   static const String loading='Loading..';
+  static const String empty='Empty';
   static const String retryAgain='Retry again';
   static const String ok='Ok';
   static const String fullname='Full name';
@@ -39,4 +40,7 @@ class AppStrings{
   static const String myCars='My Cars';
   static const String currentLocation='Current Location';
   static const String logout='Logout';
+  static const String carCode='Car code';
+  static const String carPassword='Car password';
+  static const String putNameToYourCar='Put name to your car';
 }

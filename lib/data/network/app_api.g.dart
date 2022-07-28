@@ -72,7 +72,7 @@ class _AppServiceClient implements AppServiceClient {
   }
 
   @override
-  Future<MyCarsResponse> getMyCars(id) async {
+  Future<MyCarsResponse> getMyCars() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -80,7 +80,7 @@ class _AppServiceClient implements AppServiceClient {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<MyCarsResponse>(
             Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/user/car/${id}',
+                .compose(_dio.options, '/user/car/',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = MyCarsResponse.fromJson(_result.data!);
@@ -88,7 +88,7 @@ class _AppServiceClient implements AppServiceClient {
   }
 
   @override
-  Future<UserDataResponse> getUserData(id) async {
+  Future<UserDataResponse> getUserData() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -96,10 +96,162 @@ class _AppServiceClient implements AppServiceClient {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<UserDataResponse>(
             Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/user/${id}',
+                .compose(_dio.options, '/user/',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = UserDataResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<UserDataListResponse> searchUser(username, code) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'username': username,
+      r'code': code
+    };
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<UserDataListResponse>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/search',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = UserDataListResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<UserDataResponse> updateUser(
+      fullname, profileImage, deviceToken) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = {
+      'fullname': fullname,
+      'profileImage': profileImage,
+      'deviceToken': deviceToken
+    };
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<UserDataResponse>(
+            Options(method: 'PATCH', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/user',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = UserDataResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<MyCarsResponse> connectCar(code, password, carType) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = {'code': code, 'password': password, 'carType': carType};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<MyCarsResponse>(
+            Options(method: 'PATCH', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/car/connect',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = MyCarsResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<MyCarsResponse> disconnectCar(code, password) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = {'code': code, 'password': password};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<MyCarsResponse>(
+            Options(method: 'PATCH', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/car/dissconnect',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = MyCarsResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<MyCarsResponse> shareCar(userId, code) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = {'userId': userId, 'code': code};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<MyCarsResponse>(
+            Options(method: 'PATCH', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/car/share',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = MyCarsResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<MyCarsResponse> removeUserAwayMyCar(userId, code) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = {'userId': userId, 'code': code};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<MyCarsResponse>(
+            Options(method: 'PATCH', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/car/user/remove',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = MyCarsResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<MyCarsResponse> unshareCar(code) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = {'code': code};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<MyCarsResponse>(
+            Options(method: 'PATCH', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/car/unshare',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = MyCarsResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<NotifyListResponse> getNotifys() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NotifyListResponse>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/notify/all',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NotifyListResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<BaseResponse> readNotify(id) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<BaseResponse>(
+            Options(method: 'PATCH', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/notify/${id}/read',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = BaseResponse.fromJson(_result.data!);
     return value;
   }
 

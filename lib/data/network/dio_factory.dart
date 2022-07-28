@@ -3,9 +3,9 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:fota_mobile_app/app/di.dart';
-import 'package:fota_mobile_app/app/functions.dart';
-import 'package:fota_mobile_app/data/network/error_handler.dart';
+import '../../app/di.dart';
+import '../../app/functions.dart';
+import 'error_handler.dart';
 import '../../app/app_prefs.dart';
 
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
@@ -49,6 +49,7 @@ class DioFactory {
         requestHeader: true,
         requestBody: true,
         responseHeader: true,
+        request: true,
       ));
     }
     return dio;

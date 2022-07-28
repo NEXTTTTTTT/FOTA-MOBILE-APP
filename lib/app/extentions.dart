@@ -1,6 +1,8 @@
+import 'package:dartz/dartz.dart';
+import 'package:geolocator/geolocator.dart';
 
 const EMPTY = "";
-const ZERO =0;
+const ZERO = 0;
 const FALSE = false;
 const EMPTY_MAP = {};
 
@@ -48,3 +50,13 @@ extension NonNullMap on Map? {
   }
 }
 
+extension PlacemarkExtention on Placemark {
+  String toAddress() {
+    return (country.isNotEmpty ? (country + ' - ') : '') +
+        (administrativeArea.isNotEmpty ? (administrativeArea + ' - ') : '') +
+        (subAdministrativeArea.isNotEmpty
+            ? (subAdministrativeArea + ' - ')
+            : '') +
+        (locality.isNotEmpty ? (locality + ' .') : '');
+  }
+}
